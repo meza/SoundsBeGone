@@ -50,10 +50,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: "Do we need to publish a new release?"
-        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
-        run: echo "::set-output name=new-release-published::${{ steps.get-next-version.outputs.new-release-published }}
-
       - name: Release
         if: ${{ runner.os == 'Linux' && matrix.java == '17' && steps.get-next-version.outputs.new-release-published }}
         env:
