@@ -30,8 +30,25 @@ jobs:
       - name: make gradle wrapper executable
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew
-      - name: build
-        run: ./gradlew build
+      - name: Use Latest Node.js
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+      - name: Install semantic release
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
+        run: npm i --location=global semantic-release @semantic-release/github @semantic-release/changelog @semantic-release/exec
+
+      - name: Adjust the release permissions
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
+        run: chmod a+x ./scripts/release.sh
+
+      - name: Release
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
+
       - name: capture build artifacts
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }} # Only upload artifacts built from latest java on one OS
         uses: actions/upload-artifact@v3

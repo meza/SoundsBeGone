@@ -42,7 +42,7 @@ public class ModMenuIntegration implements ModMenuApi {
 
                     });
             ConfigCategory general = builder.getOrCreateCategory(Text.of("Played in the last 60 seconds"));
-            ConfigCategory disabled = builder.getOrCreateCategory(Text.of("Disable sounds"));
+            ConfigCategory disabled = builder.getOrCreateCategory(Text.of("Disabled sounds"));
             ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
             SoundMap
