@@ -55,3 +55,43 @@ jobs:
         with:
           name: Artifacts
           path: build/libs/
+
+      - uses: Kir-Antipov/mc-publish@v3.3
+        if: github.ref == 'refs/heads/master' && matrix.java == '17' && matrix.os == 'Linux'
+        with:
+          version-type: release
+          name: ""
+          modrinth-id: ${{ vars.MODRINTH_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          changelog-file: CHANGELOG.*
+          loaders: |
+            fabric
+          game-versions: |
+            1.20.1
+          java: |
+            17
+          dependencies: |
+            fabric-api | depends
+            modmenu | depends
+            cloth-config | depends
+          version-resolver: latest
+
+      - uses: Kir-Antipov/mc-publish@v3.3
+        if: github.ref == 'refs/heads/next' && matrix.java == '17' && matrix.os == 'Linux'
+        with:
+          version-type: beta
+          name: ""
+          modrinth-id: ${{ vars.MODRINTH_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          changelog-file: CHANGELOG.*
+          loaders: |
+            fabric
+          game-versions: |
+            1.20.1
+          java: |
+            17
+          dependencies: |
+            fabric-api | depends
+            modmenu | depends
+            cloth-config | depends
+          version-resolver: latest
