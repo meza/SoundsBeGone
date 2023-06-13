@@ -30,11 +30,13 @@ jobs:
       - name: make gradle wrapper executable
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew
+
       - name: Use Latest Node.js
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         uses: actions/setup-node@v3
         with:
           node-version: latest
+
       - name: Install semantic release
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         run: npm i --location=global semantic-release @semantic-release/github @semantic-release/changelog @semantic-release/exec semantic-release-export-data
@@ -47,6 +49,10 @@ jobs:
         id: get-next-version
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: "Do we need to publish a new release?"
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
+        run: echo "::set-output name=new-release-published::${{ steps.get-next-version.outputs.new-release-published }}
 
       - name: Release
         if: ${{ runner.os == 'Linux' && matrix.java == '17' && steps.get-next-version.outputs.new-release-published }}
