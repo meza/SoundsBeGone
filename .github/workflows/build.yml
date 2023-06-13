@@ -37,20 +37,25 @@ jobs:
           node-version: latest
       - name: Install semantic release
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
-        run: npm i --location=global semantic-release @semantic-release/github @semantic-release/changelog @semantic-release/exec
+        run: npm i --location=global semantic-release @semantic-release/github @semantic-release/changelog @semantic-release/exec semantic-release-export-data
 
       - name: Adjust the release permissions
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         run: chmod a+x ./scripts/release.sh
 
+      - run: npx semantic-release --dry-run
+        id: get-next-version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
       - name: Release
-        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' && steps.get-next-version.outputs.new-release-published }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: npx semantic-release
 
       - name: capture build artifacts
-        if: ${{ runner.os == 'Linux' && matrix.java == '17' }} # Only upload artifacts built from latest java on one OS
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' && steps.get-next-version.outputs.new-release-published }} # Only upload artifacts built from latest java on one OS
         uses: actions/upload-artifact@v3
         with:
           name: Artifacts
@@ -58,7 +63,7 @@ jobs:
 
       - uses: Kir-Antipov/mc-publish@v3.3
         name: Release Main Version
-        if: ${{ github.ref_name == 'main' && matrix.java == '17' && runner.os == 'Linux' }}
+        if: ${{ github.ref_name == 'main' && matrix.java == '17' && runner.os == 'Linux' && steps.get-next-version.outputs.new-release-published }}
         with:
           version-type: release
           name: ""
@@ -81,7 +86,7 @@ jobs:
 
       - uses: Kir-Antipov/mc-publish@v3.3
         name: Release Beta Version
-        if: ${{ github.ref_name == 'next' && matrix.java == '17' && runner.os == 'Linux' }}
+        if: ${{ github.ref_name == 'next' && matrix.java == '17' && runner.os == 'Linux' && steps.get-next-version.outputs.new-release-published }}
         with:
           version-type: beta
           name: ""
