@@ -65,6 +65,7 @@ jobs:
           modrinth-id: ${{ vars.MODRINTH_ID }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           changelog-file: CHANGELOG.*
+          files: build/libs/!(*-@(dev|sources|all)).jar
           loaders: |
             fabric
           game-versions: |
@@ -87,6 +88,7 @@ jobs:
           modrinth-id: ${{ vars.MODRINTH_ID }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           changelog-file: CHANGELOG.*
+          files: build/libs/!(*-@(dev|sources|all)).jar
           loaders: |
             fabric
           game-versions: |
