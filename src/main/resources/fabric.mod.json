@@ -38,6 +38,6 @@
 		"java": ">=17",
 		"fabric-api": "*",
 		"modmenu": ">=7.0.1",
-		"cloth-config": ">=11.0.99"
+		"yet_another_config_lib_v3": ">=3.0.1+1.20"
 	}
 }
