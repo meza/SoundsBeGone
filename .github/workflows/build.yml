@@ -51,13 +51,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Release
-        if: ${{ runner.os == 'Linux' && matrix.java == '17' && steps.get-next-version.outputs.new-release-published }}
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' && (steps.get-next-version.outputs.new-release-published == true) }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: npx semantic-release
 
       - name: capture build artifacts
-        if: ${{ runner.os == 'Linux' && matrix.java == '17' && steps.get-next-version.outputs.new-release-published }} # Only upload artifacts built from latest java on one OS
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' && (steps.get-next-version.outputs.new-release-published == true) }} # Only upload artifacts built from latest java on one OS
         uses: actions/upload-artifact@v3
         with:
           name: Artifacts
@@ -65,7 +65,7 @@ jobs:
 
       - uses: Kir-Antipov/mc-publish@v3.3
         name: Release Main Version
-        if: ${{ github.ref_name == 'main' && matrix.java == '17' && runner.os == 'Linux' && steps.get-next-version.outputs.new-release-published }}
+        if: ${{ github.ref_name == 'main' && matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == true) }}
         with:
           version-type: release
           name: ""
@@ -88,7 +88,7 @@ jobs:
 
       - uses: Kir-Antipov/mc-publish@v3.3
         name: Release Beta Version
-        if: ${{ github.ref_name == 'next' && matrix.java == '17' && runner.os == 'Linux' && steps.get-next-version.outputs.new-release-published }}
+        if: ${{ github.ref_name == 'next' && matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == true) }}
         with:
           version-type: beta
           name: ""
