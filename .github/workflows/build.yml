@@ -68,7 +68,7 @@ jobs:
           loaders: |
             fabric
           game-versions: |
-            1.20.1
+            >=1.20
           java: |
             17
           dependencies: |
@@ -76,6 +76,7 @@ jobs:
             modmenu | depends
             cloth-config | depends
           version-resolver: latest
+          game-version-filter: releases
 
       - uses: Kir-Antipov/mc-publish@v3.3
         name: Release Beta Version
@@ -89,7 +90,7 @@ jobs:
           loaders: |
             fabric
           game-versions: |
-            1.20.1
+            >=1.20
           java: |
             17
           dependencies: |
@@ -97,3 +98,4 @@ jobs:
             modmenu | depends
             cloth-config | depends
           version-resolver: latest
+          game-version-filter: releases
