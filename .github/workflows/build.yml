@@ -58,7 +58,7 @@ jobs:
 
       - uses: Kir-Antipov/mc-publish@v3.3
         name: Release Main Version
-        if: ${{ github.ref == 'refs/heads/master' && matrix.java == '17' && matrix.os == 'Linux' }}
+        if: ${{ github.ref_name == 'main' && matrix.java == '17' && runner.os == 'Linux' }}
         with:
           version-type: release
           name: ""
@@ -79,7 +79,7 @@ jobs:
 
       - uses: Kir-Antipov/mc-publish@v3.3
         name: Release Beta Version
-        if: ${{ github.ref == 'refs/heads/next' && matrix.java == '17' && matrix.os == 'Linux' }}
+        if: ${{ github.ref_name == 'next' && matrix.java == '17' && runner.os == 'Linux' }}
         with:
           version-type: beta
           name: ""
