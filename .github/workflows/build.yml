@@ -20,13 +20,16 @@ jobs:
     steps:
       - name: checkout repository
         uses: actions/checkout@v3
+
       - name: validate gradle wrapper
         uses: gradle/wrapper-validation-action@v1
+
       - name: setup jdk ${{ matrix.java }}
         uses: actions/setup-java@v3
         with:
           java-version: ${{ matrix.java }}
           distribution: 'microsoft'
+
       - name: make gradle wrapper executable
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew
@@ -37,15 +40,16 @@ jobs:
         with:
           node-version: latest
 
-      - name: Install semantic release
-        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
-        run: npm i --location=global semantic-release @semantic-release/github @semantic-release/changelog @semantic-release/exec semantic-release-export-data
-
       - name: Adjust the release permissions
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         run: chmod a+x ./scripts/release.sh
 
+      - name: Install semantic release
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
+        run: npm i --location=global semantic-release @semantic-release/github @semantic-release/changelog @semantic-release/exec semantic-release-export-data
+
       - run: npx semantic-release --dry-run
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         id: get-next-version
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
