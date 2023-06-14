@@ -1,0 +1,43 @@
+{
+	"schemaVersion": 1,
+	"id": "soundsbegone",
+	"version": "${version}",
+	"name": "SoundsBeGone",
+	"description": "Allows you to permanently disable specific sounds you don't like. Perfect for people with Misophonia!",
+	"authors": [
+		"Meza"
+	],
+	"contact": {
+		"homepage": "https://github.com/meza/SoundsBeGone",
+		"sources": "https://github.com/meza/SoundsBeGone"
+	},
+	"license": "GPL-3.0",
+	"icon": "assets/soundsbegone/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"gg.meza.SoundsBeGone"
+		],
+		"client": [
+			"gg.meza.SoundsBeGoneClient"
+		],
+		"modmenu": [
+			"gg.meza.ModMenuIntegration"
+		]
+	},
+	"mixins": [
+		"soundsbegone.mixins.json",
+		{
+			"config": "soundsbegone.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.14.21",
+		"minecraft": ["~1.20"],
+		"java": ">=17",
+		"fabric-api": "*",
+		"modmenu": ">=7.0.1",
+		"cloth-config": ">=11.0.99"
+	}
+}
