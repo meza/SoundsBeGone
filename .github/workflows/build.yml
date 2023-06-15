@@ -75,6 +75,8 @@ jobs:
           name: ""
           modrinth-id: ${{ vars.MODRINTH_ID }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-id: ${{ vars.CURSEFORGE_ID }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           changelog-file: CHANGELOG.*
           files: build/libs/!(*-@(dev|sources|all)).jar
           loaders: |
@@ -98,6 +100,8 @@ jobs:
           name: ""
           modrinth-id: ${{ vars.MODRINTH_ID }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-id: ${{ vars.CURSEFORGE_ID }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           changelog-file: CHANGELOG.*
           files: build/libs/!(*-@(dev|sources|all)).jar
           loaders: |
