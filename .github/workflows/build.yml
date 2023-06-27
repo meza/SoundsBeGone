@@ -55,15 +55,19 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
 
+      - name: Needs Release?
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
+        run: echo "Needs release published? ${{ steps.get-next-version.outputs.new-release-published }}"
+
       - name: Release
-        if: ${{ runner.os == 'Linux' && matrix.java == '17' && (steps.get-next-version.outputs.new-release-published == true) }}
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' && steps.get-next-version.outputs.new-release-published  }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
         run: npx semantic-release
 
       - name: capture build artifacts
-        if: ${{ runner.os == 'Linux' && matrix.java == '17' && (steps.get-next-version.outputs.new-release-published == true) }} # Only upload artifacts built from latest java on one OS
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' && steps.get-next-version.outputs.new-release-published }} # Only upload artifacts built from latest java on one OS
         uses: actions/upload-artifact@v3
         with:
           name: Artifacts
