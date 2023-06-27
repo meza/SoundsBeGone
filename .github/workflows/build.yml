@@ -92,9 +92,9 @@ jobs:
           java: |
             17
           dependencies: |
-            fabric-api | depends
-            modmenu | depends
-            cloth-config | depends
+            fabric-api(required)
+            modmenu(required)
+            cloth-config(required)
           version-resolver: latest
           game-version-filter: releases
 
@@ -117,10 +117,9 @@ jobs:
           java: |
             17
           dependencies: |
-            fabric-api | depends
-            modmenu | depends
-            cloth-config | depends
-          version-resolver: latest
+            fabric-api(required)
+            modmenu(required)
+            cloth-config(required)
           game-version-filter: releases
 
       - uses: Kir-Antipov/mc-publish@v3.3
@@ -131,6 +130,8 @@ jobs:
           name: ""
           modrinth-id: ${{ vars.MODRINTH_ID }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-id: ${{ vars.CURSEFORGE_ID }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           changelog-file: CHANGELOG.*
           files: build/libs/!(*-@(dev|sources|all)).jar
           loaders: |
@@ -140,8 +141,7 @@ jobs:
           java: |
             17
           dependencies: |
-            fabric-api | depends
-            modmenu | depends
-            cloth-config | depends
-          version-resolver: latest
+            fabric-api(required)
+            modmenu(required)
+            cloth-config(required)
           game-version-filter: releases
