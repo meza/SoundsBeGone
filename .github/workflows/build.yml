@@ -6,6 +6,10 @@
 name: build
 on: [pull_request, push]
 
+env:
+  # release type is release when branch is main, alpha when branch is alpha and beta when branch is beta
+    RELEASE_TYPE: ${{ github.ref_name == 'main' && 'release' || github.ref_name == 'alpha' && 'alpha' || github.ref_name == 'beta' && 'beta' }}
+
 jobs:
   build:
     strategy:
@@ -18,55 +22,56 @@ jobs:
         os: [ubuntu-22.04, windows-2022]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: checkout repository
+      - name: "⬇️ Checkout"
         uses: actions/checkout@v3
 
-      - name: validate gradle wrapper
+      - name: "🛂 Validate Gradle Wrapper"
         uses: gradle/wrapper-validation-action@v1
 
-      - name: setup jdk ${{ matrix.java }}
+      - name: "☕ Setup Jdk ${{ matrix.java }}"
         uses: actions/setup-java@v3
         with:
           java-version: ${{ matrix.java }}
           distribution: 'microsoft'
 
-      - name: make gradle wrapper executable
-        if: ${{ runner.os != 'Windows' }}
-        run: chmod +x ./gradlew
-
-      - name: Use Latest Node.js
+      - name: "🔃 Use Latest Node.js"
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         uses: actions/setup-node@v3
         with:
           node-version: latest
 
-      - name: Adjust the release permissions
+      - name: "🔓 Adjust the release permissions"
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
-        run: chmod a+x ./scripts/release.sh
+        run: chmod a+x ./scripts/release.sh && chmod +x ./gradlew
 
-      - name: Install semantic release
+      - name: "🧵 Install semantic release"
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         run: npm i --location=global semantic-release conventional-changelog-conventionalcommits @semantic-release/github @semantic-release/changelog @semantic-release/exec semantic-release-export-data
 
-      - run: npx semantic-release --dry-run
+      - name: "🔢 Determine version"
+        run: npx semantic-release --dry-run
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         id: get-next-version
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
 
-      - name: Needs Release?
+      - name: "ℹ️ Needs Release?"
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         run: echo "Needs release published? ${{ steps.get-next-version.outputs.new-release-published == 'true' }}"
 
-      - name: Release
+      - name: "ℹ️ Release type is"
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
+        run: echo "Release type is ${{ env.RELEASE_TYPE }}"
+
+      - name: "🏗️ Build & Release to GitHub"
         if: ${{ runner.os == 'Linux' && matrix.java == '17' && (steps.get-next-version.outputs.new-release-published == 'true')  }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
         run: npx semantic-release
 
-      - name: capture build artifacts
+      - name: "🕵️‍♂️ Collect jars"
         if: ${{ runner.os == 'Linux' && matrix.java == '17' && (steps.get-next-version.outputs.new-release-published == 'true') }} # Only upload artifacts built from latest java on one OS
         uses: actions/upload-artifact@v3
         with:
@@ -74,10 +79,10 @@ jobs:
           path: build/libs/
 
       - uses: Kir-Antipov/mc-publish@v3.3
-        name: Release Main Version
-        if: ${{ github.ref_name == 'main' && matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == 'true') }}
+        name: "🚀 Publish: ${{ env.RELEASE_TYPE }}"
+        if: ${{ matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == 'true') }}
         with:
-          version-type: release
+          version-type: ${{ env.RELEASE_TYPE }}
           name: ""
           modrinth-id: ${{ vars.MODRINTH_ID }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -87,55 +92,7 @@ jobs:
           files: build/libs/!(*-@(dev|sources|all)).jar
           loaders: |
             fabric
-          game-versions: |
-            >=1.20
-          java: |
-            17
-          dependencies: |
-            fabric-api(required)
-            modmenu(required)
-            cloth-config(required)
-          version-resolver: latest
-          game-version-filter: releases
-
-      - uses: Kir-Antipov/mc-publish@v3.3
-        name: Release Beta Version
-        if: ${{ github.ref_name == 'beta' && matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == 'true') }}
-        with:
-          version-type: beta
-          name: ""
-          modrinth-id: ${{ vars.MODRINTH_ID }}
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          curseforge-id: ${{ vars.CURSEFORGE_ID }}
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-          changelog-file: CHANGELOG.*
-          files: build/libs/!(*-@(dev|sources|all)).jar
-          loaders: |
-            fabric
-          game-versions: |
-            >=1.20
-          java: |
-            17
-          dependencies: |
-            fabric-api(required)
-            modmenu(required)
-            cloth-config(required)
-          game-version-filter: releases
-
-      - uses: Kir-Antipov/mc-publish@v3.3
-        name: Release Alpha Version
-        if: ${{ github.ref_name == 'alpha' && matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == 'true') }}
-        with:
-          version-type: alpha
-          name: ""
-          modrinth-id: ${{ vars.MODRINTH_ID }}
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          curseforge-id: ${{ vars.CURSEFORGE_ID }}
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-          changelog-file: CHANGELOG.*
-          files: build/libs/!(*-@(dev|sources|all)).jar
-          loaders: |
-            fabric
+            quilt
           game-versions: |
             >=1.20
           java: |
