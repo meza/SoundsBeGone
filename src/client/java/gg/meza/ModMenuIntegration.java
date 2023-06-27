@@ -67,11 +67,19 @@ public class ModMenuIntegration implements ModMenuApi {
                 .setDefaultValue(SoundsBeGoneClient.config.isSoundDisabled(key))
                 .setSaveConsumer(newValue -> {
                     if (newValue) {
-                        SoundsBeGoneClient.config.disableSound(key);
-                        SoundsBeGoneClient.analytics.mutedSound(key);
+                        if (!SoundsBeGoneClient.config.isSoundDisabled(key)) {
+                            SoundsBeGone.LOGGER.info("Disabling sound: " + key);
+                            // only do work if necessary
+                            SoundsBeGoneClient.config.disableSound(key);
+                            SoundsBeGoneClient.analytics.mutedSound(key);
+                        }
                     } else {
-                        SoundsBeGoneClient.config.enableSound(key);
-                        SoundsBeGoneClient.analytics.unmutedSound(key);
+                        if (SoundsBeGoneClient.config.isSoundDisabled(key)) {
+                            SoundsBeGone.LOGGER.info("Enabling sound: " + key);
+                            // only do work if necessary
+                            SoundsBeGoneClient.config.enableSound(key);
+                            SoundsBeGoneClient.analytics.unmutedSound(key);
+                        }
                     }
                 })
                 .setYesNoTextSupplier(bool -> bool ? Text.of("Enable") : Text.of("Disable"))
