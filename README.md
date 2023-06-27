@@ -12,5 +12,18 @@ If you hear something that triggers you, press ESC, click on MODS, select Sounds
 
 ## Dependencies
 
-- [ModMenu](https://modrinth.com/mod/modmenu)
-- [ClothConfig](https://modrinth.com/mod/cloth-config)
+
+### Curseforge
+
+> Using [mmm](https://github.com/meza/minecraft-mod-manager)?
+> 
+> Run `mmm add curseforge 874633` to install this mod.
+
+- [ModMenu](https://www.curseforge.com/minecraft/mc-mods/modmenu)
+- [ClothConfig](https://www.curseforge.com/minecraft/mc-mods/cloth-config)
+
+### Modrinth
+
+> Using [mmm](https://github.com/meza/minecraft-mod-manager)?
+>
+> Run `mmm add modrinth FOIvwGKz` to install this mod.

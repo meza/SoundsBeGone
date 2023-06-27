@@ -5,7 +5,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.sound.SoundSystem;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,13 +22,14 @@ public class SoundInterceptorMixin {
 		String id = sound.getId().toString();
 		String name = sound.getId().toTranslationKey();
 
-		if (SoundsBeGoneClient.DisabledSoundMap.contains(id)) {
-			LOGGER.warn("Disabling the sound: {}", id);
+		if (SoundsBeGoneClient.config.isSoundDisabled(id)) {
+			LOGGER.debug("Disabling the sound: {}", id);
+			SoundsBeGoneClient.analytics.blockedSound(id);
 			info.cancel();
 		}
 
 		if(MinecraftClient.getInstance().world != null) {
-			LOGGER.warn("Intercepting the sound: {}", Text.translatable(name));
+			LOGGER.debug("Intercepting the sound: {}", Text.translatable(name));
 			SoundMap.put(id, new java.util.Date());
 		}
 	}

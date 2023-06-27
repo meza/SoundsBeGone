@@ -46,22 +46,28 @@ jobs:
 
       - name: Install semantic release
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
-        run: npm i --location=global semantic-release @semantic-release/github @semantic-release/changelog @semantic-release/exec semantic-release-export-data
+        run: npm i --location=global semantic-release conventional-changelog-conventionalcommits @semantic-release/github @semantic-release/changelog @semantic-release/exec semantic-release-export-data
 
       - run: npx semantic-release --dry-run
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         id: get-next-version
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
+
+      - name: Needs Release?
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
+        run: echo "Needs release published? ${{ steps.get-next-version.outputs.new-release-published }}"
 
       - name: Release
-        if: ${{ runner.os == 'Linux' && matrix.java == '17' && (steps.get-next-version.outputs.new-release-published == true) }}
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' && (steps.get-next-version.outputs.new-release-published == 1)  }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
         run: npx semantic-release
 
       - name: capture build artifacts
-        if: ${{ runner.os == 'Linux' && matrix.java == '17' && (steps.get-next-version.outputs.new-release-published == true) }} # Only upload artifacts built from latest java on one OS
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' && (steps.get-next-version.outputs.new-release-published == 1) }} # Only upload artifacts built from latest java on one OS
         uses: actions/upload-artifact@v3
         with:
           name: Artifacts
@@ -69,7 +75,7 @@ jobs:
 
       - uses: Kir-Antipov/mc-publish@v3.3
         name: Release Main Version
-        if: ${{ github.ref_name == 'main' && matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == true) }}
+        if: ${{ github.ref_name == 'main' && matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == 1) }}
         with:
           version-type: release
           name: ""
@@ -94,7 +100,7 @@ jobs:
 
       - uses: Kir-Antipov/mc-publish@v3.3
         name: Release Beta Version
-        if: ${{ github.ref_name == 'next' && matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == true) }}
+        if: ${{ github.ref_name == 'beta' && matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == 1) }}
         with:
           version-type: beta
           name: ""
@@ -102,6 +108,29 @@ jobs:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-id: ${{ vars.CURSEFORGE_ID }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          changelog-file: CHANGELOG.*
+          files: build/libs/!(*-@(dev|sources|all)).jar
+          loaders: |
+            fabric
+          game-versions: |
+            >=1.20
+          java: |
+            17
+          dependencies: |
+            fabric-api | depends
+            modmenu | depends
+            cloth-config | depends
+          version-resolver: latest
+          game-version-filter: releases
+
+      - uses: Kir-Antipov/mc-publish@v3.3
+        name: Release Alpha Version
+        if: ${{ github.ref_name == 'alpha' && matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == 1) }}
+        with:
+          version-type: alpha
+          name: ""
+          modrinth-id: ${{ vars.MODRINTH_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           changelog-file: CHANGELOG.*
           files: build/libs/!(*-@(dev|sources|all)).jar
           loaders: |
