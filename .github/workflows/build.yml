@@ -46,7 +46,7 @@ jobs:
 
       - name: Install semantic release
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
-        run: npm i --location=global semantic-release @semantic-release/github @semantic-release/changelog @semantic-release/exec semantic-release-export-data
+        run: npm i --location=global semantic-release @semantic-release/commit-analyzer @semantic-release/github @semantic-release/changelog @semantic-release/exec semantic-release-export-data
 
       - run: npx semantic-release --dry-run
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
