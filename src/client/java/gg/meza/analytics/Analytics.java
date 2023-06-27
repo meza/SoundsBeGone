@@ -21,7 +21,7 @@ public class Analytics {
     public Analytics() {
         this.posthog = new PostHog.Builder(POSTHOG_API_KEY).host(POSTHOG_HOST).build();
         if (SoundsBeGoneClient.config.isAnalyticsEnabled()) {
-            this.posthog.capture(this.uuid, "Started Minecraft");
+            this.sendEvent("Started Minecraft", "");
         }
     }
 
