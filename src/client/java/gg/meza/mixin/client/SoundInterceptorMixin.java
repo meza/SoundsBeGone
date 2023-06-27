@@ -23,13 +23,13 @@ public class SoundInterceptorMixin {
 		String name = sound.getId().toTranslationKey();
 
 		if (SoundsBeGoneClient.DisabledSoundMap.contains(id)) {
-			LOGGER.warn("Disabling the sound: {}", id);
+			LOGGER.debug("Disabling the sound: {}", id);
 			SoundsBeGoneClient.analytics.blockedSound(id);
 			info.cancel();
 		}
 
 		if(MinecraftClient.getInstance().world != null) {
-			LOGGER.warn("Intercepting the sound: {}", Text.translatable(name));
+			LOGGER.debug("Intercepting the sound: {}", Text.translatable(name));
 			SoundMap.put(id, new java.util.Date());
 		}
 	}
