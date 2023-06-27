@@ -18,6 +18,7 @@ repositories {
 	// for more information about repositories.
 	maven { url "https://maven.shedaniel.me/" } // Cloth Config
 	maven { url "https://maven.terraformersmc.com/" } // ModMenu
+	gradlePluginPortal()
 
 }
 
@@ -47,8 +48,10 @@ dependencies {
 
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 
-	implementation 'com.google.code.gson:gson:2.10.1'
-	implementation 'com.posthog.java:posthog:+'
+	modImplementation 'com.google.code.gson:gson:2.10.1'
+	modImplementation 'com.posthog.java:posthog:1.1.0'
+//	shadow 'com.posthog.java:posthog:1.1.0'
+	include 'com.posthog.java:posthog:1.1.0'
 
 	modApi("com.terraformersmc:modmenu:${project.modmenu_version}")  {
 		exclude(group: "net.fabricmc.fabric-api")

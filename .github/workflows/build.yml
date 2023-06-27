@@ -75,7 +75,7 @@ jobs:
 
       - uses: Kir-Antipov/mc-publish@v3.3
         name: Release Main Version
-        if: ${{ github.ref_name == 'main' && matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == true) }}
+        if: ${{ github.ref_name == 'main' && matrix.java == '17' && runner.os == 'Linux' && steps.get-next-version.outputs.new-release-published }}
         with:
           version-type: release
           name: ""
@@ -98,9 +98,32 @@ jobs:
 
       - uses: Kir-Antipov/mc-publish@v3.3
         name: Release Beta Version
-        if: ${{ github.ref_name == 'next' && matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == true) }}
+        if: ${{ github.ref_name == 'beta' && matrix.java == '17' && runner.os == 'Linux' && steps.get-next-version.outputs.new-release-published }}
         with:
           version-type: beta
+          name: ""
+          modrinth-id: ${{ vars.MODRINTH_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          changelog-file: CHANGELOG.*
+          files: build/libs/!(*-@(dev|sources|all)).jar
+          loaders: |
+            fabric
+          game-versions: |
+            >=1.20
+          java: |
+            17
+          dependencies: |
+            fabric-api | depends
+            modmenu | depends
+            cloth-config | depends
+          version-resolver: latest
+          game-version-filter: releases
+
+      - uses: Kir-Antipov/mc-publish@v3.3
+        name: Release Alpha Version
+        if: ${{ github.ref_name == 'alpha' && matrix.java == '17' && runner.os == 'Linux' && steps.get-next-version.outputs.new-release-published }}
+        with:
+          version-type: alpha
           name: ""
           modrinth-id: ${{ vars.MODRINTH_ID }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
