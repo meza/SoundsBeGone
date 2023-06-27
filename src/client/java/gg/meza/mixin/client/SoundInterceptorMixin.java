@@ -22,7 +22,7 @@ public class SoundInterceptorMixin {
 		String id = sound.getId().toString();
 		String name = sound.getId().toTranslationKey();
 
-		if (SoundsBeGoneClient.DisabledSoundMap.contains(id)) {
+		if (SoundsBeGoneClient.config.isSoundDisabled(id)) {
 			LOGGER.debug("Disabling the sound: {}", id);
 			SoundsBeGoneClient.analytics.blockedSound(id);
 			info.cancel();
