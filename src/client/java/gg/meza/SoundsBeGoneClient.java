@@ -2,6 +2,7 @@ package gg.meza;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import gg.meza.analytics.Analytics;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
@@ -18,6 +19,7 @@ public class SoundsBeGoneClient implements ClientModInitializer {
 	public static Map<String, Date> SoundMap = new HashMap<String, Date>();
 	public static Set<String> DisabledSoundMap = new HashSet<>();
 	private int tickCounter = 0;
+	public static Analytics analytics = new Analytics();
 
 	@Override
 	public void onInitializeClient() {

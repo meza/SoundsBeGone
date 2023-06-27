@@ -5,7 +5,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.sound.SoundSystem;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,6 +24,7 @@ public class SoundInterceptorMixin {
 
 		if (SoundsBeGoneClient.DisabledSoundMap.contains(id)) {
 			LOGGER.warn("Disabling the sound: {}", id);
+			SoundsBeGoneClient.analytics.blockedSound(id);
 			info.cancel();
 		}
 

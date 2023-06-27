@@ -65,8 +65,10 @@ public class ModMenuIntegration implements ModMenuApi {
                 .setSaveConsumer(newValue -> {
                     if (newValue) {
                         SoundsBeGoneClient.DisabledSoundMap.add(key);
+                        SoundsBeGoneClient.analytics.mutedSound(key);
                     } else {
                         SoundsBeGoneClient.DisabledSoundMap.remove(key);
+                        SoundsBeGoneClient.analytics.unmutedSound(key);
                     }
                 })
                 .setYesNoTextSupplier(bool -> bool ? Text.of("Enable") : Text.of("Disable"))

@@ -48,6 +48,7 @@ dependencies {
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 
 	implementation 'com.google.code.gson:gson:2.10.1'
+	implementation 'com.posthog.java:posthog:+'
 
 	modApi("com.terraformersmc:modmenu:${project.modmenu_version}")  {
 		exclude(group: "net.fabricmc.fabric-api")

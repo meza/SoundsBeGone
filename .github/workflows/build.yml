@@ -53,11 +53,13 @@ jobs:
         id: get-next-version
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
 
       - name: Release
         if: ${{ runner.os == 'Linux' && matrix.java == '17' && (steps.get-next-version.outputs.new-release-published == true) }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
         run: npx semantic-release
 
       - name: capture build artifacts
