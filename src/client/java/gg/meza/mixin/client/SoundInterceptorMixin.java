@@ -16,8 +16,7 @@ import static gg.meza.SoundsBeGoneClient.SoundMap;
 @Mixin(SoundSystem.class)
 public class SoundInterceptorMixin {
 
-
-	@Inject(at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;debug(Lorg/slf4j/Marker;Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"), method = "play(Lnet/minecraft/client/sound/SoundInstance;)V", cancellable = true)
+	@Inject(at = @At("HEAD"), method = "play(Lnet/minecraft/client/sound/SoundInstance;)V", cancellable = true)
 	private void run(SoundInstance sound, CallbackInfo info) {
 		String id = sound.getId().toString();
 		String name = sound.getId().toTranslationKey();
