@@ -6,7 +6,7 @@ import gg.meza.SoundsBeGoneClient;
 import net.minecraft.client.MinecraftClient;
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class Analytics {
     private static final String POSTHOG_API_KEY = "POSTHOG_API_KEY_REPL";
@@ -18,6 +18,7 @@ public class Analytics {
     private final String OS_NAME = System.getProperty("os.name");
     private final String MC_VERSION = MinecraftClient.getInstance().getGameVersion();
     private final String JAVA_VERSION = System.getProperty("java.version");
+
     public Analytics() {
         this.posthog = new PostHog.Builder(POSTHOG_API_KEY).host(POSTHOG_HOST).build();
         if (SoundsBeGoneClient.config.isAnalyticsEnabled()) {
@@ -30,16 +31,14 @@ public class Analytics {
             return;
         }
 
-        this.posthog.capture(this.uuid, event, new HashMap<String, Object>() {
-            {
-                put("sound", sound);
-                put("Minecraft Version", MC_VERSION);
-                put("OS", OS_NAME);
-                put("Local Time", new java.util.Date().toString());
-                put("ModVersion", SoundsBeGone.VERSION);
-                put("Java Version", JAVA_VERSION);
-            }
-        });
+        this.posthog.capture(this.uuid, event, Map.of(
+                "sound", sound,
+                "Minecraft Version", MC_VERSION,
+                "OS", OS_NAME,
+                "Local Time", new java.util.Date().toString(),
+                "ModVersion", SoundsBeGone.VERSION,
+                "Java Version", JAVA_VERSION
+        ));
     }
 
     public void mutedSound(String sound) {
