@@ -11,8 +11,7 @@ import java.util.Map;
 import static gg.meza.SoundsBeGone.LOGGER;
 
 public class Analytics {
-//    private static final String POSTHOG_API_KEY = "POSTHOG_API_KEY_REPL";
-    private static final String POSTHOG_API_KEY = "phc_FwrcOlz7iwXh4IlKbFn7yawZ2LiZJ4ew0p5Yy2OoeRSL";
+    private static final String POSTHOG_API_KEY = "POSTHOG_API_KEY_REPL";
     private static final String POSTHOG_HOST = "https://eu.posthog.com";
     private final PostHog posthog;
     private final Map<String, Integer> blockedSoundsCount = new HashMap<>();
