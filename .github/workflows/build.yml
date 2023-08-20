@@ -83,7 +83,8 @@ jobs:
         if: ${{ matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == 'true') }}
         with:
           version-type: ${{ env.RELEASE_TYPE }}
-          name: ""
+          name: "SoundsBeGone ${{ needs.get-next-version.outputs.new-release-version }} for Minecraft 1.20"
+          version: ${{ needs.get-next-version.outputs.new-release-version }}
           modrinth-id: ${{ vars.MODRINTH_ID }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-id: ${{ vars.CURSEFORGE_ID }}
