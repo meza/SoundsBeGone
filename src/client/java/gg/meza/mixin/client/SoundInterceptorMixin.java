@@ -19,7 +19,7 @@ public class SoundInterceptorMixin {
 	@Inject(at = @At("HEAD"), method = "play(Lnet/minecraft/client/sound/SoundInstance;)V", cancellable = true)
 	private void run(SoundInstance sound, CallbackInfo info) {
 		String id = sound.getId().toString();
-		String name = sound.getId().toTranslationKey();
+		String name = sound.getId().toUnderscoreSeparatedString();
 
 		if (SoundsBeGoneClient.config.isSoundDisabled(id)) {
 			LOGGER.debug("Disabling the sound: {}", id);
@@ -28,7 +28,7 @@ public class SoundInterceptorMixin {
 		}
 
 		if(MinecraftClient.getInstance().world != null) {
-			LOGGER.debug("Intercepting the sound: {}", Text.translatable(name));
+			LOGGER.debug("Intercepting the sound: {}", Text.of(name));
 			SoundMap.put(id, new java.util.Date());
 		}
 	}

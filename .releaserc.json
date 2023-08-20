@@ -1,7 +1,7 @@
 {
   "branches": [
     "+([0-9])?(.{+([0-9]),x}).x",
-    "MC-1.19.2",
+    "MC-1.18.2",
     "main",
     {
       "name": "beta",
@@ -12,7 +12,7 @@
       "prerelease": true
     }
   ],
-  "tagFormat": "v${version}-MC1.19.2",
+  "tagFormat": "v${version}-MC1.18.2",
   "plugins": [
     [
       "@semantic-release/commit-analyzer",
