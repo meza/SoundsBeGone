@@ -2,6 +2,7 @@ package gg.meza.analytics;
 
 import com.posthog.java.PostHog;
 import gg.meza.SoundsBeGone;
+import gg.meza.client.SoundsBeGoneClient;
 import net.minecraft.client.MinecraftClient;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -22,7 +23,7 @@ public class Analytics {
 
     public Analytics() {
         this.posthog = new PostHog.Builder(POSTHOG_API_KEY).host(POSTHOG_HOST).build();
-        if (SoundsBeGone.config.isAnalyticsEnabled()) {
+        if (SoundsBeGoneClient.config.isAnalyticsEnabled()) {
             this.sendEvent("Started Minecraft", "");
         }
     }
@@ -31,7 +32,7 @@ public class Analytics {
     }
 
     private void sendEvent(String event, String sound, Map<String, Object> extraProps) {
-        if (!SoundsBeGone.config.isAnalyticsEnabled()) {
+        if (!SoundsBeGoneClient.config.isAnalyticsEnabled()) {
             return;
         }
 

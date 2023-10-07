@@ -16,17 +16,17 @@ public class ConfigScreen {
                 .setParentScreen(parent)
                 .setTitle(Text.of("Sounds Be Gone Config"))
                 .setSavingRunnable(() -> {
-                    SoundsBeGone.config.saveConfig();
+                    SoundsBeGoneClient.config.saveConfig();
                 });
         ConfigCategory general = builder.getOrCreateCategory(Text.of("Played in the last 60 seconds"));
         ConfigCategory disabled = builder.getOrCreateCategory(Text.of("Disabled sounds"));
         ConfigCategory settings = builder.getOrCreateCategory(Text.of("Settings"));
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-        settings.addEntry(entryBuilder.startBooleanToggle(Text.of("Enable analytics"), SoundsBeGone.config.isAnalyticsEnabled())
-                .setDefaultValue(SoundsBeGone.config.isAnalyticsEnabled())
+        settings.addEntry(entryBuilder.startBooleanToggle(Text.of("Enable analytics"), SoundsBeGoneClient.config.isAnalyticsEnabled())
+                .setDefaultValue(SoundsBeGoneClient.config.isAnalyticsEnabled())
                 .setSaveConsumer(newValue -> {
-                    SoundsBeGone.config.toggleAnalytics(newValue);
+                    SoundsBeGoneClient.config.toggleAnalytics(newValue);
                 })
                 .build());
 
@@ -44,36 +44,36 @@ public class ConfigScreen {
         settings.addEntry(analyticsSubcategory.build());
         settings.addEntry(entryBuilder.startTextDescription(Text.of("Please consider keeping this on. This data helps development by giving us insight into what is important to you and what is not")).build());
 
-        SoundsBeGone.SoundMap
+        SoundsBeGoneClient.SoundMap
                 .keySet()
                 .stream()
-                .filter(s -> !SoundsBeGone.config.isSoundDisabled(s))
+                .filter(s -> !SoundsBeGoneClient.config.isSoundDisabled(s))
                 .sorted()
                 .forEach((key) -> general.addEntry(constructOption(entryBuilder, key)));
 
-        SoundsBeGone.config.disabledSounds().stream().sorted().forEach((key) -> disabled.addEntry(constructOption(entryBuilder, key)));
+        SoundsBeGoneClient.config.disabledSounds().stream().sorted().forEach((key) -> disabled.addEntry(constructOption(entryBuilder, key)));
 
         return builder.build();
     }
 
     private static AbstractConfigListEntry<?> constructOption(ConfigEntryBuilder builder, String key) {
         return builder
-                .startBooleanToggle(Text.of(key), SoundsBeGone.config.isSoundDisabled(key))
-                .setDefaultValue(SoundsBeGone.config.isSoundDisabled(key))
+                .startBooleanToggle(Text.of(key), SoundsBeGoneClient.config.isSoundDisabled(key))
+                .setDefaultValue(SoundsBeGoneClient.config.isSoundDisabled(key))
                 .setSaveConsumer(newValue -> {
                     if (newValue) {
-                        if (!SoundsBeGone.config.isSoundDisabled(key)) {
+                        if (!SoundsBeGoneClient.config.isSoundDisabled(key)) {
                             SoundsBeGone.LOGGER.info("Disabling sound: " + key);
                             // only do work if necessary
-                            SoundsBeGone.config.disableSound(key);
-                            SoundsBeGone.analytics.mutedSound(key);
+                            SoundsBeGoneClient.config.disableSound(key);
+                            SoundsBeGoneClient.analytics.mutedSound(key);
                         }
                     } else {
-                        if (SoundsBeGone.config.isSoundDisabled(key)) {
+                        if (SoundsBeGoneClient.config.isSoundDisabled(key)) {
                             SoundsBeGone.LOGGER.info("Enabling sound: " + key);
                             // only do work if necessary
-                            SoundsBeGone.config.enableSound(key);
-                            SoundsBeGone.analytics.unmutedSound(key);
+                            SoundsBeGoneClient.config.enableSound(key);
+                            SoundsBeGoneClient.analytics.unmutedSound(key);
                         }
                     }
                 })

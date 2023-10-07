@@ -2,6 +2,7 @@ package gg.meza.forge;
 
 import gg.meza.SoundsBeGone;
 import gg.meza.client.ConfigScreen;
+import gg.meza.client.SoundsBeGoneClient;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -24,12 +25,12 @@ public class SoundsBeGoneForge {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            SoundsBeGone.initClient();
+            SoundsBeGoneClient.initClient();
         }
 
         @SubscribeEvent
         public static void keyBinds(RegisterKeyMappingsEvent event) {
-            event.register(SoundsBeGone.openConfig);
+            event.register(SoundsBeGoneClient.openConfig);
         }
     }
 }
