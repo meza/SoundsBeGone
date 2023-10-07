@@ -4,6 +4,7 @@ import gg.meza.client.ConfigScreen;
 import gg.meza.client.SoundsBeGoneClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.event.GameShuttingDownEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
@@ -33,7 +34,7 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public static void shutdown(ServerStoppingEvent event) {
+    public static void shutdown(GameShuttingDownEvent event) {
         SoundsBeGoneClient.analytics.flush();
     }
 }
