@@ -19,14 +19,4 @@ public class SoundsBeGone {
     public static final Logger LOGGER = LoggerFactory.getLogger("soundsbegone");
     public static final String VERSION = "VERSION_REPL";
     public static final String MOD_ID = "soundsbegone";
-    public static Map<String, Date> SoundMap = new HashMap<>();
-    public static Config config = new Config();
-    public static Analytics analytics;
-    public static final KeyBinding openConfig = new KeyBinding("soundsbegone.config", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_B, "soundsbegone.keybinds") ;
-
-
-    public static void initClient() {
-        config.initConfig();
-        analytics = new Analytics();
-    }
 }

@@ -19,7 +19,7 @@
           "gg.meza.fabric.SoundsBeGoneFabric"
 		],
 		"client": [
-			"gg.meza.fabric.SoundsBeGoneClient"
+			"gg.meza.fabric.SoundsBeGoneClientFabric"
 		],
 		"modmenu": [
 			"gg.meza.fabric.ModMenuIntegration"

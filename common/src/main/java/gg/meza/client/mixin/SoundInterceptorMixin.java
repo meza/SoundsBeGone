@@ -1,6 +1,7 @@
 package gg.meza.client.mixin;
 
 import gg.meza.SoundsBeGone;
+import gg.meza.client.SoundsBeGoneClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.sound.SoundSystem;
@@ -18,15 +19,15 @@ public class SoundInterceptorMixin {
 	private void run(SoundInstance sound, CallbackInfo info) {
 		String id = sound.getId().toString();
 		String name = sound.getId().toTranslationKey();
-		if (SoundsBeGone.config.isSoundDisabled(id)) {
+		if (SoundsBeGoneClient.config.isSoundDisabled(id)) {
 			SoundsBeGone.LOGGER.debug("Disabling the sound: {}", id);
-			SoundsBeGone.analytics.blockedSound(id);
+			SoundsBeGoneClient.analytics.blockedSound(id);
 			info.cancel();
 		}
 
 		if(MinecraftClient.getInstance().world != null) {
 			SoundsBeGone.LOGGER.debug("Intercepting the sound: {}", Text.translatable(name));
-			SoundsBeGone.SoundMap.put(id, new java.util.Date());
+			SoundsBeGoneClient.SoundMap.put(id, new java.util.Date());
 		}
 	}
 }
