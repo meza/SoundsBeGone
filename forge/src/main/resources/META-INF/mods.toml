@@ -1,0 +1,28 @@
+modLoader = "javafml"
+loaderVersion = "[45,)"
+#issueTrackerURL = ""
+license = "GPL-3.0"
+
+[[mods]]
+modId = "soundsbegone"
+version = "${version}"
+displayName = "SoundsBeGone"
+authors = "Meza"
+description = '''
+Allows you to permanently disable specific sounds you don't like. Perfect for people with Misophonia!
+'''
+logoFile = "assets/soundsbegone/icon.png"
+
+[[dependencies.soundsbegone]]
+modId = "forge"
+mandatory = true
+versionRange = "[47.1.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.soundsbegone]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,)"
+ordering = "NONE"
+side = "BOTH"
