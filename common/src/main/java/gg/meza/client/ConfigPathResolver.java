@@ -5,10 +5,10 @@ import gg.meza.SoundsBeGone;
 
 import java.nio.file.Path;
 
-public interface Xplat {
+public interface ConfigPathResolver {
     @ExpectPlatform
     static Path getConfigDir(String dir) {
-        SoundsBeGone.LOGGER.error("Xplat failed to load");
+        SoundsBeGone.LOGGER.error("ConfigPathResolver failed to load");
         return null;
     }
 }
