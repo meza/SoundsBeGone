@@ -2,7 +2,7 @@ package gg.meza;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import gg.meza.client.Xplat;
+import gg.meza.client.ConfigPathResolver;
 import org.apache.commons.lang3.SerializationException;
 
 import java.io.BufferedReader;
@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class Config {
     private ConfigData configData = new ConfigData();
-    private Path configPath = Xplat.getConfigDir("disabled_sounds.json");
+    private Path configPath = ConfigPathResolver.getConfigDir("disabled_sounds.json");
 
     public boolean isAnalyticsEnabled() {
         return configData.analytics;

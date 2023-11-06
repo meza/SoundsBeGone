@@ -15,11 +15,9 @@
 	"icon": "assets/soundsbegone/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"main": [
-          "gg.meza.fabric.SoundsBeGoneFabric"
-		],
+		"main": [],
 		"client": [
-			"gg.meza.fabric.SoundsBeGoneClientFabric"
+			"gg.meza.fabric.SoundsBeGoneFabric"
 		],
 		"modmenu": [
 			"gg.meza.fabric.ModMenuIntegration"
