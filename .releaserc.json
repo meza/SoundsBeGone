@@ -1,17 +1,8 @@
 {
   "branches": [
-    "+([0-9])?(.{+([0-9]),x}).x",
-    "main",
-    {
-      "name": "beta",
-      "prerelease": true
-    },
-    {
-      "name": "alpha",
-      "prerelease": true
-    }
+    "MC1.20.1"
   ],
-  "tagFormat": "v${version}-MC1.20",
+  "tagFormat": "v${version}-MC1.20.1",
   "plugins": [
     [
       "@semantic-release/commit-analyzer",
@@ -29,7 +20,7 @@
     [
       "@semantic-release/changelog",
       {
-        "changelogTitle": "# Sounds Be Gone! Changelog",
+        "changelogTitle": "# Server Redstone Block Changelog",
         "changelogFile": "CHANGELOG.md"
       }
     ],
@@ -38,9 +29,14 @@
       {
         "assets": [
           {
-            "path": "build/libs/!(*-@(dev|sources)).jar",
-            "name": "soundsbegone-${nextRelease.gitTag}.jar",
-            "label": "soundsbegone-${nextRelease.gitTag}.jar"
+            "path": "forge/build/libs/!(*-@(dev|sources|shadow)).jar",
+            "name": "SoundsBeGone-forge-${nextRelease.gitTag}.jar",
+            "label": "SoundsBeGone-forge-${nextRelease.gitTag}.jar"
+          },
+          {
+            "path": "fabric/build/libs/!(*-@(dev|sources|shadow)).jar",
+            "name": "SoundsBeGone-fabric-${nextRelease.gitTag}.jar",
+            "label": "SoundsBeGone-fabric-${nextRelease.gitTag}.jar"
           }
         ]
       }
