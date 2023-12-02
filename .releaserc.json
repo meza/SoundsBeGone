@@ -1,6 +1,10 @@
 {
   "branches": [
-    "MC1.20.1"
+    "MC1.20.1",
+    {
+      "name": "MC1.20.1-beta",
+      "prerelease": true
+    }
   ],
   "tagFormat": "v${version}-MC1.20.1",
   "plugins": [

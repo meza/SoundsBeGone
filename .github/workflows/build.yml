@@ -13,7 +13,8 @@ permissions:
   pull-requests: write
 
 env:
-  MC_VERSION: 1.20.2
+  MC_VERSION: 1.20.1
+  TYPE: ${{ endsWith(github.ref_name, 'beta') && 'beta' || 'release' }}
 
 jobs:
   build:
@@ -95,10 +96,10 @@ jobs:
             !**/*-@(dev|sources|all|shadow).jar
 
       - uses: Kir-Antipov/mc-publish@v3.3
-        name: "🚀 Publish: Fabric Release"
+        name: "🚀 Publish: Fabric"
         if: ${{ matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == 'true') }}
         with:
-          version-type: release
+          version-type: ${{ env.TYPE }}
           name: ServerRedstoneBlock v${{ steps.get-next-version.outputs.new-release-version }} Fabric for ${{ env.MC_VERSION }}
           version: ${{ steps.get-next-version.outputs.new-release-version }}
           modrinth-id: ${{ vars.MODRINTH_ID }}
@@ -111,7 +112,7 @@ jobs:
             fabric
             quilt
           game-versions: |
-            >=${{ env.MC_VERSION }} <1.21
+            >=${{ env.MC_VERSION }}
           java: |
             17
           dependencies: |
@@ -119,10 +120,10 @@ jobs:
           game-version-filter: releases
 
       - uses: Kir-Antipov/mc-publish@v3.3
-        name: "🚀 Publish: Forge Release"
+        name: "🚀 Publish: Forge"
         if: ${{ matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == 'true') }}
         with:
-          version-type: release
+          version-type: ${{ env.TYPE }}
           version: ${{ steps.get-next-version.outputs.new-release-version }}
           name: ServerRedstoneBlock v${{ steps.get-next-version.outputs.new-release-version }} Forge for ${{ env.MC_VERSION }}
           modrinth-id: ${{ vars.MODRINTH_ID }}
@@ -134,7 +135,7 @@ jobs:
           loaders: |
             forge
           game-versions: |
-            >=${{ env.MC_VERSION }} <1.21
+            >=${{ env.MC_VERSION }}
           java: |
             17
           game-version-filter: releases
