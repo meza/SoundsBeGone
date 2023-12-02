@@ -6,6 +6,12 @@
 name: build
 on: [pull_request, push]
 
+permissions:
+  issues: write
+  checks: write
+  contents: write
+  pull-requests: write
+
 env:
   # release type is release when branch is main, alpha when branch is alpha and beta when branch is beta
     RELEASE_TYPE: ${{ github.ref_name == 'main' && 'release' || github.ref_name == 'alpha' && 'alpha' || github.ref_name == 'beta' && 'beta' }}
