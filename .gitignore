@@ -5,6 +5,7 @@ secrets.gradle
 build/
 out/
 classes/
+*.log
 
 # eclipse
 
