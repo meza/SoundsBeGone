@@ -4,7 +4,11 @@
 # against bad commits.
 
 name: build
-on: [pull_request, push]
+on:
+  push:
+    branches:
+    - MC1.20.1
+    - MC1.20.1-beta
 
 permissions:
   issues: write
