@@ -1,0 +1,51 @@
+{
+  "branches": [
+    "MC1.20.1"
+  ],
+  "tagFormat": "v${version}-MC1.20.1",
+  "plugins": [
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "preset": "conventionalcommits"
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "conventionalcommits"
+      }
+    ],
+    "semantic-release-export-data",
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogTitle": "# Server Redstone Block Changelog",
+        "changelogFile": "CHANGELOG.md"
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          {
+            "path": "forge/build/libs/!(*-@(dev|sources|shadow)).jar",
+            "name": "SoundsBeGone-forge-${nextRelease.gitTag}.jar",
+            "label": "SoundsBeGone-forge-${nextRelease.gitTag}.jar"
+          },
+          {
+            "path": "fabric/build/libs/!(*-@(dev|sources|shadow)).jar",
+            "name": "SoundsBeGone-fabric-${nextRelease.gitTag}.jar",
+            "label": "SoundsBeGone-fabric-${nextRelease.gitTag}.jar"
+          }
+        ]
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "./scripts/release.sh \"${nextRelease.version}\""
+      }
+    ]
+  ]
+}

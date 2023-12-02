@@ -1,0 +1,140 @@
+# Automatically build the project and run any configured tests for every push
+# and submitted pull request. This can help catch issues that only occur on
+# certain platforms or Java versions, and provides a first line of defence
+# against bad commits.
+
+name: build
+on: [pull_request, push]
+
+permissions:
+  issues: write
+  checks: write
+  contents: write
+  pull-requests: write
+
+env:
+  MC_VERSION: 1.20.2
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        # Use these Java versions
+        java: [
+          17,    # Current Java LTS & minimum supported by Minecraft
+        ]
+        # and run on both Linux and Windows
+        os: [ubuntu-22.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: "⬇️ Checkout"
+        uses: actions/checkout@v3
+
+      - name: Cache Gradle dependencies
+        id: cache-gradle-dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/forge/.gradle/caches
+            ~/fabric/.gradle/caches
+            ~/common/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+
+      - name: "🛂 Validate Gradle Wrapper"
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: "☕ Setup Jdk ${{ matrix.java }}"
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: 'microsoft'
+
+      - name: "🔃 Use Latest Node.js"
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+
+      - name: "🔓 Adjust the release permissions"
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
+        run: chmod a+x ./scripts/release.sh && chmod +x ./gradlew
+
+      - name: "🧵 Install semantic release"
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
+        run: npm i --location=global semantic-release conventional-changelog-conventionalcommits @semantic-release/github @semantic-release/changelog @semantic-release/exec semantic-release-export-data
+
+      - name: "🔢 Determine version"
+        run: npx semantic-release --dry-run
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
+        id: get-next-version
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
+
+      - name: "ℹ️ Needs Release?"
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
+        run: echo "Needs release published? ${{ steps.get-next-version.outputs.new-release-published == 'true' }}"
+
+      - name: "🏗️ Build & Release to GitHub"
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' && (steps.get-next-version.outputs.new-release-published == 'true')  }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
+        run: npx semantic-release
+
+      - name: "🕵️‍♂️ Collect jars"
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' && (steps.get-next-version.outputs.new-release-published == 'true') }} # Only upload artifacts built from latest java on one OS
+        uses: actions/upload-artifact@v3
+        with:
+          name: Artifacts
+          path: |
+            forge/build/libs/*.jar
+            fabric/build/libs/*.jar
+            !**/*-@(dev|sources|all|shadow).jar
+
+      - uses: Kir-Antipov/mc-publish@v3.3
+        name: "🚀 Publish: Fabric Release"
+        if: ${{ matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == 'true') }}
+        with:
+          version-type: release
+          name: ServerRedstoneBlock v${{ steps.get-next-version.outputs.new-release-version }} Fabric for ${{ env.MC_VERSION }}
+          version: ${{ steps.get-next-version.outputs.new-release-version }}
+          modrinth-id: ${{ vars.MODRINTH_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-id: ${{ vars.CURSEFORGE_ID }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          changelog-file: CHANGELOG.*
+          files: fabric/build/libs/!(*-@(dev|sources|all|shadow)).jar
+          loaders: |
+            fabric
+            quilt
+          game-versions: |
+            >=${{ env.MC_VERSION }} <1.21
+          java: |
+            17
+          dependencies: |
+            fabric-api(required)
+          game-version-filter: releases
+
+      - uses: Kir-Antipov/mc-publish@v3.3
+        name: "🚀 Publish: Forge Release"
+        if: ${{ matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == 'true') }}
+        with:
+          version-type: release
+          version: ${{ steps.get-next-version.outputs.new-release-version }}
+          name: ServerRedstoneBlock v${{ steps.get-next-version.outputs.new-release-version }} Forge for ${{ env.MC_VERSION }}
+          modrinth-id: ${{ vars.MODRINTH_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-id: ${{ vars.CURSEFORGE_ID }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          changelog-file: CHANGELOG.*
+          files: forge/build/libs/!(*-@(dev|sources|all|shadow)).jar
+          loaders: |
+            forge
+          game-versions: |
+            >=${{ env.MC_VERSION }} <1.21
+          java: |
+            17
+          game-version-filter: releases
