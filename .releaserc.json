@@ -24,7 +24,7 @@
     [
       "@semantic-release/changelog",
       {
-        "changelogTitle": "# Server Redstone Block Changelog",
+        "changelogTitle": "# Sounds Be Gone! Changelog",
         "changelogFile": "CHANGELOG.md"
       }
     ],
