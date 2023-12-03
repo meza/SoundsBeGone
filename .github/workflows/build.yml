@@ -116,7 +116,7 @@ jobs:
             fabric
             quilt
           game-versions: |
-            >=${{ env.MC_VERSION }}
+            ${{ env.MC_VERSION }}
           java: |
             17
           dependencies: |
@@ -139,7 +139,7 @@ jobs:
           loaders: |
             forge
           game-versions: |
-            >=${{ env.MC_VERSION }}
+            ${{ env.MC_VERSION }}
           java: |
             17
           game-version-filter: releases
