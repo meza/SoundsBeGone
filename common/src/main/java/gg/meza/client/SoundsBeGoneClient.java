@@ -2,7 +2,9 @@ package gg.meza.client;
 
 import gg.meza.Config;
 import gg.meza.analytics.Analytics;
+import net.minecraft.block.ChestBlock;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.render.block.entity.ChestBlockEntityRenderer;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 
