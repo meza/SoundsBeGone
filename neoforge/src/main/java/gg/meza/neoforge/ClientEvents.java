@@ -29,11 +29,11 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void logout(PlayerEvent.PlayerLoggedOutEvent event) {
-        SoundsBeGoneClient.analytics.flush();
+        SoundsBeGoneClient.telemetry.flush();
     }
 
     @SubscribeEvent
     public static void shutdown(GameShuttingDownEvent event) {
-        SoundsBeGoneClient.analytics.flush();
+        SoundsBeGoneClient.telemetry.flush();
     }
 }
