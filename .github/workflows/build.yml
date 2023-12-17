@@ -104,7 +104,7 @@ jobs:
         if: ${{ matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == 'true') }}
         with:
           version-type: ${{ env.TYPE }}
-          name: ServerRedstoneBlock v${{ steps.get-next-version.outputs.new-release-version }} Fabric for ${{ env.MC_VERSION }}
+          name: SoundsBeGone v${{ steps.get-next-version.outputs.new-release-version }} Fabric for ${{ env.MC_VERSION }}
           version: ${{ steps.get-next-version.outputs.new-release-version }}
           modrinth-id: ${{ vars.MODRINTH_ID }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -116,7 +116,7 @@ jobs:
             fabric
             quilt
           game-versions: |
-            >=${{ env.MC_VERSION }}
+            ${{ env.MC_VERSION }}
           java: |
             17
           dependencies: |
@@ -129,7 +129,7 @@ jobs:
         with:
           version-type: ${{ env.TYPE }}
           version: ${{ steps.get-next-version.outputs.new-release-version }}
-          name: ServerRedstoneBlock v${{ steps.get-next-version.outputs.new-release-version }} Forge for ${{ env.MC_VERSION }}
+          name: SoundsBeGone v${{ steps.get-next-version.outputs.new-release-version }} Forge for ${{ env.MC_VERSION }}
           modrinth-id: ${{ vars.MODRINTH_ID }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-id: ${{ vars.CURSEFORGE_ID }}
@@ -139,7 +139,7 @@ jobs:
           loaders: |
             forge
           game-versions: |
-            >=${{ env.MC_VERSION }}
+            ${{ env.MC_VERSION }}
           java: |
             17
           game-version-filter: releases
