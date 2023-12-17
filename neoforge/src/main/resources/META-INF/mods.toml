@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[46,)"
+loaderVersion = "[1,)"
 #issueTrackerURL = ""
 license = "GPL-3.0"
 
@@ -14,16 +14,18 @@ Allows you to permanently disable specific sounds you don't like. Perfect for pe
 logoFile = "assets/soundsbegone/icon.png"
 
 [[dependencies.soundsbegone]]
-modId = "forge"
+modId = "neoforge"
 mandatory = true
-versionRange = "[48.0.49,)"
+versionRange = "[20.4.29-beta,)"
 ordering = "NONE"
-side = "BOTH"
+side = "CLIENT"
 
 [[dependencies.soundsbegone]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.20.2,)"
+versionRange = "[1.20.4,)"
 ordering = "NONE"
-side = "BOTH"
+side = "CLIENT"
 
+[[mixins]]
+config = "soundsbegone.client.mixins.json"

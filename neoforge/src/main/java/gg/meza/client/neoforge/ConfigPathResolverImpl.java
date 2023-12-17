@@ -1,7 +1,7 @@
-package gg.meza.client.forge;
+package gg.meza.client.neoforge;
 
 import gg.meza.client.ConfigPathResolver;
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
 

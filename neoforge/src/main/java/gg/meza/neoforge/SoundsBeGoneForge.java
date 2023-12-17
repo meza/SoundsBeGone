@@ -1,15 +1,15 @@
-package gg.meza.forge;
+package gg.meza.neoforge;
 
 import gg.meza.SoundsBeGone;
 import gg.meza.client.ConfigScreen;
 import gg.meza.client.SoundsBeGoneClient;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ConfigScreenHandler;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.ConfigScreenHandler;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 
 @Mod(SoundsBeGone.MOD_ID)
 public class SoundsBeGoneForge {

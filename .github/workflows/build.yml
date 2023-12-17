@@ -7,8 +7,8 @@ name: build
 on:
   push:
     branches:
-    - MC1.20.3
-    - MC1.20.3-beta
+    - MC1.20.4
+    - MC1.20.4-beta
 
 permissions:
   issues: write
@@ -17,7 +17,7 @@ permissions:
   pull-requests: write
 
 env:
-  MC_VERSION: 1.20.3
+  MC_VERSION: 1.20.4
   TYPE: ${{ endsWith(github.ref_name, 'beta') && 'beta' || 'release' }}
 
 jobs:
@@ -124,20 +124,20 @@ jobs:
           game-version-filter: releases
 
       - uses: Kir-Antipov/mc-publish@v3.3
-        name: "🚀 Publish: Forge"
+        name: "🚀 Publish: NeoForge"
         if: ${{ matrix.java == '17' && runner.os == 'Linux' && (steps.get-next-version.outputs.new-release-published == 'true') }}
         with:
           version-type: ${{ env.TYPE }}
           version: ${{ steps.get-next-version.outputs.new-release-version }}
-          name: SoundsBeGone v${{ steps.get-next-version.outputs.new-release-version }} Forge for ${{ env.MC_VERSION }}
+          name: SoundsBeGone v${{ steps.get-next-version.outputs.new-release-version }} NeoForge for ${{ env.MC_VERSION }}
           modrinth-id: ${{ vars.MODRINTH_ID }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-id: ${{ vars.CURSEFORGE_ID }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           changelog-file: CHANGELOG.*
-          files: forge/build/libs/!(*-@(dev|sources|all|shadow)).jar
+          files: neoforge/build/libs/!(*-@(dev|sources|all|shadow)).jar
           loaders: |
-            forge
+            neoforge
           game-versions: |
             ${{ env.MC_VERSION }}
           java: |
