@@ -1,15 +1,14 @@
-package gg.meza.forge;
+package gg.meza.neoforge;
 
 import gg.meza.client.ConfigScreen;
 import gg.meza.client.SoundsBeGoneClient;
 import net.minecraft.client.MinecraftClient;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.GameShuttingDownEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.server.ServerStoppingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.GameShuttingDownEvent;
+import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 import java.util.Date;
 

@@ -1,12 +1,12 @@
 {
   "branches": [
-    "MC1.20.3",
+    "MC1.20.4",
     {
-      "name": "MC1.20.3-beta",
+      "name": "MC1.20.4-beta",
       "prerelease": true
     }
   ],
-  "tagFormat": "v${version}-MC1.20.3",
+  "tagFormat": "v${version}-MC1.20.4",
   "plugins": [
     [
       "@semantic-release/commit-analyzer",
@@ -24,7 +24,6 @@
     [
       "@semantic-release/changelog",
       {
-        "changelogTitle": "# Sounds Be Gone! Changelog",
         "changelogFile": "CHANGELOG.md"
       }
     ],
@@ -33,9 +32,9 @@
       {
         "assets": [
           {
-            "path": "forge/build/libs/!(*-@(dev|sources|shadow)).jar",
-            "name": "SoundsBeGone-forge-${nextRelease.gitTag}.jar",
-            "label": "SoundsBeGone-forge-${nextRelease.gitTag}.jar"
+            "path": "neoforge/build/libs/!(*-@(dev|sources|shadow)).jar",
+            "name": "SoundsBeGone-neoforge-${nextRelease.gitTag}.jar",
+            "label": "SoundsBeGone-neoforge-${nextRelease.gitTag}.jar"
           },
           {
             "path": "fabric/build/libs/!(*-@(dev|sources|shadow)).jar",
