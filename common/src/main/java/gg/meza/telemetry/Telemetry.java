@@ -1,4 +1,4 @@
-package gg.meza.analytics;
+package gg.meza.telemetry;
 
 import com.posthog.java.PostHog;
 import gg.meza.SoundsBeGone;
@@ -9,7 +9,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Analytics {
+public class Telemetry {
     private static final String POSTHOG_API_KEY = "POSTHOG_API_KEY_REPL";
     private static final String POSTHOG_HOST = "https://eu.posthog.com";
     private final PostHog posthog;
@@ -21,9 +21,9 @@ public class Analytics {
     private final String MC_VERSION = MinecraftClient.getInstance().getGameVersion();
     private final String JAVA_VERSION = System.getProperty("java.version");
 
-    public Analytics() {
+    public Telemetry() {
         this.posthog = new PostHog.Builder(POSTHOG_API_KEY).host(POSTHOG_HOST).build();
-        if (SoundsBeGoneClient.config.isAnalyticsEnabled()) {
+        if (SoundsBeGoneClient.config.isTelemetryEnabled()) {
             this.sendEvent("Started Minecraft", "");
         }
     }
@@ -32,7 +32,7 @@ public class Analytics {
     }
 
     private void sendEvent(String event, String sound, Map<String, Object> extraProps) {
-        if (!SoundsBeGoneClient.config.isAnalyticsEnabled()) {
+        if (!SoundsBeGoneClient.config.isTelemetryEnabled()) {
             return;
         }
 
@@ -74,7 +74,7 @@ public class Analytics {
     }
 
     public void flush() {
-        SoundsBeGone.LOGGER.debug("Flushing analytics");
+        SoundsBeGone.LOGGER.debug("Flushing telemetry");
         this.blockedSoundsCount.forEach((sound, count) -> {
             this.sendEvent("Blocked Sound", sound, Map.of(
                     "count", count

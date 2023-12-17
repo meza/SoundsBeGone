@@ -16,12 +16,12 @@ public class Config {
     private ConfigData configData = new ConfigData();
     private Path configPath = ConfigPathResolver.getConfigDir("disabled_sounds.json");
 
-    public boolean isAnalyticsEnabled() {
-        return configData.analytics;
+    public boolean isTelemetryEnabled() {
+        return configData.telemetry;
     }
 
-    public void toggleAnalytics(boolean toValue) {
-        configData.analytics = toValue;
+    public void toggleTelemetry(boolean toValue) {
+        configData.telemetry = toValue;
     }
 
     public void disableSound(String sound) {

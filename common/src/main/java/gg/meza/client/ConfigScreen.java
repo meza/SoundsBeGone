@@ -23,26 +23,26 @@ public class ConfigScreen {
         ConfigCategory settings = builder.getOrCreateCategory(Text.of("Settings"));
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-        settings.addEntry(entryBuilder.startBooleanToggle(Text.of("Enable analytics"), SoundsBeGoneClient.config.isAnalyticsEnabled())
-                .setDefaultValue(SoundsBeGoneClient.config.isAnalyticsEnabled())
+        settings.addEntry(entryBuilder.startBooleanToggle(Text.of("Enable telemetry"), SoundsBeGoneClient.config.isTelemetryEnabled())
+                .setDefaultValue(SoundsBeGoneClient.config.isTelemetryEnabled())
                 .setSaveConsumer(newValue -> {
-                    SoundsBeGoneClient.config.toggleAnalytics(newValue);
+                    SoundsBeGoneClient.config.toggleTelemetry(newValue);
                 })
                 .build());
 
         settings.addEntry(entryBuilder.startTextDescription(
-                Text.of("Enabling analytics will send anonymous data to the server to track how people are using this mod. We DO NOT send any data that would identify you.")
+                Text.of("Enabling telemetry will send anonymous data to help us understand how we can make things better. We DO NOT send any data that would identify you.")
         ).build());
-        settings.addEntry(entryBuilder.startTextDescription(Text.of("You can check the analytics code at https://github.com/meza/SoundsBeGone")).build());
-        SubCategoryBuilder analyticsSubcategory = entryBuilder.startSubCategory(Text.of("Thing we track:"));
-        analyticsSubcategory.add(entryBuilder.startTextDescription(Text.of(" - Sound enabled/disabled/blocked")).build());
-        analyticsSubcategory.add(entryBuilder.startTextDescription(Text.of(" - Mod version")).build());
-        analyticsSubcategory.add(entryBuilder.startTextDescription(Text.of(" - Minecraft version")).build());
-        analyticsSubcategory.add(entryBuilder.startTextDescription(Text.of(" - Java version")).build());
-        analyticsSubcategory.add(entryBuilder.startTextDescription(Text.of(" - Operating system used")).build());
-        analyticsSubcategory.add(entryBuilder.startTextDescription(Text.of(" - Local time")).build());
-        settings.addEntry(analyticsSubcategory.build());
-        settings.addEntry(entryBuilder.startTextDescription(Text.of("Please consider keeping this on. This data helps development by giving us insight into what is important to you and what is not")).build());
+        settings.addEntry(entryBuilder.startTextDescription(Text.of("You can check the telemetry code at https://github.com/meza/SoundsBeGone")).build());
+        SubCategoryBuilder telemetrySubcategory = entryBuilder.startSubCategory(Text.of("Telemetry used:"));
+        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.of(" - Sound enabled/disabled/blocked")).build());
+        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.of(" - Mod version")).build());
+        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.of(" - Minecraft version")).build());
+        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.of(" - Java version")).build());
+        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.of(" - Operating system used")).build());
+        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.of(" - Local time")).build());
+        settings.addEntry(telemetrySubcategory.build());
+        settings.addEntry(entryBuilder.startTextDescription(Text.of("Please consider keeping this on. This data helps development by giving us insight into what is important for the players and what is not")).build());
 
         SoundsBeGoneClient.SoundMap
                 .keySet()
@@ -66,14 +66,14 @@ public class ConfigScreen {
                             SoundsBeGone.LOGGER.info("Disabling sound: " + key);
                             // only do work if necessary
                             SoundsBeGoneClient.config.disableSound(key);
-                            SoundsBeGoneClient.analytics.mutedSound(key);
+                            SoundsBeGoneClient.telemetry.mutedSound(key);
                         }
                     } else {
                         if (SoundsBeGoneClient.config.isSoundDisabled(key)) {
                             SoundsBeGone.LOGGER.info("Enabling sound: " + key);
                             // only do work if necessary
                             SoundsBeGoneClient.config.enableSound(key);
-                            SoundsBeGoneClient.analytics.unmutedSound(key);
+                            SoundsBeGoneClient.telemetry.unmutedSound(key);
                         }
                     }
                 })

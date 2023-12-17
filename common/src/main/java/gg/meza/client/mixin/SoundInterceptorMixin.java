@@ -21,7 +21,7 @@ public class SoundInterceptorMixin {
 		String name = sound.getId().toTranslationKey();
 		if (SoundsBeGoneClient.config.isSoundDisabled(id)) {
 			SoundsBeGone.LOGGER.debug("Disabling the sound: {}", id);
-			SoundsBeGoneClient.analytics.blockedSound(id);
+			SoundsBeGoneClient.telemetry.blockedSound(id);
 			info.cancel();
 		}
 

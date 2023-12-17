@@ -1,15 +1,7 @@
 package gg.meza;
 
-import gg.meza.analytics.Analytics;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class SoundsBeGone {
 
