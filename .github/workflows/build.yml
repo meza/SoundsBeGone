@@ -95,7 +95,7 @@ jobs:
         with:
           name: Artifacts
           path: |
-            forge/build/libs/*.jar
+            neoforge/build/libs/*.jar
             fabric/build/libs/*.jar
             !**/*-@(dev|sources|all|shadow).jar
 
