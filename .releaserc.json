@@ -30,6 +30,7 @@
     [
       "@semantic-release/github",
       {
+        "successComment": ":tada: This issue has been resolved for **Minecraft: 1.20.4** in version ${nextRelease.version} :tada:\\n\\nThe release is available on [GitHub release](<github_release_url>)",
         "assets": [
           {
             "path": "neoforge/build/libs/!(*-@(dev|sources|shadow)).jar",
