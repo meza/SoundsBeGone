@@ -9,10 +9,11 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.world.WorldEvents;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SoundsBeGoneClient implements ClientModInitializer {
 
-	public static Map<String, Date> SoundMap = new HashMap<String, Date>();
+	public static Map<String, Date> SoundMap = new ConcurrentHashMap<String, Date>();
 	private int tickCounter = 0;
 	public static Config config = new Config();
 	public static Analytics analytics;
