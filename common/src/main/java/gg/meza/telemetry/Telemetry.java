@@ -6,14 +6,14 @@ import gg.meza.client.SoundsBeGoneClient;
 import net.minecraft.client.MinecraftClient;
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Telemetry {
     private static final String POSTHOG_API_KEY = "POSTHOG_API_KEY_REPL";
     private static final String POSTHOG_HOST = "https://eu.posthog.com";
     private final PostHog posthog;
-    private final Map<String, Integer> blockedSoundsCount = new HashMap<>();
+    private final Map<String, Integer> blockedSoundsCount = new ConcurrentHashMap<>();
 
     // Not actually sending any user info, just using the uuid to create a new uuid that cannot be traced back to the user
     private final String uuid = DigestUtils.sha256Hex(MinecraftClient.getInstance().getSession().getUsername());
@@ -36,7 +36,7 @@ public class Telemetry {
             return;
         }
 
-        Map<String, Object> baseProps = new HashMap<>(Map.of(
+        Map<String, Object> baseProps = new ConcurrentHashMap<>(Map.of(
                 "sound", sound,
                 "Minecraft Version", MC_VERSION,
                 "OS", OS_NAME,
