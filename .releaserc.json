@@ -1,12 +1,12 @@
 {
   "branches": [
-    "MC1.20.4",
+    "MC1.20.6",
     {
-      "name": "MC1.20.4-beta",
+      "name": "MC1.20.6-beta",
       "prerelease": true
     }
   ],
-  "tagFormat": "v${version}-MC1.20.4",
+  "tagFormat": "v${version}-MC1.20.6",
   "plugins": [
     [
       "@semantic-release/commit-analyzer",
@@ -30,7 +30,7 @@
     [
       "@semantic-release/github",
       {
-        "successComment": ":tada: This issue has been resolved for **Minecraft: 1.20.4** in version ${nextRelease.version} :tada:\\n\\nThe release is available on [GitHub release](<github_release_url>)",
+        "successComment": ":tada: This issue has been resolved for **Minecraft: 1.20.6** in version ${nextRelease.version} :tada:\\n\\nThe release is available on [GitHub release](<github_release_url>)",
         "assets": [
           {
             "path": "neoforge/build/libs/!(*-@(dev|sources|shadow)).jar",
