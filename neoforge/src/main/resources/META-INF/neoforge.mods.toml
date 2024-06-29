@@ -15,14 +15,14 @@ logoFile = "assets/soundsbegone/icon.png"
 
 [[dependencies.soundsbegone]]
 modId = "neoforge"
-mandatory = true
-versionRange = "[20.4.29-beta,)"
+type = "required"
+versionRange = "[21.0.42-beta,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.soundsbegone]]
 modId = "minecraft"
-mandatory = true
+type = "required"
 versionRange = "[1.21,)"
 ordering = "NONE"
 side = "CLIENT"
