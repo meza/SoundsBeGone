@@ -116,7 +116,7 @@ jobs:
             fabric
             quilt
           game-versions: |
-            ${{ env.MC_VERSION }}
+            >=${{ env.MC_VERSION }}
           java: |
             22
           dependencies: |
@@ -139,7 +139,7 @@ jobs:
           loaders: |
             neoforge
           game-versions: |
-            ${{ env.MC_VERSION }}
+            >=${{ env.MC_VERSION }}
           java: |
             22
           game-version-filter: releases
