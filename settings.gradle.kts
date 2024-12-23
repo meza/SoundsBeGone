@@ -27,4 +27,4 @@ stonecutter {
     }
 }
 
-rootProject.name = "DisableChristmasChests"
+rootProject.name = "SoundsBeGone"
