@@ -1,12 +1,12 @@
 {
   "branches": [
-    "MC1.21",
+    "main",
     {
-      "name": "MC1.21-beta",
+      "name": "beta",
       "prerelease": true
     }
   ],
-  "tagFormat": "v${version}-MC1.21",
+  "tagFormat": "v${version}",
   "plugins": [
     [
       "@semantic-release/commit-analyzer",
@@ -30,17 +30,10 @@
     [
       "@semantic-release/github",
       {
-        "successComment": ":tada: This issue has been resolved for **Minecraft: 1.21** in version ${nextRelease.version} :tada:\\n\\nThe release is available on [GitHub release](<github_release_url>)",
+        "successComment": ":tada: This issue has been resolved in version ${nextRelease.version} :tada:\\n\\nThe release is available on [GitHub release](<github_release_url>)",
         "assets": [
           {
-            "path": "neoforge/build/libs/!(*-@(dev|sources|shadow)).jar",
-            "name": "SoundsBeGone-neoforge-${nextRelease.gitTag}.jar",
-            "label": "SoundsBeGone-neoforge-${nextRelease.gitTag}.jar"
-          },
-          {
-            "path": "fabric/build/libs/!(*-@(dev|sources|shadow)).jar",
-            "name": "SoundsBeGone-fabric-${nextRelease.gitTag}.jar",
-            "label": "SoundsBeGone-fabric-${nextRelease.gitTag}.jar"
+            "path": "build/libs/*.jar"
           }
         ]
       }
