@@ -64,7 +64,7 @@ jobs:
         run: echo "Needs release published? ${{ steps.get-next-version.outputs.new-release-published == 'true' }}"
 
       - name: "🏗️ Build & Release to GitHub"
-        if: steps.get-next-version.outputs.new-release-published == 'true'  }}
+        if: ${{ steps.get-next-version.outputs.new-release-published == 'true'  }}
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
