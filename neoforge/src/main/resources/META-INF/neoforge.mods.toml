@@ -1,31 +1,25 @@
 modLoader = "javafml"
-loaderVersion = "[1,)"
+loaderVersion = "*"
 #issueTrackerURL = ""
 license = "GPL-3.0"
 
 [[mods]]
-modId = "soundsbegone"
+modId = "${id}"
 version = "${version}"
-displayName = "SoundsBeGone"
+displayName = "${name}"
 authors = "Meza"
 description = '''
-Allows you to permanently disable specific sounds you don't like. Perfect for people with Misophonia!
+${description}
 '''
-logoFile = "assets/soundsbegone/icon.png"
+logoFile = "assets/${id}/icon.png"
+logoBlur = false
 
-[[dependencies.soundsbegone]]
-modId = "neoforge"
-type = "required"
-versionRange = "[21.0.42-beta,)"
-ordering = "NONE"
-side = "CLIENT"
-
-[[dependencies.soundsbegone]]
+[[dependencies.${id}]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21,)"
+versionRange = "[${minecraftVersion},)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[mixins]]
-config = "soundsbegone.client.mixins.json"
+config = "${id}.client.mixins.json"
