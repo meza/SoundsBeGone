@@ -34,7 +34,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
 
       - name: "🛂 Validate Gradle Wrapper"
-        uses: gradle/wrapper-validation-action@v1
+        uses: gradle/wrapper-validation-action@v3
 
       - name: "☕ Setup Jdk ${{ matrix.java }}"
         uses: actions/setup-java@v3
