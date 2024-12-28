@@ -1,6 +1,6 @@
 package gg.meza.client.mixin;
 
-import gg.meza.SoundsBeGone;
+import gg.meza.SoundsBeGoneConfig;
 import gg.meza.client.SoundsBeGoneClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.AbstractSoundInstance;
@@ -27,14 +27,14 @@ public class AbstractSoundInstanceMixin {
     private void getVolume(CallbackInfoReturnable<Float> cir) {
 
         if (SoundsBeGoneClient.config.isSoundDisabled(id.toString())) {
-            SoundsBeGone.LOGGER.debug("Disabling the sound: {}", id);
+            SoundsBeGoneConfig.LOGGER.debug("Disabling the sound: {}", id);
             SoundsBeGoneClient.telemetry.blockedSound(id.toString());
             cir.setReturnValue(0.0F);
             cir.cancel();
         }
 
         if(MinecraftClient.getInstance().world != null) {
-            SoundsBeGone.LOGGER.debug("Intercepting the sound: {}", Text.translatable(id.toTranslationKey()));
+            SoundsBeGoneConfig.LOGGER.debug("Intercepting the sound: {}", Text.translatable(id.toTranslationKey()));
             SoundsBeGoneClient.SoundMap.put(id.toString(), new java.util.Date());
         }
 

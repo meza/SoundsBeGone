@@ -1,14 +1,23 @@
 package gg.meza.client;
 
-import dev.architectury.injectables.annotations.ExpectPlatform;
-import gg.meza.SoundsBeGone;
+/*? if fabric {*/
+/*import net.fabricmc.loader.api.FabricLoader;
+*//*?}*/
+
+/*? if neoforge {*/
+import net.neoforged.fml.loading.FMLPaths;
+/*?}*/
 
 import java.nio.file.Path;
 
-public interface ConfigPathResolver {
-    @ExpectPlatform
-    static Path getConfigDir(String dir) {
-        SoundsBeGone.LOGGER.error("ConfigPathResolver failed to load");
-        return null;
+public class ConfigPathResolver {
+    public static Path getConfigDir(String dir) {
+        /*? if fabric {*/
+        /*return FabricLoader.getInstance().getConfigDir().resolve(dir);
+        *//*?}*/
+
+        /*? if neoforge {*/
+        return FMLPaths.CONFIGDIR.get().resolve(dir);
+        /*?}*/
     }
 }

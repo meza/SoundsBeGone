@@ -1,7 +1,7 @@
 package gg.meza.telemetry;
 
 import com.posthog.java.PostHog;
-import gg.meza.SoundsBeGone;
+import gg.meza.SoundsBeGoneConfig;
 import gg.meza.client.SoundsBeGoneClient;
 import net.minecraft.client.MinecraftClient;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -41,7 +41,7 @@ public class Telemetry {
                 "Minecraft Version", MC_VERSION,
                 "OS", OS_NAME,
                 "Local Time", new java.util.Date().toString(),
-                "ModVersion", SoundsBeGone.VERSION,
+                "ModVersion", SoundsBeGoneConfig.VERSION,
                 "Java Version", JAVA_VERSION
         ));
 
@@ -74,7 +74,7 @@ public class Telemetry {
     }
 
     public void flush() {
-        SoundsBeGone.LOGGER.debug("Flushing telemetry");
+        SoundsBeGoneConfig.LOGGER.debug("Flushing telemetry");
         this.blockedSoundsCount.forEach((sound, count) -> {
             this.sendEvent("Blocked Sound", sound, Map.of(
                     "count", count

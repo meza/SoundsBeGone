@@ -20,30 +20,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "⬇️ Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Cache Gradle dependencies
         id: cache-gradle-dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-            ~/neoforge/.gradle/caches
+            ~/forge/.gradle/caches
             ~/fabric/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
 
       - name: "🛂 Validate Gradle Wrapper"
-        uses: gradle/wrapper-validation-action@v3
+        uses: gradle/wrapper-validation-action@v1
 
-      - name: "☕ Setup Jdk ${{ matrix.java }}"
+      - name: "☕ Setup Jdk 21"
         uses: actions/setup-java@v4
         with:
+          cache: 'gradle'
           java-version: 21
           distribution: 'temurin'
 
       - name: "🔃 Use Latest Node.js"
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: latest
 
@@ -51,23 +52,28 @@ jobs:
         run: chmod a+x ./scripts/release.sh && chmod +x ./gradlew
 
       - name: "🧵 Install semantic release"
-        run: npm i --location=global semantic-release conventional-changelog-conventionalcommits @semantic-release/github @semantic-release/changelog @semantic-release/exec semantic-release-export-data
+        run: npm i --location=global semantic-release semantic-release-discord-notifier conventional-changelog-conventionalcommits @semantic-release/github @semantic-release/changelog @semantic-release/exec semantic-release-export-data semantic-release-discord
 
       - name: "🔢 Determine version"
         run: npx semantic-release --dry-run
         id: get-next-version
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
       - name: "ℹ️ Needs Release?"
         run: echo "Needs release published? ${{ steps.get-next-version.outputs.new-release-published == 'true' }}"
 
       - name: "🏗️ Build & Release to GitHub"
-        if: ${{ steps.get-next-version.outputs.new-release-published == 'true'  }}
+        if: ${{ steps.get-next-version.outputs.new-release-published == 'true' }}
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
+          DO_PUBLISH: steps.get-next-version.outputs.new-release-published
+          MODRINTH_ID: ${{ vars.MODRINTH_ID }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          CURSEFORGE_ID: ${{ vars.CURSEFORGE_ID }}
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: npx semantic-release
 
       - name: "🧪 Run Dev Build"
@@ -81,37 +87,3 @@ jobs:
           path: |
             build/libs/*.jar
 
-      - uses: Kir-Antipov/mc-publish@v3.3
-        name: "🚀 Publish: Fabric"
-        if: ${{ steps.get-next-version.outputs.new-release-published == 'true' }}
-        with:
-          version-type: ${{ env.TYPE }}
-          name: SoundsBeGone v${{ steps.get-next-version.outputs.new-release-version }} Fabric
-          version: ${{ steps.get-next-version.outputs.new-release-version }}
-          modrinth-id: ${{ vars.MODRINTH_ID }}
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          curseforge-id: ${{ vars.CURSEFORGE_ID }}
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-          changelog-file: CHANGELOG.*
-          files: build/libs/*-fabric-*.jar
-          loaders: |
-            fabric
-            quilt
-          game-version-filter: releases
-
-      - uses: Kir-Antipov/mc-publish@v3.3
-        name: "🚀 Publish: NeoForge"
-        if: ${{ steps.get-next-version.outputs.new-release-published == 'true' }}
-        with:
-          version-type: ${{ env.TYPE }}
-          version: ${{ steps.get-next-version.outputs.new-release-version }}
-          name: SoundsBeGone v${{ steps.get-next-version.outputs.new-release-version }} NeoForge
-          modrinth-id: ${{ vars.MODRINTH_ID }}
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          curseforge-id: ${{ vars.CURSEFORGE_ID }}
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-          changelog-file: CHANGELOG.*
-          files: build/libs/*-neoforge-*.jar
-          loaders: |
-            neoforge
-          game-version-filter: releases

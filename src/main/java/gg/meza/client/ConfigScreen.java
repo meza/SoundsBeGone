@@ -1,6 +1,6 @@
 package gg.meza.client;
 
-import gg.meza.SoundsBeGone;
+import gg.meza.SoundsBeGoneConfig;
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
@@ -63,14 +63,14 @@ public class ConfigScreen {
                 .setSaveConsumer(newValue -> {
                     if (newValue) {
                         if (!SoundsBeGoneClient.config.isSoundDisabled(key)) {
-                            SoundsBeGone.LOGGER.info("Disabling sound: " + key);
+                            SoundsBeGoneConfig.LOGGER.info("Disabling sound: " + key);
                             // only do work if necessary
                             SoundsBeGoneClient.config.disableSound(key);
                             SoundsBeGoneClient.telemetry.mutedSound(key);
                         }
                     } else {
                         if (SoundsBeGoneClient.config.isSoundDisabled(key)) {
-                            SoundsBeGone.LOGGER.info("Enabling sound: " + key);
+                            SoundsBeGoneConfig.LOGGER.info("Enabling sound: " + key);
                             // only do work if necessary
                             SoundsBeGoneClient.config.enableSound(key);
                             SoundsBeGoneClient.telemetry.unmutedSound(key);

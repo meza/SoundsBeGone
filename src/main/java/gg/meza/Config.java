@@ -48,7 +48,7 @@ public class Config {
                 configData = gson.fromJson(reader, ConfigData.class);
                 reader.close();
             } catch (IOException | JsonParseException e) {
-                SoundsBeGone.LOGGER.error("Cause: " + e.getCause().getClass().getSimpleName());
+                SoundsBeGoneConfig.LOGGER.error("Cause: " + e.getCause().getClass().getSimpleName());
                 if (e.getCause().getClass() == IllegalStateException.class) {
                     convertConfig(configPath);
                     return;
@@ -72,7 +72,7 @@ public class Config {
 
     private void convertConfig(Path configPath) {
         try {
-            SoundsBeGone.LOGGER.warn("Old config file found, migrating to new format");
+            SoundsBeGoneConfig.LOGGER.warn("Old config file found, migrating to new format");
             BufferedReader reader = Files.newBufferedReader(configPath);
             Gson gson = new Gson();
             Set<String> disabledSounds = gson.fromJson(reader, Set.class);
