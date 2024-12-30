@@ -88,7 +88,7 @@ dependencies {
         })
     }
 
-    modImplementation("com.google.code.gson:gson:2.10.1")
+    modImplementation("com.google.code.gson:gson:2.11.0")
     modImplementation("com.posthog.java:posthog:${mod.prop("posthog_version")}")
 
     include("com.posthog.java:posthog:${mod.prop("posthog_version")}")
