@@ -1,8 +1,8 @@
-package gg.meza;
+package gg.meza.soundsbegone;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import gg.meza.client.ConfigPathResolver;
+import gg.meza.soundsbegone.client.ConfigPathResolver;
 import org.apache.commons.lang3.SerializationException;
 
 import java.io.BufferedReader;

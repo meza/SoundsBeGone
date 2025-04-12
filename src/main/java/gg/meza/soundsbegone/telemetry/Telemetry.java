@@ -1,8 +1,8 @@
-package gg.meza.telemetry;
+package gg.meza.soundsbegone.telemetry;
 
 import com.posthog.java.PostHog;
-import gg.meza.SoundsBeGoneConfig;
-import gg.meza.client.SoundsBeGoneClient;
+import gg.meza.soundsbegone.SoundsBeGoneConfig;
+import gg.meza.soundsbegone.client.SoundsBeGoneClient;
 import net.minecraft.client.MinecraftClient;
 import org.apache.commons.codec.digest.DigestUtils;
 

@@ -1,8 +1,8 @@
-package gg.meza;
+package gg.meza.soundsbegone;
 
 /*? if fabric {*/
-/*import gg.meza.client.ConfigScreen;
-import gg.meza.client.SoundsBeGoneClient;
+import gg.meza.soundsbegone.client.ConfigScreen;
+import gg.meza.soundsbegone.client.SoundsBeGoneClient;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -41,11 +41,11 @@ public class SoundsBeGone implements ClientModInitializer {
         });
     }
 }
-*//*?}*/
+/*?}*/
 
 /*? if neoforge {*/
-import gg.meza.client.ConfigScreen;
-import gg.meza.client.SoundsBeGoneClient;
+/*import gg.meza.soundsbegone.client.ConfigScreen;
+import gg.meza.soundsbegone.client.SoundsBeGoneClient;
 import net.minecraft.client.MinecraftClient;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -107,4 +107,4 @@ public class SoundsBeGone {
     }
 }
 
-/*?}*/
+*//*?}*/

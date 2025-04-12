@@ -19,13 +19,16 @@ modSettings {
 }
 
 repositories {
+    mavenLocal()
     maven("https://maven.terraformersmc.com/")
     maven("https://maven.shedaniel.me/")
+    maven("https://maven.meza.gg/releases/")
 }
 
 dependencies {
     modImplementation("com.google.code.gson:gson:2.10.1")
     modImplementation("com.posthog.java:posthog:${mod.prop("posthog_version")}")
+    include(modImplementation("gg.meza:supporters_core-${mod.loader}:${mod.prop("supporters_core_version")}")!!)
 
     include("com.posthog.java:posthog:${mod.prop("posthog_version")}")
 

@@ -11,16 +11,24 @@
 		"homepage": "https://github.com/meza/SoundsBeGone",
 		"sources": "https://github.com/meza/SoundsBeGone"
 	},
+	"custom": {
+		"modmenu": {
+			"links": {
+				"${id}.discord": "https://discord.gg/dvg3tcQCPW",
+				"${id}.support": "https://ko-fi.com/meza"
+			}
+		}
+	},
 	"license": "GPL-3.0",
 	"icon": "assets/${id}/icon.png",
 	"environment": "client",
 	"entrypoints": {
 		"main": [],
 		"client": [
-			"gg.meza.SoundsBeGone"
+			"gg.meza.soundsbegone.SoundsBeGone"
 		],
 		"modmenu": [
-			"gg.meza.fabric.ModMenuIntegration"
+			"gg.meza.soundsbegone.fabric.ModMenuIntegration"
 		]
 	},
 	"mixins": [

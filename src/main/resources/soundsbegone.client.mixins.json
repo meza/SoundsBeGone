@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "gg.meza.client.mixin",
+  "package": "gg.meza.soundsbegone.client.mixin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8.4",
   "client": ["AbstractSoundInstanceMixin"],

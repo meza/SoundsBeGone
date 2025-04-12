@@ -1,9 +1,9 @@
 /*? if fabric {*/
-/*package gg.meza.fabric;
+package gg.meza.soundsbegone.fabric;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import gg.meza.client.ConfigScreen;
+import gg.meza.soundsbegone.client.ConfigScreen;
 
 
 public class ModMenuIntegration implements ModMenuApi {
@@ -12,4 +12,4 @@ public class ModMenuIntegration implements ModMenuApi {
         return ConfigScreen::getConfigeScreen;
     }
 }
-*//*?}*/
+/*?}*/

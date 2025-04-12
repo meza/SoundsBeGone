@@ -1,13 +1,12 @@
-package gg.meza.client;
+package gg.meza.soundsbegone.client;
 
-import gg.meza.Config;
-import gg.meza.telemetry.Telemetry;
+import gg.meza.soundsbegone.Config;
+import gg.meza.soundsbegone.telemetry.Telemetry;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

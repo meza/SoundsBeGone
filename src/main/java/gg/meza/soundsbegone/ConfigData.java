@@ -1,4 +1,4 @@
-package gg.meza;
+package gg.meza.soundsbegone;
 
 import java.util.HashSet;
 import java.util.Set;

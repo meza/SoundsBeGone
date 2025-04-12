@@ -1,7 +1,7 @@
-package gg.meza.client.mixin;
+package gg.meza.soundsbegone.client.mixin;
 
-import gg.meza.SoundsBeGoneConfig;
-import gg.meza.client.SoundsBeGoneClient;
+import gg.meza.soundsbegone.SoundsBeGoneConfig;
+import gg.meza.soundsbegone.client.SoundsBeGoneClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.AbstractSoundInstance;
 import net.minecraft.text.Text;

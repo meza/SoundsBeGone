@@ -1,6 +1,8 @@
-package gg.meza.client;
+package gg.meza.soundsbegone.client;
 
-import gg.meza.SoundsBeGoneConfig;
+import gg.meza.soundsbegone.SoundsBeGoneConfig;
+
+import gg.meza.supporters.clothconfig.SupportCategory;
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
@@ -52,7 +54,7 @@ public class ConfigScreen {
                 .forEach((key) -> general.addEntry(constructOption(entryBuilder, key)));
 
         SoundsBeGoneClient.config.disabledSounds().stream().sorted().forEach((key) -> disabled.addEntry(constructOption(entryBuilder, key)));
-
+        SupportCategory.add(builder, entryBuilder);
         return builder.build();
     }
 

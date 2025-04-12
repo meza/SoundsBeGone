@@ -1,4 +1,6 @@
 {
   "soundsbegone.config" : "Open Config Screen",
-  "soundsbegone.keybinds" : "SoundsBeGone"
+  "soundsbegone.keybinds" : "SoundsBeGone",
+  "soundsbegone.discord" : "Discord",
+  "soundsbegone.support" : "Support on Ko-fi"
 }
