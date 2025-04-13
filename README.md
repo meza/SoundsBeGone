@@ -1,3 +1,9 @@
 # Sounds Be Gone!
 
-Please refer to the MC\* branches for the actual code
+
+## Credits
+
+Thanks to all the supporters who make this project possible!
+
+<!-- marker:patrons-start -->
+<!-- marker:patrons-end -->
