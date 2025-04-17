@@ -8,6 +8,9 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Telemetry {
     private static final String POSTHOG_API_KEY = "POSTHOG_API_KEY_REPL";
@@ -21,11 +24,16 @@ public class Telemetry {
     private final String MC_VERSION = MinecraftClient.getInstance().getGameVersion();
     private final String JAVA_VERSION = System.getProperty("java.version");
 
+    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+
     public Telemetry() {
         this.posthog = new PostHog.Builder(POSTHOG_API_KEY).host(POSTHOG_HOST).build();
         if (SoundsBeGoneClient.config.isTelemetryEnabled()) {
             this.sendEvent("Started Minecraft", "");
+            scheduler.scheduleAtFixedRate(this::sendBlockedData, 30, 30, TimeUnit.SECONDS);
         }
+
+        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
     }
     private void sendEvent(String event, String sound) {
         this.sendEvent(event, sound, Map.of());
@@ -73,13 +81,29 @@ public class Telemetry {
         this.sendEvent("UnMuted Sound", sound);
     }
 
-    public void flush() {
-        SoundsBeGoneConfig.LOGGER.debug("Flushing telemetry");
+    public void sendBlockedData() {
         this.blockedSoundsCount.forEach((sound, count) -> {
             this.sendEvent("Blocked Sound", sound, Map.of(
                     "count", count
             ));
             this.blockedSoundsCount.remove(sound);
         });
+    }
+
+    public void flush() {
+        SoundsBeGoneConfig.LOGGER.debug("Flushing telemetry");
+        sendBlockedData();
+    }
+
+    public void shutdown() {
+        scheduler.shutdown();
+        try {
+            if (!scheduler.awaitTermination(5, TimeUnit.SECONDS)) {
+                scheduler.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            scheduler.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
     }
 }
