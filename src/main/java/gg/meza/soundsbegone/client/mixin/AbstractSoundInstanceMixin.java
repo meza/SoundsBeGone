@@ -34,7 +34,6 @@ public class AbstractSoundInstanceMixin {
         }
 
         if(MinecraftClient.getInstance().world != null) {
-            SoundsBeGoneConfig.LOGGER.debug("Intercepting the sound: {}", Text.translatable(id.toTranslationKey()));
             SoundsBeGoneClient.SoundMap.put(id.toString(), new java.util.Date());
         }
 
