@@ -46,7 +46,7 @@ public class Telemetry {
         this.client = client;
         this.posthog = new PostHog.Builder(POSTHOG_API_KEY).host(POSTHOG_HOST).build();
         if (SoundsBeGoneClient.config.isTelemetryEnabled()) {
-            scheduler.scheduleAtFixedRate(this::sendBlockedData, 30, 30, TimeUnit.SECONDS);
+            scheduler.scheduleAtFixedRate(this::sendBlockedData, 30, 30, TimeUnit.MINUTES);
         }
 
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
