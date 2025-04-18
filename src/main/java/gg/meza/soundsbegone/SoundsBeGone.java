@@ -3,6 +3,7 @@ package gg.meza.soundsbegone;
 /*? if fabric {*/
 import gg.meza.soundsbegone.client.ConfigScreen;
 import gg.meza.soundsbegone.client.SoundsBeGoneClient;
+import gg.meza.soundsbegone.client.TranslationReminder;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -32,6 +33,10 @@ public class SoundsBeGone implements ClientModInitializer {
             tickCounter = 0;
         });
 
+        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+            TranslationReminder.notify(client);
+        });
+
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
             SoundsBeGoneClient.telemetry.startMinecraft();
         });
@@ -50,13 +55,17 @@ public class SoundsBeGone implements ClientModInitializer {
 /*? if neoforge {*/
 /*import gg.meza.soundsbegone.client.ConfigScreen;
 import gg.meza.soundsbegone.client.SoundsBeGoneClient;
+import gg.meza.soundsbegone.client.TranslationReminder;
+
 import net.minecraft.client.MinecraftClient;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+
 import net.neoforged.neoforge.event.GameShuttingDownEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
@@ -93,6 +102,11 @@ public class SoundsBeGone {
             //remove from SoundMap if the sound has been playing for more than 60 seconds
             SoundsBeGoneClient.SoundMap.entrySet().removeIf(entry -> new Date().getTime() - entry.getValue().getTime() > 60000);
             tickCounter = 0;
+        }
+
+        @SubscribeEvent
+        public static void clientJoin(ClientPlayerNetworkEvent.LoggingIn event) {
+            TranslationReminder.notify(MinecraftClient.getInstance());
         }
     }
 

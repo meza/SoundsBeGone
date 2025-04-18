@@ -2,10 +2,14 @@
   "soundsbegone.config" : "Open Config Screen",
   "soundsbegone.keybinds" : "SoundsBeGone",
   "soundsbegone.discord" : "Discord",
+  "soundsbegone.translate" : "Help Translate!",
   "soundsbegone.support" : "Support on Ko-fi",
   "soundsbegone.enable" : "Enable",
   "soundsbegone.disable" : "Disable",
 
+  "soundsbegone.cmd.translate": "Playing Minecraft in a different language?\nYou can help translate %s!\n\nJust click the link below to get started.\nIt’s super easy and you can do it right in your browser.\nNo need to download anything or set up a special account.",
+  "soundsbegone.cmd.crowdin": "Translate on Crowdin",
+  "soundsbegone.cmd.crowdin.tooltip": "Click to open Crowdin translation page",
 
   "soundsbegone.config.title" : "Sounds Be Gone Config",
   "soundsbegone.config.category.latest" : "Played in the last 60 seconds",

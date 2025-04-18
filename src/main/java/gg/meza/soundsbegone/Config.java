@@ -1,6 +1,7 @@
 package gg.meza.soundsbegone;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import gg.meza.soundsbegone.client.ConfigPathResolver;
 import org.apache.commons.lang3.SerializationException;
@@ -15,6 +16,15 @@ import java.util.Set;
 public class Config {
     private ConfigData configData = new ConfigData();
     private Path configPath = ConfigPathResolver.getConfigDir("disabled_sounds.json");
+
+    public String lastVersionSeen() {
+        return configData.lastVersionSeen;
+    }
+
+    public void setLastVersionSeen(String version) {
+        configData.lastVersionSeen = version;
+        this.saveConfig();
+    }
 
     public boolean isTelemetryEnabled() {
         return configData.telemetry;
@@ -44,7 +54,7 @@ public class Config {
         if (Files.exists(configPath)) {
             try {
                 BufferedReader reader = Files.newBufferedReader(configPath);
-                Gson gson = new Gson();
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 configData = gson.fromJson(reader, ConfigData.class);
                 reader.close();
             } catch (IOException | JsonParseException e) {
