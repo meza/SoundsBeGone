@@ -1,4 +1,8 @@
-# Sounds Be Gone!
+# Sounds Be Gone! [![Crowdin](https://badges.crowdin.net/soundsbegone/localized.svg)](https://crowdin.com/project/soundsbegone)
+
+[![Modrinth](https://img.shields.io/modrinth/dt/soundsbegone?logo=modrinth&label=Modrinth)](https://modrinth.com/mod/soundsbegone)
+[![CurseForge](https://img.shields.io/curseforge/dt/874633?logo=curseforge&label=CurseForge)](https://www.curseforge.com/minecraft/mc-mods/soundsbegone)
+
 
 Inspired by my own Misophonia, this mod allows you to disable any sound in the game (vanilla, modded, etc) that you don't like.
 
