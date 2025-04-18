@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
 
+import static gg.meza.soundsbegone.SoundsBeGoneConfig.LOGGER;
 import static gg.meza.soundsbegone.SoundsBeGoneConfig.MOD_ID;
 
 public class Config {
@@ -88,6 +89,10 @@ public class Config {
     private void renameConfigFile() {
         try {
             if (Files.exists(oldConfigPath)) {
+                if (Files.exists(configPath)) {
+                    LOGGER.warn("Old config file found, but new config file already exists. Please delete the old config file manually.");
+                    return;
+                }
                 Files.move(oldConfigPath, configPath);
             }
         } catch (IOException e) {
