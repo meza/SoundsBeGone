@@ -13,7 +13,7 @@ import net.minecraft.text.Text;
 
 public class ConfigScreen {
 
-    public static Screen getConfigeScreen(Screen parent) {
+    public static Screen getConfigScreen(Screen parent) {
         ConfigBuilder builder = ConfigBuilder.create()
                 .setParentScreen(parent)
                 .setTitle(Text.translatable("soundsbegone.config.title"))

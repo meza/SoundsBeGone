@@ -24,7 +24,7 @@ public class SoundsBeGone implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (SoundsBeGoneClient.openConfig.wasPressed()) {
-                client.setScreen(ConfigScreen.getConfigeScreen(null));
+                client.setScreen(ConfigScreen.getConfigScreen(null));
             }
             if (tickCounter++ < 200) return;
             //remove from SoundMap if the sound has been playing for more than 60 seconds
@@ -83,7 +83,7 @@ public class SoundsBeGone {
         @SubscribeEvent
         public static void endTick(ClientTickEvent.Post event) {
             if (SoundsBeGoneClient.openConfig.wasPressed()) {
-                MinecraftClient.getInstance().setScreen(ConfigScreen.getConfigeScreen(null));
+                MinecraftClient.getInstance().setScreen(ConfigScreen.getConfigScreen(null));
             }
             if (tickCounter++ < 200) return;
             //remove from SoundMap if the sound has been playing for more than 60 seconds
