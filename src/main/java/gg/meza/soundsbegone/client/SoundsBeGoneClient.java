@@ -14,7 +14,12 @@ public class SoundsBeGoneClient {
     public static Map<String, Date> SoundMap = new ConcurrentHashMap<>();
     public static Config config = new Config();
     public static Telemetry telemetry;
-    public static final KeyBinding openConfig = new KeyBinding("soundsbegone.config", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_B, "soundsbegone.keybinds");
+    public static final KeyBinding openConfig = new KeyBinding(
+            "soundsbegone.config",
+            InputUtil.Type.KEYSYM,
+            GLFW.GLFW_KEY_B,
+            "soundsbegone.keybinds"
+    );
 
 
     public static void initClient() {
