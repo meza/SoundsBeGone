@@ -26,14 +26,6 @@ jobs:
         lc:
           - lc: de
             name: German
-          - lc: fr
-            name: French
-          - lc: pt-BR
-            name: Portuguese (br)
-          - lc: ru
-            name: Russian
-          - lc: uk
-            name: Ukrainian
           - lc: zh-CN
             name: Chinese
     steps:
