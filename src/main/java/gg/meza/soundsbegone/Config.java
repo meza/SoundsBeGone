@@ -3,12 +3,14 @@ package gg.meza.soundsbegone;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import gg.meza.soundsbegone.client.ConfigPathResolver;
 import org.apache.commons.lang3.SerializationException;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
@@ -97,7 +99,9 @@ public class Config {
         try {
             SoundsBeGoneConfig.LOGGER.warn("Old config file found, migrating to new format");
             BufferedReader reader = Files.newBufferedReader(configPath);
-            Set<String> disabledSounds = GSON.fromJson(reader, Set.class);
+
+            Type setType = new TypeToken<Set<String>>(){}.getType();
+            Set<String> disabledSounds = GSON.fromJson(reader, setType);
             reader.close();
             this.configData.sounds = disabledSounds;
 
