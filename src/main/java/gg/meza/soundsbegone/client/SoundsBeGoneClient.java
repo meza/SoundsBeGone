@@ -2,6 +2,7 @@ package gg.meza.soundsbegone.client;
 
 import gg.meza.soundsbegone.Config;
 import gg.meza.soundsbegone.telemetry.Telemetry;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
@@ -24,6 +25,6 @@ public class SoundsBeGoneClient {
 
     public static void initClient() {
         config.initConfig();
-        telemetry = new Telemetry();
+        telemetry = new Telemetry(MinecraftClient.getInstance());
     }
 }

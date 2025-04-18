@@ -32,6 +32,10 @@ public class SoundsBeGone implements ClientModInitializer {
             tickCounter = 0;
         });
 
+        ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
+            SoundsBeGoneClient.telemetry.startMinecraft();
+        });
+
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> {
             SoundsBeGoneClient.telemetry.flush();
         });

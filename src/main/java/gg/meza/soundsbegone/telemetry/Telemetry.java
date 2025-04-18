@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 public class Telemetry {
     private static final String POSTHOG_API_KEY = "POSTHOG_API_KEY_REPL";
@@ -39,11 +40,12 @@ public class Telemetry {
     /*private final String LOADER = "neoforge";*/
 
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    private final MinecraftClient client;
 
-    public Telemetry() {
+    public Telemetry(MinecraftClient client) {
+        this.client = client;
         this.posthog = new PostHog.Builder(POSTHOG_API_KEY).host(POSTHOG_HOST).build();
         if (SoundsBeGoneClient.config.isTelemetryEnabled()) {
-            this.sendEvent("Started Minecraft", "");
             scheduler.scheduleAtFixedRate(this::sendBlockedData, 30, 30, TimeUnit.SECONDS);
         }
 
@@ -57,7 +59,7 @@ public class Telemetry {
         if (!SoundsBeGoneClient.config.isTelemetryEnabled()) {
             return;
         }
-
+        String lng = client.getLanguageManager().getLanguage();
         Map<String, Object> baseProps = new ConcurrentHashMap<>(Map.of(
                 "sound", sound,
                 "Minecraft Version", MC_VERSION,
@@ -65,7 +67,8 @@ public class Telemetry {
                 "Local Time", new java.util.Date().toString(),
                 "ModVersion", SoundsBeGoneConfig.VERSION,
                 "Java Version", JAVA_VERSION,
-                "Loader", LOADER
+                "Loader", LOADER,
+                "Language", lng
         ));
 
         baseProps.putAll(extraProps);
@@ -120,5 +123,9 @@ public class Telemetry {
             scheduler.shutdownNow();
             Thread.currentThread().interrupt();
         }
+    }
+
+    public void startMinecraft() {
+        this.sendEvent("Started Minecraft", "");
     }
 }

@@ -42,6 +42,7 @@ public class ConfigScreen {
         telemetrySubcategory.add(entryBuilder.startTextDescription(Text.literal("-").append(Text.translatable("soundsbegone.config.telemetry.data.loader"))).build());
         telemetrySubcategory.add(entryBuilder.startTextDescription(Text.literal("-").append(Text.translatable("soundsbegone.config.telemetry.data.os"))).build());
         telemetrySubcategory.add(entryBuilder.startTextDescription(Text.literal("-").append(Text.translatable("soundsbegone.config.telemetry.data.time"))).build());
+        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.literal("-").append(Text.translatable("soundsbegone.config.telemetry.data.language"))).build());
         settings.addEntry(telemetrySubcategory.build());
         settings.addEntry(entryBuilder.startTextDescription(Text.translatable("soundsbegone.config.telemetry.disclaimer")).build());
 
