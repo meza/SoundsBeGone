@@ -60,7 +60,7 @@ public class Telemetry {
         if (!SoundsBeGoneClient.config.isTelemetryEnabled()) {
             return;
         }
-        String lng = client.getLanguageManager().getLanguage();
+        String languageCode = client.getLanguageManager().getLanguage().toLowerCase();
         Map<String, Object> baseProps = new ConcurrentHashMap<>(Map.of(
                 "sound", sound,
                 "Minecraft Version", MC_VERSION,
@@ -69,7 +69,7 @@ public class Telemetry {
                 "ModVersion", SoundsBeGoneConfig.VERSION,
                 "Java Version", JAVA_VERSION,
                 "Loader", LOADER,
-                "Language", lng
+                "Language", languageCode
         ));
 
         baseProps.putAll(extraProps);
