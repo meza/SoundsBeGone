@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class TranslationReminder {
     public static void notify(MinecraftClient client) {
-        String languageCode = client.getLanguageManager().getLanguage();
+        String languageCode = client.getLanguageManager().getLanguage().toLowerCase();
             if (languageCode.equals("en_us")) {
             return;
         }
