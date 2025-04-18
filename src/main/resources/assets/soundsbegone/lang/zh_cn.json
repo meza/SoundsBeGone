@@ -20,5 +20,6 @@
   "soundsbegone.config.telemetry.data.version.java": "Java version",
   "soundsbegone.config.telemetry.data.loader": "Mod loader",
   "soundsbegone.config.telemetry.data.os": "Operating system used",
-  "soundsbegone.config.telemetry.data.time": "Local time"
+  "soundsbegone.config.telemetry.data.time": "Local time",
+  "soundsbegone.config.telemetry.data.language": "Minecraft language"
 }
