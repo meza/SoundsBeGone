@@ -6,6 +6,7 @@ import gg.meza.soundsbegone.client.SoundsBeGoneClient;
 import net.minecraft.client.MinecraftClient;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -100,11 +101,13 @@ public class Telemetry {
     }
 
     public void sendBlockedData() {
-        this.blockedSoundsCount.forEach((sound, count) -> {
+        Map<String, Integer> soundsToSend = new HashMap<>(this.blockedSoundsCount);
+        this.blockedSoundsCount.clear();
+
+        soundsToSend.forEach((sound, count) -> {
             this.sendEvent("Blocked Sound", sound, Map.of(
                     "count", count
             ));
-            this.blockedSoundsCount.remove(sound);
         });
     }
 
