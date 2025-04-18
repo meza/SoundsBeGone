@@ -13,9 +13,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
 
+import static gg.meza.soundsbegone.SoundsBeGoneConfig.MOD_ID;
+
 public class Config {
     private ConfigData configData = new ConfigData();
-    private Path configPath = ConfigPathResolver.getConfigDir("disabled_sounds.json");
+    private final Path oldConfigPath = ConfigPathResolver.getConfigDir("disabled_sounds.json");
+    private final Path configPath = ConfigPathResolver.getConfigDir(MOD_ID + ".json");
 
     public String lastVersionSeen() {
         return configData.lastVersionSeen;
@@ -51,6 +54,7 @@ public class Config {
     }
 
     public void initConfig() {
+        renameConfigFile();
         if (Files.exists(configPath)) {
             try {
                 BufferedReader reader = Files.newBufferedReader(configPath);
@@ -80,11 +84,21 @@ public class Config {
         }
     }
 
+    private void renameConfigFile() {
+        try {
+            if (Files.exists(oldConfigPath)) {
+                Files.move(oldConfigPath, configPath);
+            }
+        } catch (IOException e) {
+            throw new SerializationException(e);
+        }
+    }
+
     private void convertConfig(Path configPath) {
         try {
             SoundsBeGoneConfig.LOGGER.warn("Old config file found, migrating to new format");
             BufferedReader reader = Files.newBufferedReader(configPath);
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
             Set<String> disabledSounds = gson.fromJson(reader, Set.class);
             reader.close();
             this.configData.sounds = disabledSounds;
