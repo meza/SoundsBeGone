@@ -19,6 +19,7 @@ public class Config {
     private ConfigData configData = new ConfigData();
     private final Path oldConfigPath = ConfigPathResolver.getConfigDir("disabled_sounds.json");
     private final Path configPath = ConfigPathResolver.getConfigDir(MOD_ID + ".json");
+    private final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public String lastVersionSeen() {
         return configData.lastVersionSeen;
@@ -58,8 +59,7 @@ public class Config {
         if (Files.exists(configPath)) {
             try {
                 BufferedReader reader = Files.newBufferedReader(configPath);
-                Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                configData = gson.fromJson(reader, ConfigData.class);
+                configData = GSON.fromJson(reader, ConfigData.class);
                 reader.close();
             } catch (IOException | JsonParseException e) {
                 SoundsBeGoneConfig.LOGGER.error("Cause: " + e.getCause().getClass().getSimpleName());
@@ -75,9 +75,8 @@ public class Config {
     public void saveConfig() {
         try {
             // Save config
-            Gson gson = new Gson();
             BufferedWriter writer = Files.newBufferedWriter(configPath);
-            gson.toJson(configData, writer);
+            GSON.toJson(configData, writer);
             writer.close();
         } catch (IOException e) {
             throw new SerializationException(e);
@@ -98,13 +97,12 @@ public class Config {
         try {
             SoundsBeGoneConfig.LOGGER.warn("Old config file found, migrating to new format");
             BufferedReader reader = Files.newBufferedReader(configPath);
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            Set<String> disabledSounds = gson.fromJson(reader, Set.class);
+            Set<String> disabledSounds = GSON.fromJson(reader, Set.class);
             reader.close();
             this.configData.sounds = disabledSounds;
 
             BufferedWriter writer = Files.newBufferedWriter(configPath);
-            gson.toJson(configData, writer);
+            GSON.toJson(configData, writer);
             writer.close();
         } catch (IOException | JsonParseException e) {
             throw new SerializationException(e);

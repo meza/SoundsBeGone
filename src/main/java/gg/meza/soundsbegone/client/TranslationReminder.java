@@ -44,7 +44,8 @@ public class TranslationReminder {
                     Text.translatable("soundsbegone.cmd.translate", Text.literal("Sounds Be Gone").styled(style -> style.withBold(true).withColor(Formatting.GOLD))).styled(style -> style.withColor(Formatting.AQUA))
                             .append(Text.literal("\n\n"))
                             .append(Text.translatable("soundsbegone.cmd.crowdin").styled(style -> style.withBold(true)
-                                    .withColor(Formatting.GOLD)
+                                    .withColor(Formatting.BLUE)
+                                    .withUnderline(true)
                                     .withHoverEvent(showText)
                                     .withClickEvent(clickEvent))),
                     false
