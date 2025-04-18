@@ -50,4 +50,7 @@ If you hear something that triggers you, press ESC, click on MODS, select Sounds
 Thanks to all the supporters who make this project possible!
 
 <!-- marker:patrons-start -->
+
+Yama
+
 <!-- marker:patrons-end -->
