@@ -13,38 +13,38 @@ import net.minecraft.text.Text;
 
 public class ConfigScreen {
 
-    public static Screen getConfigeScreen(Screen parent) {
+    public static Screen getConfigScreen(Screen parent) {
         ConfigBuilder builder = ConfigBuilder.create()
                 .setParentScreen(parent)
-                .setTitle(Text.of("Sounds Be Gone Config"))
+                .setTitle(Text.translatable("soundsbegone.config.title"))
                 .setSavingRunnable(() -> {
                     SoundsBeGoneClient.config.saveConfig();
                 });
-        ConfigCategory general = builder.getOrCreateCategory(Text.of("Played in the last 60 seconds"));
-        ConfigCategory disabled = builder.getOrCreateCategory(Text.of("Disabled sounds"));
-        ConfigCategory settings = builder.getOrCreateCategory(Text.of("Settings"));
+        ConfigCategory general = builder.getOrCreateCategory(Text.translatable("soundsbegone.config.category.latest"));
+        ConfigCategory disabled = builder.getOrCreateCategory(Text.translatable("soundsbegone.config.category.disabled"));
+        ConfigCategory settings = builder.getOrCreateCategory(Text.translatable("soundsbegone.config.category.settings"));
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-        settings.addEntry(entryBuilder.startBooleanToggle(Text.of("Enable telemetry"), SoundsBeGoneClient.config.isTelemetryEnabled())
+        settings.addEntry(entryBuilder.startBooleanToggle(Text.translatable("soundsbegone.config.telemetry.switch"), SoundsBeGoneClient.config.isTelemetryEnabled())
                 .setDefaultValue(SoundsBeGoneClient.config.isTelemetryEnabled())
                 .setSaveConsumer(newValue -> {
                     SoundsBeGoneClient.config.toggleTelemetry(newValue);
                 })
                 .build());
 
-        settings.addEntry(entryBuilder.startTextDescription(
-                Text.of("Enabling telemetry will send anonymous data to help us understand how we can make things better. We DO NOT send any data that would identify you.")
-        ).build());
-        settings.addEntry(entryBuilder.startTextDescription(Text.of("You can check the telemetry code at https://github.com/meza/SoundsBeGone")).build());
-        SubCategoryBuilder telemetrySubcategory = entryBuilder.startSubCategory(Text.of("Telemetry used:"));
-        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.of(" - Sound enabled/disabled/blocked")).build());
-        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.of(" - Mod version")).build());
-        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.of(" - Minecraft version")).build());
-        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.of(" - Java version")).build());
-        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.of(" - Operating system used")).build());
-        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.of(" - Local time")).build());
+        settings.addEntry(entryBuilder.startTextDescription(Text.translatable("soundsbegone.config.telemetry.description")).build());
+        settings.addEntry(entryBuilder.startTextDescription(Text.translatable("soundsbegone.config.telemetry.verify", "https://github.com/meza/SoundsBeGone")).build());
+        SubCategoryBuilder telemetrySubcategory = entryBuilder.startSubCategory(Text.translatable("soundsbegone.config.telemetry.used"));
+        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.literal("-").append(Text.translatable("soundsbegone.config.telemetry.data.sound"))).build());
+        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.literal("-").append(Text.translatable("soundsbegone.config.telemetry.data.version.mod"))).build());
+        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.literal("-").append(Text.translatable("soundsbegone.config.telemetry.data.version.minecraft"))).build());
+        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.literal("-").append(Text.translatable("soundsbegone.config.telemetry.data.version.java"))).build());
+        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.literal("-").append(Text.translatable("soundsbegone.config.telemetry.data.loader"))).build());
+        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.literal("-").append(Text.translatable("soundsbegone.config.telemetry.data.os"))).build());
+        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.literal("-").append(Text.translatable("soundsbegone.config.telemetry.data.time"))).build());
+        telemetrySubcategory.add(entryBuilder.startTextDescription(Text.literal("-").append(Text.translatable("soundsbegone.config.telemetry.data.language"))).build());
         settings.addEntry(telemetrySubcategory.build());
-        settings.addEntry(entryBuilder.startTextDescription(Text.of("Please consider keeping this on. This data helps development by giving us insight into what is important for the players and what is not")).build());
+        settings.addEntry(entryBuilder.startTextDescription(Text.translatable("soundsbegone.config.telemetry.disclaimer")).build());
 
         SoundsBeGoneClient.SoundMap
                 .keySet()
@@ -60,7 +60,7 @@ public class ConfigScreen {
 
     private static AbstractConfigListEntry<?> constructOption(ConfigEntryBuilder builder, String key) {
         return builder
-                .startBooleanToggle(Text.of(key), SoundsBeGoneClient.config.isSoundDisabled(key))
+                .startBooleanToggle(Text.translatable(key), SoundsBeGoneClient.config.isSoundDisabled(key))
                 .setDefaultValue(SoundsBeGoneClient.config.isSoundDisabled(key))
                 .setSaveConsumer(newValue -> {
                     if (newValue) {
@@ -79,7 +79,7 @@ public class ConfigScreen {
                         }
                     }
                 })
-                .setYesNoTextSupplier(bool -> bool ? Text.of("Enable") : Text.of("Disable"))
+                .setYesNoTextSupplier(bool -> bool ? Text.translatable("soundsbegone.enable") : Text.translatable("soundsbegone.disable"))
                 .build();
     }
 }

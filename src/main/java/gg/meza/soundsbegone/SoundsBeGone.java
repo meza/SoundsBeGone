@@ -3,6 +3,7 @@ package gg.meza.soundsbegone;
 /*? if fabric {*/
 import gg.meza.soundsbegone.client.ConfigScreen;
 import gg.meza.soundsbegone.client.SoundsBeGoneClient;
+import gg.meza.soundsbegone.client.TranslationReminder;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -24,12 +25,20 @@ public class SoundsBeGone implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (SoundsBeGoneClient.openConfig.wasPressed()) {
-                client.setScreen(ConfigScreen.getConfigeScreen(null));
+                client.setScreen(ConfigScreen.getConfigScreen(null));
             }
             if (tickCounter++ < 200) return;
             //remove from SoundMap if the sound has been playing for more than 60 seconds
             SoundsBeGoneClient.SoundMap.entrySet().removeIf(entry -> new Date().getTime() - entry.getValue().getTime() > 60000);
             tickCounter = 0;
+        });
+
+        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+            TranslationReminder.notify(client);
+        });
+
+        ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
+            SoundsBeGoneClient.telemetry.startMinecraft();
         });
 
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> {
@@ -46,13 +55,17 @@ public class SoundsBeGone implements ClientModInitializer {
 /*? if neoforge {*/
 /*import gg.meza.soundsbegone.client.ConfigScreen;
 import gg.meza.soundsbegone.client.SoundsBeGoneClient;
+import gg.meza.soundsbegone.client.TranslationReminder;
+
 import net.minecraft.client.MinecraftClient;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+
 import net.neoforged.neoforge.event.GameShuttingDownEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
@@ -83,12 +96,17 @@ public class SoundsBeGone {
         @SubscribeEvent
         public static void endTick(ClientTickEvent.Post event) {
             if (SoundsBeGoneClient.openConfig.wasPressed()) {
-                MinecraftClient.getInstance().setScreen(ConfigScreen.getConfigeScreen(null));
+                MinecraftClient.getInstance().setScreen(ConfigScreen.getConfigScreen(null));
             }
             if (tickCounter++ < 200) return;
             //remove from SoundMap if the sound has been playing for more than 60 seconds
             SoundsBeGoneClient.SoundMap.entrySet().removeIf(entry -> new Date().getTime() - entry.getValue().getTime() > 60000);
             tickCounter = 0;
+        }
+
+        @SubscribeEvent
+        public static void clientJoin(ClientPlayerNetworkEvent.LoggingIn event) {
+            TranslationReminder.notify(MinecraftClient.getInstance());
         }
     }
 

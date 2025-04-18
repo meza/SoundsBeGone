@@ -15,7 +15,8 @@
 		"modmenu": {
 			"links": {
 				"${id}.discord": "https://discord.gg/dvg3tcQCPW",
-				"${id}.support": "https://ko-fi.com/meza"
+				"${id}.support": "https://ko-fi.com/meza",
+				"${id}.translate":  "https://crowdin.com/project/sounds-be-gone"
 			}
 		}
 	},
@@ -38,7 +39,7 @@
 		}
 	],
 	"depends": {
-		"fabricloader": ">=0.15.0",
+		"fabricloader": "*",
 		"minecraft": ">=${minecraftVersion}",
 		"fabric-api": "*",
 		"cloth-config": ">=${cloth_version}"

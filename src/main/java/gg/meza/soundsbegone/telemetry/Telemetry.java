@@ -6,8 +6,13 @@ import gg.meza.soundsbegone.client.SoundsBeGoneClient;
 import net.minecraft.client.MinecraftClient;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 public class Telemetry {
     private static final String POSTHOG_API_KEY = "POSTHOG_API_KEY_REPL";
@@ -18,14 +23,34 @@ public class Telemetry {
     // Not actually sending any user info, just using the uuid to create a new uuid that cannot be traced back to the user
     private final String uuid = DigestUtils.sha256Hex(MinecraftClient.getInstance().getSession().getUsername());
     private final String OS_NAME = System.getProperty("os.name");
-    private final String MC_VERSION = MinecraftClient.getInstance().getGameVersion();
+    /*? if 1.21.5*/
+    private final String MC_VERSION = "1.21.5";
+    /*? if 1.21.4*/
+    /*private final String MC_VERSION = "1.21.4";*/
+    /*? if 1.21*/
+    /*private final String MC_VERSION = "1.21";*/
+    /*? if 1.19.4*/
+    /*private final String MC_VERSION = "1.19.4";*/
     private final String JAVA_VERSION = System.getProperty("java.version");
 
-    public Telemetry() {
+    /*? if fabric*/
+    private final String LOADER = "fabric";
+    /*? if forge*/
+    /*private final String LOADER = "forge";*/
+    /*? if neoforge*/
+    /*private final String LOADER = "neoforge";*/
+
+    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    private final MinecraftClient client;
+
+    public Telemetry(MinecraftClient client) {
+        this.client = client;
         this.posthog = new PostHog.Builder(POSTHOG_API_KEY).host(POSTHOG_HOST).build();
         if (SoundsBeGoneClient.config.isTelemetryEnabled()) {
-            this.sendEvent("Started Minecraft", "");
+            scheduler.scheduleAtFixedRate(this::sendBlockedData, 30, 30, TimeUnit.MINUTES);
         }
+
+        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
     }
     private void sendEvent(String event, String sound) {
         this.sendEvent(event, sound, Map.of());
@@ -35,14 +60,16 @@ public class Telemetry {
         if (!SoundsBeGoneClient.config.isTelemetryEnabled()) {
             return;
         }
-
+        String languageCode = client.getLanguageManager().getLanguage().toLowerCase();
         Map<String, Object> baseProps = new ConcurrentHashMap<>(Map.of(
                 "sound", sound,
                 "Minecraft Version", MC_VERSION,
                 "OS", OS_NAME,
                 "Local Time", new java.util.Date().toString(),
                 "ModVersion", SoundsBeGoneConfig.VERSION,
-                "Java Version", JAVA_VERSION
+                "Java Version", JAVA_VERSION,
+                "Loader", LOADER,
+                "Language", languageCode
         ));
 
         baseProps.putAll(extraProps);
@@ -73,13 +100,35 @@ public class Telemetry {
         this.sendEvent("UnMuted Sound", sound);
     }
 
-    public void flush() {
-        SoundsBeGoneConfig.LOGGER.debug("Flushing telemetry");
-        this.blockedSoundsCount.forEach((sound, count) -> {
+    public void sendBlockedData() {
+        Map<String, Integer> soundsToSend = new HashMap<>(this.blockedSoundsCount);
+        this.blockedSoundsCount.clear();
+
+        soundsToSend.forEach((sound, count) -> {
             this.sendEvent("Blocked Sound", sound, Map.of(
                     "count", count
             ));
-            this.blockedSoundsCount.remove(sound);
         });
+    }
+
+    public void flush() {
+        SoundsBeGoneConfig.LOGGER.debug("Flushing telemetry");
+        sendBlockedData();
+    }
+
+    public void shutdown() {
+        scheduler.shutdown();
+        try {
+            if (!scheduler.awaitTermination(5, TimeUnit.SECONDS)) {
+                scheduler.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            scheduler.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    public void startMinecraft() {
+        this.sendEvent("Started Minecraft", "");
     }
 }

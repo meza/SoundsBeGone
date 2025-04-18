@@ -1,20 +1,37 @@
 package gg.meza.soundsbegone;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import gg.meza.soundsbegone.client.ConfigPathResolver;
 import org.apache.commons.lang3.SerializationException;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
 
+import static gg.meza.soundsbegone.SoundsBeGoneConfig.LOGGER;
+import static gg.meza.soundsbegone.SoundsBeGoneConfig.MOD_ID;
+
 public class Config {
     private ConfigData configData = new ConfigData();
-    private Path configPath = ConfigPathResolver.getConfigDir("disabled_sounds.json");
+    private final Path oldConfigPath = ConfigPathResolver.getConfigDir("disabled_sounds.json");
+    private final Path configPath = ConfigPathResolver.getConfigDir(MOD_ID + ".json");
+    private final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+
+    public String lastVersionSeen() {
+        return configData.lastVersionSeen;
+    }
+
+    public void setLastVersionSeen(String version) {
+        configData.lastVersionSeen = version;
+        this.saveConfig();
+    }
 
     public boolean isTelemetryEnabled() {
         return configData.telemetry;
@@ -41,11 +58,11 @@ public class Config {
     }
 
     public void initConfig() {
+        renameConfigFile();
         if (Files.exists(configPath)) {
             try {
                 BufferedReader reader = Files.newBufferedReader(configPath);
-                Gson gson = new Gson();
-                configData = gson.fromJson(reader, ConfigData.class);
+                configData = GSON.fromJson(reader, ConfigData.class);
                 reader.close();
             } catch (IOException | JsonParseException e) {
                 SoundsBeGoneConfig.LOGGER.error("Cause: " + e.getCause().getClass().getSimpleName());
@@ -61,10 +78,23 @@ public class Config {
     public void saveConfig() {
         try {
             // Save config
-            Gson gson = new Gson();
             BufferedWriter writer = Files.newBufferedWriter(configPath);
-            gson.toJson(configData, writer);
+            GSON.toJson(configData, writer);
             writer.close();
+        } catch (IOException e) {
+            throw new SerializationException(e);
+        }
+    }
+
+    private void renameConfigFile() {
+        try {
+            if (Files.exists(oldConfigPath)) {
+                if (Files.exists(configPath)) {
+                    LOGGER.warn("Old config file found, but new config file already exists. Please delete the old config file manually.");
+                    return;
+                }
+                Files.move(oldConfigPath, configPath);
+            }
         } catch (IOException e) {
             throw new SerializationException(e);
         }
@@ -74,13 +104,14 @@ public class Config {
         try {
             SoundsBeGoneConfig.LOGGER.warn("Old config file found, migrating to new format");
             BufferedReader reader = Files.newBufferedReader(configPath);
-            Gson gson = new Gson();
-            Set<String> disabledSounds = gson.fromJson(reader, Set.class);
+
+            Type setType = new TypeToken<Set<String>>(){}.getType();
+            Set<String> disabledSounds = GSON.fromJson(reader, setType);
             reader.close();
             this.configData.sounds = disabledSounds;
 
             BufferedWriter writer = Files.newBufferedWriter(configPath);
-            gson.toJson(configData, writer);
+            GSON.toJson(configData, writer);
             writer.close();
         } catch (IOException | JsonParseException e) {
             throw new SerializationException(e);

@@ -28,7 +28,8 @@ repositories {
 dependencies {
     modImplementation("com.google.code.gson:gson:2.10.1")
     modImplementation("com.posthog.java:posthog:${mod.prop("posthog_version")}")
-    include(modImplementation("gg.meza:supporters_core-${mod.loader}:${mod.prop("supporters_core_version")}")!!)
+
+    include(modImplementation("gg.meza:supporters_core-${mod.loader}:${mod.prop("supporters_core_version")}+${stonecutter.current.version}")!!)
 
     include("com.posthog.java:posthog:${mod.prop("posthog_version")}")
 
