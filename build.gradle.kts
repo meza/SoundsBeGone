@@ -27,12 +27,12 @@ repositories {
 
 dependencies {
     modImplementation("com.google.code.gson:gson:2.10.1")
+
     modImplementation("com.posthog.java:posthog:${mod.prop("posthog_version")}")
-
-    modImplementation("gg.meza:supporters_core-${mod.loader}:${mod.prop("supporters_core_version")}+${stonecutter.current.version}")
-    include("gg.meza:supporters_core-${mod.loader}:${mod.prop("supporters_core_version")}+${stonecutter.current.version}")
-
     include("com.posthog.java:posthog:${mod.prop("posthog_version")}")
+
+    modImplementation("gg.meza:meza_core-${mod.loader}:${mod.prop("meza_core_version")}+${stonecutter.current.version}")
+    include("gg.meza:meza_core-${mod.loader}:${mod.prop("meza_core_version")}+${stonecutter.current.version}")
 
     if (mod.isNeoforge) {
         modApi("me.shedaniel.cloth:cloth-config-neoforge:${mod.prop("cloth_version")}")
