@@ -1,7 +1,7 @@
 package gg.meza.soundsbegone;
 
 /*? if fabric {*/
-import gg.meza.soundsbegone.client.ConfigScreen;
+/*import gg.meza.soundsbegone.client.ConfigScreen;
 import gg.meza.soundsbegone.client.SoundsBeGoneClient;
 import gg.meza.soundsbegone.client.TranslationReminder;
 import net.fabricmc.api.ClientModInitializer;
@@ -50,15 +50,17 @@ public class SoundsBeGone implements ClientModInitializer {
         });
     }
 }
-/*?}*/
+*//*?}*/
 
 /*? if neoforge {*/
-/*import gg.meza.soundsbegone.client.ConfigScreen;
+import gg.meza.soundsbegone.client.ConfigScreen;
 import gg.meza.soundsbegone.client.SoundsBeGoneClient;
 import gg.meza.soundsbegone.client.TranslationReminder;
 
+import gg.meza.soundsbegone.client.neoforge.ConfigScreenFactory;
 import net.minecraft.client.MinecraftClient;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -66,6 +68,7 @@ import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.event.GameShuttingDownEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
@@ -74,7 +77,8 @@ import java.util.Date;
 @Mod(SoundsBeGoneConfig.MOD_ID)
 public class SoundsBeGone {
 
-    public SoundsBeGone() {
+    public SoundsBeGone(ModContainer container) {
+        container.registerExtensionPoint(IConfigScreenFactory.class, new ConfigScreenFactory());
 
         SoundsBeGoneConfig.LOGGER.info("SoundsBeGone initialized");
     }
@@ -125,4 +129,4 @@ public class SoundsBeGone {
     }
 }
 
-*//*?}*/
+/*?}*/
