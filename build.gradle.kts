@@ -13,8 +13,8 @@ modSettings {
 
     variableReplacements = mapOf(
         "schema" to "\$schema",
-        "cloth_version" to mod.prop("cloth_version"),
-        "modmenu_version" to mod.prop("modmenu_version")
+        "cloth_version" to mod.prop("cloth_version", "*"),
+        "modmenu_version" to mod.prop("modmenu_version", "*"),
     )
 }
 
@@ -42,7 +42,9 @@ dependencies {
         modApi("me.shedaniel.cloth:cloth-config-fabric:${mod.prop("cloth_version")}") {
             exclude(group = "net.fabricmc.fabric-api")
         }
-        modApi("com.terraformersmc:modmenu:${mod.prop("modmenu_version")}")
+        if (mod.hasProp("modmenu_version")) {
+            modApi("com.terraformersmc:modmenu:${mod.prop("modmenu_version")}")
+        }
     }
 }
 
