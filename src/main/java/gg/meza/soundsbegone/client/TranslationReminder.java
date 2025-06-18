@@ -33,12 +33,12 @@ public class TranslationReminder {
                 MutableText crowdinTooltip = Text.translatable("soundsbegone.cmd.crowdin.tooltip");
 
                 /*? if > 1.21.4 {*/
-                /*ClickEvent.OpenUrl clickEvent = new ClickEvent.OpenUrl(crowdinUri);
+                ClickEvent.OpenUrl clickEvent = new ClickEvent.OpenUrl(crowdinUri);
                 HoverEvent.ShowText showText = new HoverEvent.ShowText(crowdinTooltip);
-                *//*?} else {*/
-                ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, crowdinUri.toString());
+                /*?} else {*/
+                /*ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, crowdinUri.toString());
                 HoverEvent showText = new HoverEvent(HoverEvent.Action.SHOW_TEXT, crowdinTooltip);
-                /*?}*/
+                *//*?}*/
 
                 client.player.sendMessage(
                     Text.translatable("soundsbegone.cmd.translate", Text.literal("Sounds Be Gone").styled(style -> style.withBold(true).withColor(Formatting.GOLD))).styled(style -> style.withColor(Formatting.AQUA))

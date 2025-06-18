@@ -1,7 +1,7 @@
 package gg.meza.soundsbegone;
 
 /*? if fabric {*/
-/*import gg.meza.soundsbegone.client.ConfigScreen;
+import gg.meza.soundsbegone.client.ConfigScreen;
 import gg.meza.soundsbegone.client.SoundsBeGoneClient;
 import gg.meza.soundsbegone.client.TranslationReminder;
 import net.fabricmc.api.ClientModInitializer;
@@ -50,10 +50,10 @@ public class SoundsBeGone implements ClientModInitializer {
         });
     }
 }
-*//*?}*/
+/*?}*/
 
 /*? if neoforge {*/
-import gg.meza.soundsbegone.client.ConfigScreen;
+/*import gg.meza.soundsbegone.client.ConfigScreen;
 import gg.meza.soundsbegone.client.SoundsBeGoneClient;
 import gg.meza.soundsbegone.client.TranslationReminder;
 
@@ -129,4 +129,4 @@ public class SoundsBeGone {
     }
 }
 
-/*?}*/
+*//*?}*/

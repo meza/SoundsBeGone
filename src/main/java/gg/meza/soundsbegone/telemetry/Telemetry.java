@@ -23,22 +23,24 @@ public class Telemetry {
     // Not actually sending any user info, just using the uuid to create a new uuid that cannot be traced back to the user
     private final String uuid = DigestUtils.sha256Hex(MinecraftClient.getInstance().getSession().getUsername());
     private final String OS_NAME = System.getProperty("os.name");
+    /*? if 1.21.6*/
+    private final String MC_VERSION = "1.21.6";
     /*? if 1.21.5*/
     /*private final String MC_VERSION = "1.21.5";*/
     /*? if 1.21.4*/
     /*private final String MC_VERSION = "1.21.4";*/
     /*? if 1.21*/
-    private final String MC_VERSION = "1.21";
+    /*private final String MC_VERSION = "1.21";*/
     /*? if 1.19.4*/
     /*private final String MC_VERSION = "1.19.4";*/
     private final String JAVA_VERSION = System.getProperty("java.version");
 
     /*? if fabric*/
-    /*private final String LOADER = "fabric";*/
+    private final String LOADER = "fabric";
     /*? if forge*/
     /*private final String LOADER = "forge";*/
     /*? if neoforge*/
-    private final String LOADER = "neoforge";
+    /*private final String LOADER = "neoforge";*/
 
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private final MinecraftClient client;
