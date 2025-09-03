@@ -1,0 +1,33 @@
+{
+  "soundsbegone.config" : "Открыть экран конфигурации",
+  "soundsbegone.keybinds" : "SoundsBeGone",
+  "soundsbegone.discord" : "Discord",
+  "soundsbegone.translate" : "Помочь с переводом!",
+  "soundsbegone.support" : "Поддержка на Ko-fi",
+  "soundsbegone.enable" : "Включить",
+  "soundsbegone.disable" : "Отключить",
+
+  "soundsbegone.cmd.translate": "Играете в Minecraft на другом языке?\nВы можете помочь перевести %s!\n\nПросто нажмите на ссылку ниже, чтобы начать.\nЭто очень просто, и вы можете делать это прямо в браузере.\nНе нужно ничего скачивать или создавать специальный аккаунт.",
+  "soundsbegone.cmd.crowdin": "Переводить на Crowdin",
+  "soundsbegone.cmd.crowdin.tooltip": "Нажмите, чтобы открыть страницу перевода Crowdin",
+
+  "soundsbegone.config.title" : "Конфигурация Sounds Be Gone",
+  "soundsbegone.config.category.latest" : "Воспроизведено за последние 60 секунд",
+  "soundsbegone.config.category.disabled" : "Отключенные звуки",
+  "soundsbegone.config.category.settings" : "Настройки",
+
+  "soundsbegone.config.telemetry.switch" : "Включить телеметрию",
+  "soundsbegone.config.telemetry.description" : "Включение телеметрии будет отправлять анонимные данные, чтобы помочь нам понять, как мы можем улучшить мод. Мы НЕ отправляем никаких данных, которые могли бы вас идентифицировать.",
+  "soundsbegone.config.telemetry.verify" : "Вы можете проверить код телеметрии на %s",
+  "soundsbegone.config.telemetry.used" : "Используемые данные телеметрии:",
+  "soundsbegone.config.telemetry.disclaimer": "Пожалуйста, подумайте о том, чтобы оставить это включенным. Эти данные помогают разработке, давая нам понимание того, что важно для игроков, а что нет",
+
+  "soundsbegone.config.telemetry.data.sound": "Звук включен/отключен/заблокирован",
+  "soundsbegone.config.telemetry.data.version.mod": "Версия мода",
+  "soundsbegone.config.telemetry.data.version.minecraft": "Версия Minecraft",
+  "soundsbegone.config.telemetry.data.version.java": "Версия Java",
+  "soundsbegone.config.telemetry.data.loader": "Загрузчик модов",
+  "soundsbegone.config.telemetry.data.os": "Используемая операционная система",
+  "soundsbegone.config.telemetry.data.time": "Местное время",
+  "soundsbegone.config.telemetry.data.language": "Язык Minecraft"
+}
