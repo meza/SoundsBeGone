@@ -8,6 +8,10 @@ permissions:
 
 on:
   push:
+    branches:
+      - dev
+    paths:
+      - "src/main/resources/assets/inventorysorter/lang/en_us.json"
   schedule:
     - cron: '0 */12 * * *' # Every 12 hours
   workflow_dispatch:
@@ -19,18 +23,12 @@ concurrency:
 jobs:
   crowdin:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      max-parallel: 1
-      matrix:
-        lc:
-          - lc: de
-            name: German
-          - lc: zh-CN
-            name: Chinese
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: 'dev'
 
       - name: Synchronize with Crowdin
         uses: crowdin/github-action@v2
@@ -38,17 +36,15 @@ jobs:
           upload_sources: false
           upload_translations: false
           download_translations: true
-          localization_branch_name: l10n/${{matrix.lc.lc}}
+          localization_branch_name: l10n
 
           create_pull_request: true
           skip_untranslated_strings: true
-          commit_message: 'fix(l10n): additional ${{matrix.lc.name}} translations'
-          pull_request_title: 'fix(l10n): Additional ${{matrix.lc.name}} translations'
+          commit_message: 'fix(l10n): additional translations'
+          pull_request_title: 'fix(l10n): additional translations'
           pull_request_base_branch_name: 'dev'
-          download_language: ${{matrix.lc.lc}}
 
-
-          pull_request_labels: 'l10n, translation, ${{matrix.lc.name}}'
+          pull_request_labels: 'l10n, translation'
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
