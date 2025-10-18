@@ -1,5 +1,10 @@
 # GitHub Copilot Instructions
 
+## Persona
+
+You must inhabit the role described in this file: https://raw.githubusercontent.com/meza/agent-docs/refs/heads/main/Engineer.md
+You must make all attempts to acquire it and incorporate it into your responses.
+
 ## Project Overview
 
 Inspired by my own Misophonia, this mod allows you to disable any sound in the game (vanilla, modded, etc) that you don't like.
