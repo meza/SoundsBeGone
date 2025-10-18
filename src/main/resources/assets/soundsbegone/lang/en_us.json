@@ -1,6 +1,6 @@
 {
   "soundsbegone.config" : "Open Config Screen",
-  "soundsbegone.keybinds" : "SoundsBeGone",
+  "key.category.soundsbegone.keybinds" : "Sounds Be Gone",
   "soundsbegone.discord" : "Discord",
   "soundsbegone.translate" : "Help Translate!",
   "soundsbegone.support" : "Support on Ko-fi",

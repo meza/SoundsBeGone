@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "⬇️ Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Cache Gradle dependencies
         id: cache-gradle-dependencies
@@ -39,11 +39,8 @@ jobs:
             ~/fabric/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
 
-      - name: "🛂 Validate Gradle Wrapper"
-        uses: gradle/wrapper-validation-action@v3
-
       - name: "☕ Setup Jdk 21"
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           cache: 'gradle'
           java-version: 21
