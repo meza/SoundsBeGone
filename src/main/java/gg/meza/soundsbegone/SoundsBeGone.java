@@ -83,7 +83,11 @@ public class SoundsBeGone {
         SoundsBeGoneConfig.LOGGER.info("SoundsBeGone initialized");
     }
 
-    @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME ,modid = SoundsBeGoneConfig.MOD_ID)
+    /^? if >= 1.21.9 {^/
+    @EventBusSubscriber(modid = SoundsBeGoneConfig.MOD_ID)
+    /^?} else {^/
+    /^@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME ,modid = SoundsBeGoneConfig.MOD_ID)
+    ^//^?}^/
     public static class GameModEvents {
         static int tickCounter = 0;
 
@@ -114,7 +118,11 @@ public class SoundsBeGone {
         }
     }
 
-    @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD ,modid = SoundsBeGoneConfig.MOD_ID)
+    /^? if >= 1.21.9 {^/
+    @EventBusSubscriber(modid = SoundsBeGoneConfig.MOD_ID)
+    /^?} else {^/
+    /^@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME ,modid = SoundsBeGoneConfig.MOD_ID)
+    ^//^?}^/
     public static class ClientModEvents {
 
         @SubscribeEvent

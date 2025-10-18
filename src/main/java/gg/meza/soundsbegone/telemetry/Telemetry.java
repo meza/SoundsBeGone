@@ -23,8 +23,12 @@ public class Telemetry {
     // Not actually sending any user info, just using the uuid to create a new uuid that cannot be traced back to the user
     private final String uuid = DigestUtils.sha256Hex(MinecraftClient.getInstance().getSession().getUsername());
     private final String OS_NAME = System.getProperty("os.name");
+    /*? if 1.21.10*/
+    /*private final String MC_VERSION = "1.21.10";*/
+    /*? if 1.21.9*/
+    private final String MC_VERSION = "1.21.9";
     /*? if 1.21.6*/
-    private final String MC_VERSION = "1.21.6";
+    /*private final String MC_VERSION = "1.21.6";*/
     /*? if 1.21.5*/
     /*private final String MC_VERSION = "1.21.5";*/
     /*? if 1.21.4*/
