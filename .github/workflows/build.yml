@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "⬇️ Checkout"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Cache Gradle dependencies
         id: cache-gradle-dependencies
@@ -47,7 +47,7 @@ jobs:
           distribution: 'temurin'
 
       - name: "🔃 Use Latest Node.js"
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: latest
 
@@ -85,7 +85,7 @@ jobs:
         run: ./gradlew chiseledBuild
 
       - name: "🕵️‍♂️ Collect jars"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: Artifacts
           path: |
