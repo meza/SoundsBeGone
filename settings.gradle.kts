@@ -10,12 +10,13 @@ pluginManagement {
         maven("https://maven.kikugie.dev/snapshots")
         maven("https://maven.terraformersmc.com/")
         maven("https://maven.shedaniel.me/")
+        maven("https://maven.meza.gg/snapshots")
     }
 }
 
 plugins {
-    id("gg.meza.stonecraft") version "1.8.2"
-    id("dev.kikugie.stonecutter") version "0.7.11"
+    id("gg.meza.stonecraft") version "1.9.+"
+    id("dev.kikugie.stonecutter") version "0.8+"
 }
 
 stonecutter {
@@ -23,7 +24,7 @@ stonecutter {
     kotlinController = true
     shared {
         fun mc(version: String, vararg loaders: String) {
-            for (it in loaders) vers("$version-$it", version)
+            for (it in loaders) version("$version-$it", version)
         }
 
         mc("1.19.4", "fabric")

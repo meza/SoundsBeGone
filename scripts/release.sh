@@ -7,4 +7,4 @@ sed -e "s/0.0-SNAPSHOT/${VERSION}/" -i gradle.properties
 sed -e "s/VERSION_REPL/${VERSION}/" -i src/main/java/gg/meza/soundsbegone/SoundsBeGoneConfig.java
 sed -e "s/POSTHOG_API_KEY_REPL/${POSTHOG_API_KEY}/" -i src/main/java/gg/meza/soundsbegone/telemetry/Telemetry.java
 
-./gradlew chiseledBuildAndCollect chiseledPublishMods --no-daemon
+./gradlew buildAndCollect publishMods --no-daemon
