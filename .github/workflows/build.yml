@@ -55,7 +55,7 @@ jobs:
         run: chmod a+x ./scripts/release.sh && chmod +x ./gradlew
 
       - name: "🧵 Install semantic release"
-        run: npm i --location=global semantic-release semantic-release-discord-notifier conventional-changelog-conventionalcommits @semantic-release/github @semantic-release/changelog @semantic-release/exec semantic-release-export-data semantic-release-discord
+        run: npm i --location=global semantic-release @meza/mezas-conventional-changelog semantic-release-discord-notifier conventional-changelog-conventionalcommits @semantic-release/github @semantic-release/changelog @semantic-release/exec semantic-release-export-data semantic-release-discord
 
       - name: "🔢 Determine version"
         run: npx semantic-release --dry-run
