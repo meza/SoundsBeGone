@@ -33,8 +33,9 @@ stonecutter {
         mc("1.21.5", "fabric", "neoforge")
         mc("1.21.6", "fabric", "neoforge")
         mc("1.21.9", "fabric", "neoforge")
+        mc("1.21.11", "fabric", "neoforge")
 
-        vcsVersion = "1.21.9-fabric"
+        vcsVersion = "1.21.11-fabric"
     }
     create(rootProject)
 }

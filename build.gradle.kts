@@ -18,6 +18,11 @@ modSettings {
     )
 }
 
+stonecutter {
+    swaps["version"] = "private final String MC_VERSION = \"${stonecutter.current.version}\";"
+    swaps["loader"] = "private final String LOADER = \"${mod.loader}\";"
+}
+
 repositories {
     mavenLocal()
     maven("https://maven.terraformersmc.com/")
