@@ -30,7 +30,7 @@ jobs:
 
       - name: Cache Gradle dependencies
         id: cache-gradle-dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/caches
@@ -85,7 +85,7 @@ jobs:
         run: ./gradlew build
 
       - name: "🕵️‍♂️ Collect jars"
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: Artifacts
           path: |
