@@ -31,7 +31,7 @@ jobs:
           ref: 'dev'
 
       - name: Synchronize with Crowdin
-        uses: crowdin/github-action@v2.16.1
+        uses: crowdin/github-action@v2.16.2
         with:
           upload_sources: false
           upload_translations: false
