@@ -115,7 +115,6 @@ The versions are defined in the `settings.gradle.kts` file.
 #### Running tasks against the active version
 
 - `./gradlew buildActive` - build just the current active version
-- `./gradlew testActiveServer` - run the current active version's server tests
 
 ### Verifying Changes
 
@@ -124,10 +123,6 @@ The versions are defined in the `settings.gradle.kts` file.
 To make sure that the project tests and builds correctly:
 
 - `./gradlew test buildAndCollect`
-
-#### Full E2E Check
-
-- `./gradlew chiseledGameTest`
 
 ### Adding a new minecraft version to the project
 
