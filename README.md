@@ -15,6 +15,16 @@ Inspired by my own misophonia, Sounds Be Gone keeps Minecraft playable when spec
 - Keeps an audit trail so you can easily unmute later when you change your mind.
 - Built for sensory accessibility: predictable UI, reversible actions, and zero server requirements.
 
+## Infrequent Sounds!
+
+Some sounds are useful in small doses but miserable when Minecraft repeats them constantly. Mark those sounds as **Infrequent** instead of disabling them.
+
+Infrequent sounds still play sometimes. Sounds Be Gone checks each playback attempt and only lets a percentage of those attempts through. The default frequency is `10%`, and you can change it from the **Infrequent sounds** category in the config screen.
+
+This is not just a flat random toggle. When the same sound fires repeatedly, Sounds Be Gone counts recent attempts for that sound and lowers the chance for each attempt in the burst. A sound that only happens occasionally stays close to your configured percentage, while a sound that is spamming the client is suppressed more aggressively.
+
+Use **Infrequent** for sounds where silence would remove useful feedback, but normal playback is too much. Examples include repeated ambient loops, machine noises, villager chatter, or any modded sound that you only want to hear once in a while.
+
 ## Quick start
 
 ### Minecraft 1.20+
