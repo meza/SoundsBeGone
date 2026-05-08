@@ -6,7 +6,7 @@
 
 Inspired by my own misophonia, Sounds Be Gone keeps Minecraft playable when specific noises are overwhelming. The mod passively records every sound you have heard in the past minute and lets you mute any of them permanently with a couple of clicks. Everything is client-side, so your preferences affect only your game.
 
-### _Fabric is supported on releases below 1.20. NeoForge builds are available for Minecraft 1.20.4 and newer._
+### _Fabric and NeoForge builds are available for Minecraft 1.21 and newer._
 
 ## Why players use Sounds Be Gone
 
@@ -27,17 +27,17 @@ Use **Infrequent** for sounds where silence would remove useful feedback, but no
 
 ## Quick start
 
-### Minecraft 1.20+
+### Minecraft 1.21+
 
 1. When you hear an unwanted sound, press `B` (default keybind) to open the Sound Sanctuary.
 2. Pick the sound(s) from the "Played in the last 60 seconds" list.
 3. Toggle them off to mute permanently; the change saves immediately to your local profile.
 
-### Minecraft 1.19 and below
+## Compatibility support policy
 
-1. Press `ESC`, choose `MODS`, then select **Sounds Be Gone**.
-2. Click the settings cog in the top-right corner to open the configuration screen.
-3. Use the list of recent sounds to disable whatever is bothering you.
+Sounds Be Gone supports Minecraft versions released within the last three years. This keeps the support window predictable while still covering players who do not update immediately.
+
+Older Minecraft versions may be dropped when they fall outside that window. Versions inside the window may also be dropped when Minecraft, Fabric, NeoForge, Architectury, Stonecutter, or another core dependency changes enough that keeping backward compatibility creates a large maintenance burden. In those cases, the goal is to protect the actively supported versions instead of carrying fragile compatibility code indefinitely.
 
 ## Installation
 
@@ -59,7 +59,7 @@ Use **Infrequent** for sounds where silence would remove useful feedback, but no
 
 - Rebind the `B` key if it clashes with another mod under `Options → Controls → Key Binds → Sounds Be Gone`.
 - Sounds stay muted until you manually re-enable them, even if you swap worlds or restart the client.
-- Mod Menu makes it easy to open the config without jumping into a world, especially on older Minecraft versions.
+- Mod Menu makes it easy to open the config without jumping into a world.
 - Keep Cloth Config up to date—new releases occasionally add UX improvements for navigating large sound lists.
 
 ## Telemetry & privacy
