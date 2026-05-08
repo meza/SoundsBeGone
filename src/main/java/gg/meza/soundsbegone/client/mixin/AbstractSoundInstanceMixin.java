@@ -1,16 +1,14 @@
 package gg.meza.soundsbegone.client.mixin;
 
 import gg.meza.soundsbegone.SoundsBeGoneConfig;
-import gg.meza.soundsbegone.client.SoundEmissionRegulator;
 import gg.meza.soundsbegone.client.SoundsBeGoneClient;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.sound.AbstractSoundInstance;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.AbstractSoundInstance;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.RandomSource;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -20,11 +18,11 @@ import static gg.meza.soundsbegone.client.SoundsBeGoneClient.soundEmissionRegula
 @Mixin(AbstractSoundInstance.class)
 public class AbstractSoundInstanceMixin {
 
-    private final Random random = Random.createLocal();
+    private final RandomSource random = RandomSource.create();
 
     @Final
     @Shadow
-    protected Identifier id;
+    protected Identifier identifier;
 
     @Inject(
             method = "getVolume()F",
@@ -32,26 +30,26 @@ public class AbstractSoundInstanceMixin {
             cancellable = true)
     private void getVolume(CallbackInfoReturnable<Float> cir) {
 
-        if (SoundsBeGoneClient.config.isSoundDisabled(id.toString())) {
-            SoundsBeGoneConfig.LOGGER.debug("Disabling the sound: {}", id);
-            SoundsBeGoneClient.telemetry.blockedSound(id.toString());
+        if (SoundsBeGoneClient.config.isSoundDisabled(identifier.toString())) {
+            SoundsBeGoneConfig.LOGGER.debug("Disabling the sound: {}", identifier);
+            SoundsBeGoneClient.telemetry.blockedSound(identifier.toString());
             cir.setReturnValue(0.0F);
             cir.cancel();
-        } else if (SoundsBeGoneClient.config.isSoundInfrequent(id.toString())) {
+        } else if (SoundsBeGoneClient.config.isSoundInfrequent(identifier.toString())) {
             double value = random.nextDouble()*100;
-            double weightedChance = soundEmissionRegulator.weightedChance(id.toString(), SoundsBeGoneClient.config.getFrequencyPercentage());
+            double weightedChance = soundEmissionRegulator.weightedChance(identifier.toString(), SoundsBeGoneClient.config.getFrequencyPercentage());
             boolean playSound = value < weightedChance;
 
             if (!playSound) {
-                SoundsBeGoneConfig.LOGGER.debug("Reducing the sound: {}", id);
-                SoundsBeGoneClient.telemetry.blockedSound(id.toString());
+                SoundsBeGoneConfig.LOGGER.debug("Reducing the sound: {}", identifier);
+                SoundsBeGoneClient.telemetry.blockedSound(identifier.toString());
                 cir.setReturnValue(0.0F);
                 cir.cancel();
             }
         }
 
-        if (MinecraftClient.getInstance().world != null) {
-            SoundsBeGoneClient.SoundMap.put(id.toString(), new java.util.Date());
+        if (Minecraft.getInstance().level != null) {
+            SoundsBeGoneClient.SoundMap.put(identifier.toString(), new java.util.Date());
         }
 
     }

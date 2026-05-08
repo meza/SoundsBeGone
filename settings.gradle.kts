@@ -23,7 +23,10 @@ stonecutter {
     centralScript = "build.gradle.kts"
     kotlinController = true
     shared {
-        fun mc(version: String, vararg loaders: String) {
+        fun mc(
+            version: String,
+            vararg loaders: String,
+        ) {
             for (it in loaders) version("$version-$it", version)
         }
 

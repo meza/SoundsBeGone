@@ -3,7 +3,7 @@ package gg.meza.soundsbegone.telemetry;
 import com.posthog.java.PostHog;
 import gg.meza.soundsbegone.SoundsBeGoneConfig;
 import gg.meza.soundsbegone.client.SoundsBeGoneClient;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.HashMap;
@@ -21,7 +21,7 @@ public class Telemetry {
     private final Map<String, Integer> blockedSoundsCount = new ConcurrentHashMap<>();
 
     // Not actually sending any user info, just using the uuid to create a new uuid that cannot be traced back to the user
-    private final String uuid = DigestUtils.sha256Hex(MinecraftClient.getInstance().getSession().getUsername());
+    private final String uuid = DigestUtils.sha256Hex(Minecraft.getInstance().getUser().getName());
     private final String OS_NAME = System.getProperty("os.name");
 
     //$ version
@@ -33,9 +33,9 @@ public class Telemetry {
     private final String LOADER = "fabric";
 
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-    private final MinecraftClient client;
+    private final Minecraft client;
 
-    public Telemetry(MinecraftClient client) {
+    public Telemetry(Minecraft client) {
         this.client = client;
         this.posthog = new PostHog.Builder(POSTHOG_API_KEY).host(POSTHOG_HOST).build();
         if (SoundsBeGoneClient.config.isTelemetryEnabled()) {
@@ -52,7 +52,7 @@ public class Telemetry {
         if (!SoundsBeGoneClient.config.isTelemetryEnabled()) {
             return;
         }
-        String languageCode = client.getLanguageManager().getLanguage().toLowerCase();
+        String languageCode = client.getLanguageManager().getSelected().toLowerCase();
         Map<String, Object> baseProps = new ConcurrentHashMap<>(Map.of(
                 "sound", sound,
                 "Minecraft Version", MC_VERSION,

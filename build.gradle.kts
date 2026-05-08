@@ -11,16 +11,21 @@ modSettings {
         narrator = false
     }
 
-    variableReplacements = mapOf(
-        "schema" to "\$schema",
-        "cloth_version" to mod.prop("cloth_version", "*"),
-        "modmenu_version" to mod.prop("modmenu_version", "*"),
-    )
+    variableReplacements =
+        mapOf(
+            "schema" to "\$schema",
+            "cloth_version" to mod.prop("cloth_version", "*"),
+            "modmenu_version" to mod.prop("modmenu_version", "*"),
+        )
 }
 
 stonecutter {
     swaps["version"] = "private final String MC_VERSION = \"${stonecutter.current.version}\";"
     swaps["loader"] = "private final String LOADER = \"${mod.loader}\";"
+    replacements.string(stonecutter.current.parsed < "1.21.11") {
+        replace("Identifier", "ResourceLocation")
+        replace("ResourceLocationParameter", "ResourceLocationParameter")
+    }
 }
 
 repositories {

@@ -1,13 +1,12 @@
 package gg.meza.soundsbegone.client;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import gg.meza.soundsbegone.Config;
 import gg.meza.soundsbegone.telemetry.Telemetry;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 /*? if >= 1.21.9 {*/
-import gg.meza.soundsbegone.SoundsBeGoneConfig;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 /*?}*/
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
@@ -27,12 +26,12 @@ public class SoundsBeGoneClient {
     public static SoundEmissionRegulator soundEmissionRegulator = new SoundEmissionRegulator();
 
     /*? if >= 1.21.9 {*/
-    private static final KeyBinding.Category category = KeyBinding.Category.create(Identifier.of(MOD_ID, "keybinds"));
+    private static final KeyMapping.Category category = KeyMapping.Category.register(Identifier.fromNamespaceAndPath(MOD_ID, "keybinds"));
     /*?}*/
 
-    public static final KeyBinding openConfig = new KeyBinding(
+    public static final KeyMapping openConfig = new KeyMapping(
             "soundsbegone.config",
-            InputUtil.Type.KEYSYM,
+            InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_B,
             /*? if >= 1.21.9 {*/
             category
@@ -44,6 +43,6 @@ public class SoundsBeGoneClient {
 
     public static void initClient() {
         config.initConfig();
-        telemetry = new Telemetry(MinecraftClient.getInstance());
+        telemetry = new Telemetry(Minecraft.getInstance());
     }
 }
