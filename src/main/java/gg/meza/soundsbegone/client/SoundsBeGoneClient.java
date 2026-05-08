@@ -10,18 +10,24 @@ import gg.meza.soundsbegone.SoundsBeGoneConfig;
 import net.minecraft.util.Identifier;
 /*?}*/
 import org.lwjgl.glfw.GLFW;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static gg.meza.soundsbegone.SoundsBeGoneConfig.MOD_ID;
+
 public class SoundsBeGoneClient {
     public static Map<String, Date> SoundMap = new ConcurrentHashMap<>();
     public static Config config = new Config();
     public static Telemetry telemetry;
+    public static Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static SoundEmissionRegulator soundEmissionRegulator = new SoundEmissionRegulator();
 
     /*? if >= 1.21.9 {*/
-    private static final KeyBinding.Category category = KeyBinding.Category.create(Identifier.of(SoundsBeGoneConfig.MOD_ID, "keybinds"));
+    private static final KeyBinding.Category category = KeyBinding.Category.create(Identifier.of(MOD_ID, "keybinds"));
     /*?}*/
 
     public static final KeyBinding openConfig = new KeyBinding(

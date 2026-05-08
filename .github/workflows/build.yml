@@ -26,11 +26,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "⬇️ Checkout"
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6.0.2
 
       - name: Cache Gradle dependencies
         id: cache-gradle-dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5.0.5
         with:
           path: |
             ~/.gradle/caches
@@ -40,14 +40,14 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
 
       - name: "☕ Setup Jdk 21"
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v5.2.0
         with:
           cache: 'gradle'
           java-version: 21
           distribution: 'temurin'
 
       - name: "🔃 Use Latest Node.js"
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v6.4.0
         with:
           node-version: latest
 
@@ -55,7 +55,7 @@ jobs:
         run: chmod a+x ./scripts/release.sh && chmod +x ./gradlew
 
       - name: "🧵 Install semantic release"
-        run: npm i --location=global semantic-release semantic-release-discord-notifier conventional-changelog-conventionalcommits @semantic-release/github @semantic-release/changelog @semantic-release/exec semantic-release-export-data semantic-release-discord
+        run: npm i --location=global semantic-release @meza/mezas-conventional-changelog semantic-release-discord-notifier conventional-changelog-conventionalcommits @semantic-release/github @semantic-release/changelog @semantic-release/exec semantic-release-export-data semantic-release-discord
 
       - name: "🔢 Determine version"
         run: npx semantic-release --dry-run
@@ -82,10 +82,10 @@ jobs:
 
       - name: "🧪 Run Dev Build"
         if: ${{ steps.get-next-version.outputs.new-release-published != 'true' }}
-        run: ./gradlew chiseledBuild
+        run: ./gradlew build
 
       - name: "🕵️‍♂️ Collect jars"
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: Artifacts
           path: |
