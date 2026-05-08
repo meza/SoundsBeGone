@@ -33,8 +33,8 @@ loom {
 }
 
 stonecutter {
-    swaps["version"] = "private final String MC_VERSION = \"${stonecutter.current.version}\";"
-    swaps["loader"] = "private final String LOADER = \"${mod.loader}\";"
+    swaps["version"] = "String MC_VERSION = \"${stonecutter.current.version}\";"
+    swaps["loader"] = "String LOADER = \"${mod.loader}\";"
     replacements.string(stonecutter.current.parsed < "1.21.11") {
         replace("Identifier", "ResourceLocation")
         replace("ResourceLocationParameter", "ResourceLocationParameter")

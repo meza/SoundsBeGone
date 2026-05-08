@@ -12,7 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 
 public class Telemetry {
     private static final String POSTHOG_API_KEY = "POSTHOG_API_KEY_REPL";
@@ -24,13 +23,7 @@ public class Telemetry {
     private final String uuid = DigestUtils.sha256Hex(Minecraft.getInstance().getUser().getName());
     private final String OS_NAME = System.getProperty("os.name");
 
-    //$ version
-    private final String MC_VERSION = "26.1";
-
     private final String JAVA_VERSION = System.getProperty("java.version");
-
-    //$ loader
-    private final String LOADER = "fabric";
 
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private final Minecraft client;
@@ -53,6 +46,10 @@ public class Telemetry {
             return;
         }
         String languageCode = client.getLanguageManager().getSelected().toLowerCase();
+        //$ version
+        String MC_VERSION = "26.1";
+        //$ loader
+        String LOADER = "fabric";
         Map<String, Object> baseProps = new ConcurrentHashMap<>(Map.of(
                 "sound", sound,
                 "Minecraft Version", MC_VERSION,
@@ -102,11 +99,9 @@ public class Telemetry {
         Map<String, Integer> soundsToSend = new HashMap<>(this.blockedSoundsCount);
         this.blockedSoundsCount.clear();
 
-        soundsToSend.forEach((sound, count) -> {
-            this.sendEvent("Blocked Sound", sound, Map.of(
-                    "count", count
-            ));
-        });
+        soundsToSend.forEach((sound, count) -> this.sendEvent("Blocked Sound", sound, Map.of(
+                "count", count
+        )));
     }
 
     public void flush() {

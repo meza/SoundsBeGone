@@ -39,19 +39,19 @@ public class SoundsBeGone implements ClientModInitializer {
             tickCounter = 0;
         });
 
-        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+        ClientPlayConnectionEvents.JOIN.register((_, _, client) -> {
             TranslationReminder.notify(client);
         });
 
-        ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
+        ClientLifecycleEvents.CLIENT_STARTED.register(_ -> {
             SoundsBeGoneClient.telemetry.startMinecraft();
         });
 
-        ClientLifecycleEvents.CLIENT_STOPPING.register(client -> {
+        ClientLifecycleEvents.CLIENT_STOPPING.register(_ -> {
             SoundsBeGoneClient.telemetry.flush();
         });
 
-        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+        ClientPlayConnectionEvents.DISCONNECT.register((_, _) -> {
             SoundsBeGoneClient.telemetry.flush();
         });
     }
