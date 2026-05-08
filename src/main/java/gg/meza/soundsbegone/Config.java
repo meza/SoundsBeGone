@@ -42,16 +42,16 @@ public class Config {
     }
 
     public void disableSound(String sound) {
-        enableSound(sound);
+        resetSound(sound);
         configData.sounds.add(sound);
     }
 
     public void reduceSound(String sound) {
-        enableSound(sound);
+        resetSound(sound);
         configData.infrequent.add(sound);
     }
 
-    public void enableSound(String sound) {
+    public void resetSound(String sound) {
         configData.infrequent.remove(sound);
         configData.sounds.remove(sound);
     }
@@ -79,14 +79,6 @@ public class Config {
             return SoundState.INFREQUENT;
         } else {
             return SoundState.ENABLED;
-        }
-    }
-
-    public void setSoundState(String sound, SoundState state) {
-        switch (state) {
-            case DISABLED -> disableSound(sound);
-            case INFREQUENT -> reduceSound(sound);
-            case ENABLED -> enableSound(sound);
         }
     }
 
