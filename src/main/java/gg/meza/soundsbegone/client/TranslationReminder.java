@@ -40,16 +40,18 @@ public class TranslationReminder {
                 HoverEvent showText = new HoverEvent(HoverEvent.Action.SHOW_TEXT, crowdinTooltip);
                 *//*?}*/
 
-                client.player.displayClientMessage(
-                    Component.translatable("soundsbegone.cmd.translate", Component.literal("Sounds Be Gone").withStyle(style -> style.withBold(true).withColor(ChatFormatting.GOLD))).withStyle(style -> style.withColor(ChatFormatting.AQUA))
-                            .append(Component.literal("\n\n"))
-                            .append(Component.translatable("soundsbegone.cmd.crowdin").withStyle(style -> style.withBold(true)
-                                    .withColor(ChatFormatting.BLUE)
-                                    .withUnderlined(true)
-                                    .withHoverEvent(showText)
-                                    .withClickEvent(clickEvent))),
-                        false
-            );
+                Component message = Component.translatable("soundsbegone.cmd.translate", Component.literal("Sounds Be Gone").withStyle(style -> style.withBold(true).withColor(ChatFormatting.GOLD))).withStyle(style -> style.withColor(ChatFormatting.AQUA))
+                        .append(Component.literal("\n\n"))
+                        .append(Component.translatable("soundsbegone.cmd.crowdin").withStyle(style -> style.withBold(true)
+                                .withColor(ChatFormatting.BLUE)
+                                .withUnderlined(true)
+                                .withHoverEvent(showText)
+                                .withClickEvent(clickEvent)));
+
+                //? >= 26.1 {
+                client.player.sendSystemMessage(message);
+                //?} else
+                //client.player.displayClientMessage(message, false);
             SoundsBeGoneClient.config.setLastVersionSeen(SoundsBeGoneConfig.VERSION);
         }
     }
