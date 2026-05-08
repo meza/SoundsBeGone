@@ -4,9 +4,11 @@ plugins {
     id("gg.meza.stonecraft")
 }
 
+val isDeobfuscated = stonecutter.current.parsed >= "26.1"
+
 val awFile =
     when {
-        stonecutter.current.parsed >= "26.1" -> "soundsbegone.accesswidener"
+        isDeobfuscated -> "soundsbegone.accesswidener"
         else -> "soundsbegone.old.accesswidener"
     }
 
@@ -47,46 +49,37 @@ repositories {
 }
 
 dependencies {
-    if (stonecutter.current.parsed >= "26.1") {
-        implementation("com.google.code.gson:gson:2.10.1")
-
-        implementation("com.posthog.java:posthog:${mod.prop("posthog_version")}")
-        include("com.posthog.java:posthog:${mod.prop("posthog_version")}")
-
-        implementation("gg.meza:meza_core-${mod.loader}:${mod.prop("meza_core_version")}+${stonecutter.current.version}")
-        include("gg.meza:meza_core-${mod.loader}:${mod.prop("meza_core_version")}+${stonecutter.current.version}")
-
-        if (mod.isNeoforge) {
-            api("me.shedaniel.cloth:cloth-config-neoforge:${mod.prop("cloth_version")}")
-            "forgeRuntimeLibrary"("com.posthog.java:posthog:${mod.prop("posthog_version")}")
+    val implementationConfiguration =
+        when {
+            isDeobfuscated -> "implementation"
+            else -> "modImplementation"
         }
-        if (mod.isFabric) {
-            api("me.shedaniel.cloth:cloth-config-fabric:${mod.prop("cloth_version")}") {
-                exclude(group = "net.fabricmc.fabric-api")
-            }
-            if (mod.hasProp("modmenu_version")) {
-                api("com.terraformersmc:modmenu:${mod.prop("modmenu_version")}")
-            }
+    val apiConfiguration =
+        when {
+            isDeobfuscated -> "api"
+            else -> "modApi"
         }
-    } else {
-        add("modImplementation", "com.google.code.gson:gson:2.10.1")
-        add("modImplementation", "com.posthog.java:posthog:${mod.prop("posthog_version")}")
-        include("com.posthog.java:posthog:${mod.prop("posthog_version")}")
 
-        add("modImplementation", "gg.meza:meza_core-${mod.loader}:${mod.prop("meza_core_version")}+${stonecutter.current.version}")
-        include("gg.meza:meza_core-${mod.loader}:${mod.prop("meza_core_version")}+${stonecutter.current.version}")
+    val posthog = "com.posthog.java:posthog:${mod.prop("posthog_version")}"
+    val mezaCore = "gg.meza:meza_core-${mod.loader}:${mod.prop("meza_core_version")}+${stonecutter.current.version}"
 
-        if (mod.isNeoforge) {
-            add("modApi", "me.shedaniel.cloth:cloth-config-neoforge:${mod.prop("cloth_version")}")
-            "forgeRuntimeLibrary"("com.posthog.java:posthog:${mod.prop("posthog_version")}")
+    add(implementationConfiguration, "com.google.code.gson:gson:2.10.1")
+    add(implementationConfiguration, posthog)
+    include(posthog)
+
+    add(implementationConfiguration, mezaCore)
+    include(mezaCore)
+
+    if (mod.isNeoforge) {
+        add(apiConfiguration, "me.shedaniel.cloth:cloth-config-neoforge:${mod.prop("cloth_version")}")
+        "forgeRuntimeLibrary"(posthog)
+    }
+    if (mod.isFabric) {
+        add(apiConfiguration, "me.shedaniel.cloth:cloth-config-fabric:${mod.prop("cloth_version")}") {
+            exclude(group = "net.fabricmc.fabric-api")
         }
-        if (mod.isFabric) {
-            add("modApi", "me.shedaniel.cloth:cloth-config-fabric:${mod.prop("cloth_version")}") {
-                exclude(group = "net.fabricmc.fabric-api")
-            }
-            if (mod.hasProp("modmenu_version")) {
-                add("modApi", "com.terraformersmc:modmenu:${mod.prop("modmenu_version")}")
-            }
+        if (mod.hasProp("modmenu_version")) {
+            add(apiConfiguration, "com.terraformersmc:modmenu:${mod.prop("modmenu_version")}")
         }
     }
 }
