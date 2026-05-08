@@ -1,20 +1,20 @@
 package gg.meza.soundsbegone.client;
 
 import gg.meza.soundsbegone.SoundsBeGoneConfig;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.resource.language.LanguageDefinition;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.HoverEvent;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.language.LanguageInfo;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.MutableComponent;
 
 import java.net.URI;
 import java.util.Objects;
 
 public class TranslationReminder {
-    public static void notify(MinecraftClient client) {
-        String languageCode = client.getLanguageManager().getLanguage().toLowerCase();
+    public static void notify(Minecraft client) {
+        String languageCode = client.getLanguageManager().getSelected().toLowerCase();
             if (languageCode.equals("en_us")) {
             return;
         }
@@ -23,14 +23,14 @@ public class TranslationReminder {
             return;
         }
 
-        LanguageDefinition language = client.getLanguageManager().getLanguage(languageCode);
+        LanguageInfo language = client.getLanguageManager().getLanguage(languageCode);
             if (language == null) {
             return;
         }
 
             if (client.player != null) {
                 URI crowdinUri = URI.create("https://crowdin.com/project/soundsbegone");
-                MutableText crowdinTooltip = Text.translatable("soundsbegone.cmd.crowdin.tooltip");
+                MutableComponent crowdinTooltip = Component.translatable("soundsbegone.cmd.crowdin.tooltip");
 
                 /*? if > 1.21.4 {*/
                 ClickEvent.OpenUrl clickEvent = new ClickEvent.OpenUrl(crowdinUri);
@@ -40,16 +40,18 @@ public class TranslationReminder {
                 HoverEvent showText = new HoverEvent(HoverEvent.Action.SHOW_TEXT, crowdinTooltip);
                 *//*?}*/
 
-                client.player.sendMessage(
-                    Text.translatable("soundsbegone.cmd.translate", Text.literal("Sounds Be Gone").styled(style -> style.withBold(true).withColor(Formatting.GOLD))).styled(style -> style.withColor(Formatting.AQUA))
-                            .append(Text.literal("\n\n"))
-                            .append(Text.translatable("soundsbegone.cmd.crowdin").styled(style -> style.withBold(true)
-                                    .withColor(Formatting.BLUE)
-                                    .withUnderline(true)
-                                    .withHoverEvent(showText)
-                                    .withClickEvent(clickEvent))),
-                    false
-            );
+                Component message = Component.translatable("soundsbegone.cmd.translate", Component.literal("Sounds Be Gone").withStyle(style -> style.withBold(true).withColor(ChatFormatting.GOLD))).withStyle(style -> style.withColor(ChatFormatting.AQUA))
+                        .append(Component.literal("\n\n"))
+                        .append(Component.translatable("soundsbegone.cmd.crowdin").withStyle(style -> style.withBold(true)
+                                .withColor(ChatFormatting.BLUE)
+                                .withUnderlined(true)
+                                .withHoverEvent(showText)
+                                .withClickEvent(clickEvent)));
+
+                //? >= 26.1 {
+                client.player.sendSystemMessage(message);
+                //?} else
+                //client.player.displayClientMessage(message, false);
             SoundsBeGoneClient.config.setLastVersionSeen(SoundsBeGoneConfig.VERSION);
         }
     }

@@ -14,7 +14,14 @@
   "soundsbegone.config.title" : "Sounds Be Gone Config",
   "soundsbegone.config.category.latest" : "Played in the last 60 seconds",
   "soundsbegone.config.category.disabled" : "Disabled sounds",
+  "soundsbegone.config.category.infrequent" : "Infrequent sounds",
   "soundsbegone.config.category.settings" : "Settings",
+
+  "soundsbegone.config.infrequent.frequency.title" : "Frequency of infrequent sounds (percentage)",
+  "soundsbegone.config.infrequent.frequency.tooltip" : "What percentage of infrequent sounds should be played? (0.001 - 99.999)",
+  "soundsbegone.config.sound.state.enabled" : "Enabled",
+  "soundsbegone.config.sound.state.disabled" : "Disabled",
+  "soundsbegone.config.sound.state.infrequent" : "Infrequent",
 
   "soundsbegone.config.telemetry.switch" : "Enable telemetry",
   "soundsbegone.config.telemetry.description" : "Enabling telemetry will send anonymous data to help us understand how we can make things better. We DO NOT send any data that would identify you.",

@@ -7,7 +7,10 @@ import gg.meza.soundsbegone.client.TranslationReminder;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+//? >= 26.1
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+//? <= 1.21.11
+//import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 
 import java.util.*;
@@ -21,10 +24,13 @@ public class SoundsBeGone implements ClientModInitializer {
 
         SoundsBeGoneClient.initClient();
 
-        KeyBindingHelper.registerKeyBinding(SoundsBeGoneClient.openConfig);
+        //? >= 26.1
+        KeyMappingHelper.registerKeyMapping(SoundsBeGoneClient.openConfig);
+        //? <= 1.21.11
+        //KeyBindingHelper.registerKeyBinding(SoundsBeGoneClient.openConfig);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (SoundsBeGoneClient.openConfig.wasPressed()) {
+            if (SoundsBeGoneClient.openConfig.consumeClick()) {
                 client.setScreen(ConfigScreen.getConfigScreen(null));
             }
             if (tickCounter++ < 200) return;
@@ -58,7 +64,7 @@ import gg.meza.soundsbegone.client.SoundsBeGoneClient;
 import gg.meza.soundsbegone.client.TranslationReminder;
 
 import gg.meza.soundsbegone.client.neoforge.ConfigScreenFactory;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -103,8 +109,8 @@ public class SoundsBeGone {
 
         @SubscribeEvent
         public static void endTick(ClientTickEvent.Post event) {
-            if (SoundsBeGoneClient.openConfig.wasPressed()) {
-                MinecraftClient.getInstance().setScreen(ConfigScreen.getConfigScreen(null));
+            if (SoundsBeGoneClient.openConfig.consumeClick()) {
+                Minecraft.getInstance().setScreen(ConfigScreen.getConfigScreen(null));
             }
             if (tickCounter++ < 200) return;
             //remove from SoundMap if the sound has been playing for more than 60 seconds
@@ -114,7 +120,7 @@ public class SoundsBeGone {
 
         @SubscribeEvent
         public static void clientJoin(ClientPlayerNetworkEvent.LoggingIn event) {
-            TranslationReminder.notify(MinecraftClient.getInstance());
+            TranslationReminder.notify(Minecraft.getInstance());
         }
     }
 

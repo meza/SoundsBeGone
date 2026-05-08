@@ -42,10 +42,17 @@ public class Config {
     }
 
     public void disableSound(String sound) {
+        resetSound(sound);
         configData.sounds.add(sound);
     }
 
-    public void enableSound(String sound) {
+    public void reduceSound(String sound) {
+        resetSound(sound);
+        configData.infrequent.add(sound);
+    }
+
+    public void resetSound(String sound) {
+        configData.infrequent.remove(sound);
         configData.sounds.remove(sound);
     }
 
@@ -53,8 +60,34 @@ public class Config {
         return configData.sounds.contains(sound);
     }
 
+    public boolean isSoundInfrequent(String sound) {
+        return configData.infrequent.contains(sound);
+    }
+
     public Set<String> disabledSounds() {
         return configData.sounds;
+    }
+
+    public Set<String> infrequentSounds() {
+        return configData.infrequent;
+    }
+
+    public SoundState getSoundState(String sound) {
+        if (isSoundDisabled(sound)) {
+            return SoundState.DISABLED;
+        } else if (isSoundInfrequent(sound)) {
+            return SoundState.INFREQUENT;
+        } else {
+            return SoundState.ENABLED;
+        }
+    }
+
+    public double getFrequencyPercentage() {
+        return configData.frequencyPercentage;
+    }
+
+    public void setFrequencyPercentage(double percentage) {
+        configData.frequencyPercentage = percentage;
     }
 
     public void initConfig() {
@@ -105,7 +138,8 @@ public class Config {
             SoundsBeGoneConfig.LOGGER.warn("Old config file found, migrating to new format");
             BufferedReader reader = Files.newBufferedReader(configPath);
 
-            Type setType = new TypeToken<Set<String>>(){}.getType();
+            Type setType = new TypeToken<Set<String>>() {
+            }.getType();
             Set<String> disabledSounds = GSON.fromJson(reader, setType);
             reader.close();
             this.configData.sounds = disabledSounds;
