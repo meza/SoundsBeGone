@@ -73,6 +73,12 @@ public class Telemetry {
         this.sendEvent("Muted Sound", sound);
     }
 
+    public void setInfrequentSound(String sound, double frequencyPercentage) {
+        this.sendEvent("Set Infrequent Sound", sound, Map.of(
+                "frequency_percentage", frequencyPercentage
+        ));
+    }
+
     public void blockedSound(String sound) {
         if (this.blockedSoundsCount.containsKey(sound)) {
             this.blockedSoundsCount.put(sound, this.blockedSoundsCount.get(sound) + 1);
