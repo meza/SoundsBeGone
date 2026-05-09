@@ -127,7 +127,7 @@ public class SoundsBeGone {
     /^? if >= 1.21.9 {^/
     @EventBusSubscriber(modid = SoundsBeGoneConfig.MOD_ID)
     /^?} else {^/
-    /^@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME ,modid = SoundsBeGoneConfig.MOD_ID)
+    /^@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD ,modid = SoundsBeGoneConfig.MOD_ID)
     ^//^?}^/
     public static class ClientModEvents {
 
