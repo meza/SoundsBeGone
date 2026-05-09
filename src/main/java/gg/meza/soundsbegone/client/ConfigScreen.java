@@ -78,6 +78,8 @@ public class ConfigScreen {
                 .setDefaultValue(SoundsBeGoneClient.config.getSoundState(key))
                 .setEnumNameProvider((state) -> Component.translatable("soundsbegone.config.sound.state." + state.name().toLowerCase()))
                 .setSaveConsumer(newValue -> {
+                    boolean hasChanged = SoundsBeGoneClient.config.getSoundState(key) != newValue;
+                    if (!hasChanged) return;
                     switch (newValue) {
                         case DISABLED -> {
                             SoundsBeGoneConfig.LOGGER.info("Disabling sound: " + key);
