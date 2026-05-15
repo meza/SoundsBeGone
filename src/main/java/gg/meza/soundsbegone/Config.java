@@ -70,15 +70,13 @@ public class Config {
     public Set<String> disabledSounds() {
         return configData.soundVolumes.entrySet().stream()
                 .filter(e -> e.getValue() == 0)
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toSet());
+                .map(Map.Entry::getKey).collect(Collectors.toUnmodifiableSet());
     }
 
     public Set<String> reducedSounds() {
         return configData.soundVolumes.entrySet().stream()
                 .filter(e -> e.getValue() > 0 && e.getValue() < 100)
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toSet());
+                .map(Map.Entry::getKey).collect(Collectors.toUnmodifiableSet());
     }
 
     public Set<String> infrequentSounds() {
@@ -102,7 +100,7 @@ public class Config {
                 reader.close();
             } catch (IOException | JsonParseException e) {
                 Throwable cause = e.getCause();
-                SoundsBeGoneConfig.LOGGER.error("Cause: {}", cause != null ? cause.getClass().getSimpleName() : "null");
+                LOGGER.error("Failed to load config", e);
                 if (cause != null && cause.getClass() == IllegalStateException.class) {
                     convertConfig(configPath);
                     return;
@@ -147,8 +145,10 @@ public class Config {
             }.getType();
             Set<String> disabledSounds = GSON.fromJson(reader, setType);
             reader.close();
-            for (String sound : disabledSounds) {
-                this.configData.soundVolumes.putIfAbsent(sound, 0);
+            if (disabledSounds != null) {
+                for (String sound : disabledSounds) {
+                    this.configData.soundVolumes.putIfAbsent(sound, 0);
+                }
             }
 
             BufferedWriter writer = Files.newBufferedWriter(configPath);
@@ -165,7 +165,7 @@ public class Config {
             for (String sound : configData.sounds) {
                 configData.soundVolumes.putIfAbsent(sound, 0);
             }
-            configData.sounds.clear();
+            configData.sounds = null;
             saveConfig();
         }
     }

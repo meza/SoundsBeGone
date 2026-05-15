@@ -21,6 +21,8 @@ public class AbstractSoundInstanceMixin {
     @Shadow protected float volume;
     @Unique
     private final RandomSource random = RandomSource.create();
+    @Unique
+    private boolean soundsBeGone$telemetryReported;
 
     @Inject(
             method = "getVolume()F",
@@ -36,7 +38,10 @@ public class AbstractSoundInstanceMixin {
 
             if (!playSound) {
                 SoundsBeGoneConfig.LOGGER.debug("Reducing the sound: {}", soundId);
-                SoundsBeGoneClient.telemetry.blockedSound(soundId);
+                if (!soundsBeGone$telemetryReported) {
+                    SoundsBeGoneClient.telemetry.blockedSound(soundId);
+                    soundsBeGone$telemetryReported = true;
+                }
                 cir.setReturnValue(0.0F);
                 cir.cancel();
                 track(soundId);
@@ -46,12 +51,16 @@ public class AbstractSoundInstanceMixin {
 
         int volumePercent = SoundsBeGoneClient.config.getSoundVolume(soundId);
         if (volumePercent == 0) {
-            SoundsBeGoneClient.telemetry.blockedSound(soundId);
+            if (!soundsBeGone$telemetryReported) {
+                SoundsBeGoneClient.telemetry.blockedSound(soundId);
+                soundsBeGone$telemetryReported = true;
+            }
             cir.setReturnValue(0.0F);
             cir.cancel();
             track(soundId);
             return;
         } else if (volumePercent != 100) {
+            track(soundId);
             float newVolume = this.volume * (volumePercent / 100.0f);
             cir.setReturnValue(newVolume);
             cir.cancel();
