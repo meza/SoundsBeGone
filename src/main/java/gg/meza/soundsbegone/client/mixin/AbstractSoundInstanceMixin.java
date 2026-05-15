@@ -7,6 +7,7 @@ import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,36 +18,62 @@ import static gg.meza.soundsbegone.client.SoundsBeGoneClient.soundEmissionRegula
 @Mixin(AbstractSoundInstance.class)
 public class AbstractSoundInstanceMixin {
 
+    @Shadow protected float volume;
+    @Unique
     private final RandomSource random = RandomSource.create();
+    @Unique
+    private boolean soundsBeGone$telemetryReported;
 
     @Inject(
             method = "getVolume()F",
             at = @At("HEAD"),
             cancellable = true)
     private void getVolume(CallbackInfoReturnable<Float> cir) {
+        String soundId = soundsBeGone$sound().toString();
 
-        if (SoundsBeGoneClient.config.isSoundDisabled(soundsBeGone$sound().toString())) {
-            SoundsBeGoneConfig.LOGGER.debug("Disabling the sound: {}", soundsBeGone$sound());
-            SoundsBeGoneClient.telemetry.blockedSound(soundsBeGone$sound().toString());
-            cir.setReturnValue(0.0F);
-            cir.cancel();
-        } else if (SoundsBeGoneClient.config.isSoundInfrequent(soundsBeGone$sound().toString())) {
-            double value = random.nextDouble()*100;
-            double weightedChance = soundEmissionRegulator.weightedChance(soundsBeGone$sound().toString(), SoundsBeGoneClient.config.getFrequencyPercentage());
+        if (SoundsBeGoneClient.config.isSoundInfrequent(soundId)) {
+            double value = random.nextDouble() * 100;
+            double weightedChance = soundEmissionRegulator.weightedChance(soundId, SoundsBeGoneClient.config.getFrequencyPercentage());
             boolean playSound = value < weightedChance;
 
             if (!playSound) {
-                SoundsBeGoneConfig.LOGGER.debug("Reducing the sound: {}", soundsBeGone$sound());
-                SoundsBeGoneClient.telemetry.blockedSound(soundsBeGone$sound().toString());
+                SoundsBeGoneConfig.LOGGER.debug("Reducing the sound: {}", soundId);
+                if (!soundsBeGone$telemetryReported) {
+                    SoundsBeGoneClient.telemetry.blockedSound(soundId);
+                    soundsBeGone$telemetryReported = true;
+                }
                 cir.setReturnValue(0.0F);
                 cir.cancel();
+                track(soundId);
+                return;
             }
         }
 
-        if (Minecraft.getInstance().level != null) {
-            SoundsBeGoneClient.SoundMap.put(soundsBeGone$sound().toString(), new java.util.Date());
+        int volumePercent = SoundsBeGoneClient.config.getSoundVolume(soundId);
+        if (volumePercent == 0) {
+            if (!soundsBeGone$telemetryReported) {
+                SoundsBeGoneClient.telemetry.blockedSound(soundId);
+                soundsBeGone$telemetryReported = true;
+            }
+            cir.setReturnValue(0.0F);
+            cir.cancel();
+            track(soundId);
+            return;
+        } else if (volumePercent != 100) {
+            track(soundId);
+            float newVolume = this.volume * (volumePercent / 100.0f);
+            cir.setReturnValue(newVolume);
+            cir.cancel();
         }
 
+        track(soundId);
+    }
+
+    @Unique
+    private void track(String soundId) {
+        if (Minecraft.getInstance().level != null) {
+            SoundsBeGoneClient.SoundMap.put(soundId, new java.util.Date());
+        }
     }
 
     @Unique

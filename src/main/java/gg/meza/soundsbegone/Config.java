@@ -13,7 +13,9 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static gg.meza.soundsbegone.SoundsBeGoneConfig.LOGGER;
 import static gg.meza.soundsbegone.SoundsBeGoneConfig.MOD_ID;
@@ -41,23 +43,24 @@ public class Config {
         configData.telemetry = toValue;
     }
 
-    public void disableSound(String sound) {
-        resetSound(sound);
-        configData.sounds.add(sound);
+    public void setInfrequent(String sound, boolean value) {
+        if (value) {
+            configData.infrequent.add(sound);
+        } else {
+            configData.infrequent.remove(sound);
+        }
     }
 
-    public void reduceSound(String sound) {
-        resetSound(sound);
-        configData.infrequent.add(sound);
+    public int getSoundVolume(String sound) {
+        return configData.soundVolumes.getOrDefault(sound, 100);
     }
 
-    public void resetSound(String sound) {
-        configData.infrequent.remove(sound);
-        configData.sounds.remove(sound);
-    }
-
-    public boolean isSoundDisabled(String sound) {
-        return configData.sounds.contains(sound);
+    public void setSoundVolume(String sound, int volume) {
+        if (volume == 100) {
+            configData.soundVolumes.remove(sound);
+        } else {
+            configData.soundVolumes.put(sound, volume);
+        }
     }
 
     public boolean isSoundInfrequent(String sound) {
@@ -65,21 +68,19 @@ public class Config {
     }
 
     public Set<String> disabledSounds() {
-        return configData.sounds;
+        return configData.soundVolumes.entrySet().stream()
+                .filter(e -> e.getValue() == 0)
+                .map(Map.Entry::getKey).collect(Collectors.toUnmodifiableSet());
+    }
+
+    public Set<String> reducedSounds() {
+        return configData.soundVolumes.entrySet().stream()
+                .filter(e -> e.getValue() > 0 && e.getValue() < 100)
+                .map(Map.Entry::getKey).collect(Collectors.toUnmodifiableSet());
     }
 
     public Set<String> infrequentSounds() {
-        return configData.infrequent;
-    }
-
-    public SoundState getSoundState(String sound) {
-        if (isSoundDisabled(sound)) {
-            return SoundState.DISABLED;
-        } else if (isSoundInfrequent(sound)) {
-            return SoundState.INFREQUENT;
-        } else {
-            return SoundState.ENABLED;
-        }
+        return Set.copyOf(configData.infrequent);
     }
 
     public double getFrequencyPercentage() {
@@ -98,14 +99,16 @@ public class Config {
                 configData = GSON.fromJson(reader, ConfigData.class);
                 reader.close();
             } catch (IOException | JsonParseException e) {
-                SoundsBeGoneConfig.LOGGER.error("Cause: " + e.getCause().getClass().getSimpleName());
-                if (e.getCause().getClass() == IllegalStateException.class) {
+                Throwable cause = e.getCause();
+                LOGGER.error("Failed to load config", e);
+                if (cause != null && cause.getClass() == IllegalStateException.class) {
                     convertConfig(configPath);
                     return;
                 }
                 throw new SerializationException(e);
             }
         }
+        migrateLegacySounds();
     }
 
     public void saveConfig() {
@@ -142,13 +145,28 @@ public class Config {
             }.getType();
             Set<String> disabledSounds = GSON.fromJson(reader, setType);
             reader.close();
-            this.configData.sounds = disabledSounds;
+            if (disabledSounds != null) {
+                for (String sound : disabledSounds) {
+                    this.configData.soundVolumes.putIfAbsent(sound, 0);
+                }
+            }
 
             BufferedWriter writer = Files.newBufferedWriter(configPath);
             GSON.toJson(configData, writer);
             writer.close();
         } catch (IOException | JsonParseException e) {
             throw new SerializationException(e);
+        }
+    }
+
+    private void migrateLegacySounds() {
+        if (configData.sounds != null && !configData.sounds.isEmpty()) {
+            SoundsBeGoneConfig.LOGGER.info("Migrating legacy disabled sounds to volume map");
+            for (String sound : configData.sounds) {
+                configData.soundVolumes.putIfAbsent(sound, 0);
+            }
+            configData.sounds = null;
+            saveConfig();
         }
     }
 

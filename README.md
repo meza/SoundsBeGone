@@ -4,15 +4,15 @@
 [![CurseForge](https://img.shields.io/curseforge/dt/874633?logo=curseforge&label=CurseForge)](https://www.curseforge.com/minecraft/mc-mods/soundsbegone)  
 [![](https://dcbadge.limes.pink/api/server/dvg3tcQCPW)](https://discord.gg/dvg3tcQCPW)
 
-Inspired by my own misophonia, Sounds Be Gone keeps Minecraft playable when specific noises are overwhelming. The mod passively records every sound you have heard in the past minute and lets you mute any of them permanently with a couple of clicks. Everything is client-side, so your preferences affect only your game.
+Inspired by my own misophonia, Sounds Be Gone keeps Minecraft playable when specific noises are overwhelming. The mod passively records every sound you have heard in the past minute and lets you reduce the volume or mute any of them permanently with a couple of clicks. Everything is client-side, so your preferences affect only your game.
 
 ### _Fabric is supported on releases below 1.20. NeoForge builds are available for Minecraft 1.20.4 and newer._
 
 ## Why players use Sounds Be Gone
 
-- Instantly silence any sound event (vanilla or modded) without memorizing filenames.
-- The "recently played" list removes guesswork—scroll, select, and mute.
-- Keeps an audit trail so you can easily unmute later when you change your mind.
+- Reduce the volume or instantly silence any sound event (vanilla or modded) without memorizing filenames.
+- The "recently played" list removes guesswork—scroll, select, and adjust.
+- Keeps an audit trail so you can easily readjust volumes later when you change your mind.
 - Built for sensory accessibility: predictable UI, reversible actions, and zero server requirements.
 
 ## Infrequent Sounds!
@@ -31,13 +31,13 @@ Use **Infrequent** for sounds where silence would remove useful feedback, but no
 
 1. When you hear an unwanted sound, press `B` (default keybind) to open the Sound Sanctuary.
 2. Pick the sound(s) from the "Played in the last 60 seconds" list.
-3. Toggle them off to mute permanently; the change saves immediately to your local profile.
+3. Use the volume slider to turn it down, or set it to 0% to mute it permanently; the change saves immediately.
 
 ### Minecraft 1.19 and below
 
 1. Press `ESC`, choose `MODS`, then select **Sounds Be Gone**.
 2. Click the settings cog in the top-right corner to open the configuration screen.
-3. Use the list of recent sounds to disable whatever is bothering you.
+3. Use the list of recent sounds to turn down or disable whatever is bothering you.
 
 ## Installation
 
@@ -58,7 +58,6 @@ Use **Infrequent** for sounds where silence would remove useful feedback, but no
 ## Configuration tips
 
 - Rebind the `B` key if it clashes with another mod under `Options → Controls → Key Binds → Sounds Be Gone`.
-- Sounds stay muted until you manually re-enable them, even if you swap worlds or restart the client.
 - Mod Menu makes it easy to open the config without jumping into a world, especially on older Minecraft versions.
 - Keep Cloth Config up to date—new releases occasionally add UX improvements for navigating large sound lists.
 
