@@ -82,7 +82,7 @@ public class Config {
     }
 
     public Set<String> infrequentSounds() {
-        return configData.infrequent;
+        return Set.copyOf(configData.infrequent);
     }
 
     public double getFrequencyPercentage() {
@@ -101,8 +101,9 @@ public class Config {
                 configData = GSON.fromJson(reader, ConfigData.class);
                 reader.close();
             } catch (IOException | JsonParseException e) {
-                SoundsBeGoneConfig.LOGGER.error("Cause: {}", e.getCause().getClass().getSimpleName());
-                if (e.getCause().getClass() == IllegalStateException.class) {
+                Throwable cause = e.getCause();
+                SoundsBeGoneConfig.LOGGER.error("Cause: {}", cause != null ? cause.getClass().getSimpleName() : "null");
+                if (cause != null && cause.getClass() == IllegalStateException.class) {
                     convertConfig(configPath);
                     return;
                 }
@@ -147,7 +148,7 @@ public class Config {
             Set<String> disabledSounds = GSON.fromJson(reader, setType);
             reader.close();
             for (String sound : disabledSounds) {
-                this.configData.soundVolumes.put(sound, 0);
+                this.configData.soundVolumes.putIfAbsent(sound, 0);
             }
 
             BufferedWriter writer = Files.newBufferedWriter(configPath);
@@ -162,7 +163,7 @@ public class Config {
         if (configData.sounds != null && !configData.sounds.isEmpty()) {
             SoundsBeGoneConfig.LOGGER.info("Migrating legacy disabled sounds to volume map");
             for (String sound : configData.sounds) {
-                configData.soundVolumes.put(sound, 0);
+                configData.soundVolumes.putIfAbsent(sound, 0);
             }
             configData.sounds.clear();
             saveConfig();

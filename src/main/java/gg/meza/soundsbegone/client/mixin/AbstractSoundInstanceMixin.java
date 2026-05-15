@@ -46,6 +46,7 @@ public class AbstractSoundInstanceMixin {
 
         int volumePercent = SoundsBeGoneClient.config.getSoundVolume(soundId);
         if (volumePercent == 0) {
+            SoundsBeGoneClient.telemetry.blockedSound(soundId);
             cir.setReturnValue(0.0F);
             cir.cancel();
             track(soundId);
