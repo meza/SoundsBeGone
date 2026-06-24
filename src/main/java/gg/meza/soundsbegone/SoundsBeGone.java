@@ -89,7 +89,7 @@ public class SoundsBeGone {
         SoundsBeGoneConfig.LOGGER.info("SoundsBeGone initialized");
     }
 
-    /^? if >= 1.21.9 {^/
+    /^? if >= 1.21.6 {^/
     @EventBusSubscriber(modid = SoundsBeGoneConfig.MOD_ID)
     /^?} else {^/
     /^@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME ,modid = SoundsBeGoneConfig.MOD_ID)
@@ -124,7 +124,7 @@ public class SoundsBeGone {
         }
     }
 
-    /^? if >= 1.21.9 {^/
+    /^? if >= 1.21.6 {^/
     @EventBusSubscriber(modid = SoundsBeGoneConfig.MOD_ID)
     /^?} else {^/
     /^@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD ,modid = SoundsBeGoneConfig.MOD_ID)
