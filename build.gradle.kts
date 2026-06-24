@@ -28,6 +28,13 @@ stonecutter {
         replace("Identifier", "ResourceLocation")
         replace("ResourceLocationParameter", "ResourceLocationParameter")
     }
+
+    replacements.string(stonecutter.current.parsed < "26.2") {
+        replace("Minecraft.getInstance().gui.screen()", "Minecraft.getInstance().screen")
+        replace("Minecraft.getInstance().gui.setScreen(", "Minecraft.getInstance().setScreen(")
+        replace("minecraft.gui.screen()", "minecraft.screen")
+        replace("client.gui.setScreen(", "client.setScreen(")
+    }
 }
 
 repositories {
