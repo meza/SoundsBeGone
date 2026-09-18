@@ -35,7 +35,10 @@ jobs:
         uses: actions/setup-java@v5.4.0
         with:
           cache: 'gradle'
-          java-version: 25
+          java-version: |
+            17
+            21
+            25
           distribution: 'temurin'
 
       - name: "🔃 Use Latest Node.js"
