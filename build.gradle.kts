@@ -18,6 +18,11 @@ modSettings {
             "schema" to "\$schema",
             "cloth_version" to mod.prop("cloth_version", "*"),
             "modmenu_version" to mod.prop("modmenu_version", "*"),
+            "neoforgeLogo" to
+                when (stonecutter.current.parsed < "26.3") {
+                    true -> "logoFile"
+                    false -> "iconFile"
+                },
         )
 }
 
