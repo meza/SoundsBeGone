@@ -5,8 +5,12 @@
 
 name: build
 on:
-  - push
-  - pull_request
+  push:
+    branches:
+      - main
+      - beta
+  pull_request:
+  workflow_dispatch:
 
 permissions:
   issues: write
@@ -19,16 +23,18 @@ env:
 
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
-    cancel-in-progress: ${{ github.event_name == 'push' && github.ref_name != 'main' && github.ref_name != 'beta' }}
+    cancel-in-progress: ${{ github.ref_name != 'main' && github.ref_name != 'beta' }}
 
 jobs:
   build:
     runs-on: meza-ubuntu-slim
+    env:
+      HAS_SECRETS: ${{ secrets.DISCORD_WEBHOOK != '' }}
     steps:
       - name: "⬇️ Checkout"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: "☕ Setup Jdk 25"
+      - name: "☕ Setup Jdk"
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
         with:
           cache: 'gradle'
@@ -52,6 +58,7 @@ jobs:
 
       - name: "🔢 Determine version"
         run: npx semantic-release --dry-run
+        if: env.HAS_SECRETS == 'true'
         id: get-next-version
         env:
           GH_TOKEN: ${{ github.token }}
@@ -61,7 +68,7 @@ jobs:
         run: echo "Needs release published? ${{ steps.get-next-version.outputs.new-release-published == 'true' }}"
 
       - name: "🏗️ Build & Release to GitHub"
-        if: ${{ steps.get-next-version.outputs.new-release-published == 'true' }}
+        if: ${{ steps.get-next-version.outputs.new-release-published == 'true' && env.HAS_SECRETS == 'true' }}
         env:
           GH_TOKEN: ${{ github.token }}
           DO_PUBLISH: steps.get-next-version.outputs.new-release-published
