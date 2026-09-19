@@ -110,6 +110,7 @@ public class Telemetry {
     }
 
     public void shutdown() {
+        boolean interrupted = false;
         scheduler.shutdown();
         try {
             if (!scheduler.awaitTermination(5, TimeUnit.SECONDS)) {
@@ -117,7 +118,16 @@ public class Telemetry {
             }
         } catch (InterruptedException e) {
             scheduler.shutdownNow();
-            Thread.currentThread().interrupt();
+            interrupted = true;
+        }
+
+        try {
+            flush();
+        } finally {
+            posthog.shutdown();
+            if (interrupted) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 

@@ -48,7 +48,7 @@ public class SoundsBeGone implements ClientModInitializer {
         });
 
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> {
-            SoundsBeGoneClient.telemetry.flush();
+            SoundsBeGoneClient.telemetry.shutdown();
         });
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
@@ -99,7 +99,7 @@ public class SoundsBeGone {
 
         @SubscribeEvent
         public static void shutdown(GameShuttingDownEvent event) {
-            SoundsBeGoneClient.telemetry.flush();
+            SoundsBeGoneClient.telemetry.shutdown();
         }
 
         @SubscribeEvent
