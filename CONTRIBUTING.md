@@ -83,7 +83,7 @@ This project uses Java with Gradle and [Stonecutter][stonecutter] for developmen
 
 1. Clone the repository.
 2. Open the project in your favorite IDE.
-3. Run `./gradlew chiseledBuild` to build the project.
+3. Run `./gradlew build` to build the full Minecraft version-loader matrix.
 
 If the build is successful, you are ready to start developing. 
 If you encounter any issues, please follow the steps in the error message first and then ask for help in the [Discord server][discord].
@@ -108,13 +108,37 @@ We're using [Stonecutter][stonecutter] to manage multiple Minecraft versions and
 
 #### Switching versions
 
-Gradle has a "Set active project to <version>-<loader>" tasks, those are the ones to use.
+Before testing or diagnosing one Minecraft version-loader combination, switch to it with Stonecutter's generated task:
+
+```bash
+./gradlew "Set active project to <version>-<loader>"
+```
 
 The versions are defined in the `settings.gradle.kts` file.
+Switching the active project rewrites the Stonecutter-controlled branches under `src/`, so always switch before editing or testing version-dependent source.
 
 #### Running tasks against the active version
 
-- `./gradlew buildActive` - build just the current active version
+- `./gradlew buildActive` builds only the current active version-loader combination.
+
+Use this task after switching when testing or diagnosing one target.
+
+#### Restoring the handover state
+
+After targeted work, run:
+
+```bash
+./gradlew "Reset active project"
+```
+
+This restores the active project to the `vcsVersion` declared in `settings.gradle.kts`.
+The reset state is mandatory before full-matrix verification and before handover.
+Do not edit the active project in `stonecutter.gradle.kts` manually.
+
+#### Building the full matrix
+
+- `./gradlew build` builds the full declared Minecraft version-loader matrix.
+- `./gradlew buildAndCollect` builds the full matrix and collects the jars in one place.
 
 ### Verifying Changes
 
@@ -122,7 +146,8 @@ The versions are defined in the `settings.gradle.kts` file.
 
 To make sure that the project tests and builds correctly:
 
-- `./gradlew test buildAndCollect`
+- Run `./gradlew build` for full-matrix verification.
+- Run `./gradlew buildAndCollect` instead when you also need the jars collected in one place.
 
 ### Adding a new minecraft version to the project
 
@@ -133,11 +158,11 @@ At the worst, we need to completely rewrite sections of the mod to work with the
 Fortunately [Stonecutter][stonecutter] makes this process easier by allowing us to have multiple versions of Minecraft in the same codebase.
 The trade-off is that it's a bit more complex to read, but it's worth it in the long run.
 
-To add a new version of Minecraft to the project, follow the steps in the [Minecraft Version Update Runbook](/docs/minecraft-version-update-runbook.md).
+To add a new version of Minecraft to the project, follow the steps in the [Minecraft Version Update Runbook](docs/minecraft-version-update-runbook.md).
 
 ### DO NOT
 
-Do not run traditional gradle compile tasks. The project uses a custom build process that includes additional steps beyond compilation. Running standard compile tasks may lead to incomplete builds and test failures.
+Do not run direct Gradle `compile*` tasks or version-subproject build tasks. Use `buildActive` after switching to one target, or `build` for the full matrix. The project uses a custom build process that includes additional steps beyond compilation, so bypassing these tasks may lead to incomplete builds and test failures.
 
 ## Documentation
 

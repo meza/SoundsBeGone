@@ -47,7 +47,7 @@ public class Telemetry {
         }
         String languageCode = client.getLanguageManager().getSelected().toLowerCase();
         //$ version
-        String MC_VERSION = "26.2";
+        String MC_VERSION = "26.3";
         //$ loader
         String LOADER = "fabric";
         Map<String, Object> baseProps = new ConcurrentHashMap<>(Map.of(
@@ -110,6 +110,7 @@ public class Telemetry {
     }
 
     public void shutdown() {
+        boolean interrupted = false;
         scheduler.shutdown();
         try {
             if (!scheduler.awaitTermination(5, TimeUnit.SECONDS)) {
@@ -117,7 +118,16 @@ public class Telemetry {
             }
         } catch (InterruptedException e) {
             scheduler.shutdownNow();
-            Thread.currentThread().interrupt();
+            interrupted = true;
+        }
+
+        try {
+            flush();
+        } finally {
+            posthog.shutdown();
+            if (interrupted) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 

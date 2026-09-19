@@ -8,7 +8,6 @@ import net.minecraft.client.Minecraft;
 /*? if >= 1.21.9 {*/
 import net.minecraft.resources.Identifier;
 /*?}*/
-import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +30,8 @@ public class SoundsBeGoneClient {
 
     public static final KeyMapping openConfig = new KeyMapping(
             "soundsbegone.config",
-            InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_B,
+            InputConstants.Type.KEYBOARD,
+            InputConstants.KEY_B,
             /*? if >= 1.21.9 {*/
             category
             /*?} else {*/

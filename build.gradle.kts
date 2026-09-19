@@ -18,6 +18,11 @@ modSettings {
             "schema" to "\$schema",
             "cloth_version" to mod.prop("cloth_version", "*"),
             "modmenu_version" to mod.prop("modmenu_version", "*"),
+            "neoforgeLogo" to
+                when (stonecutter.current.parsed < "26.3") {
+                    true -> "logoFile"
+                    false -> "iconFile"
+                },
         )
 }
 
@@ -34,6 +39,11 @@ stonecutter {
         replace("Minecraft.getInstance().gui.setScreen(", "Minecraft.getInstance().setScreen(")
         replace("minecraft.gui.screen()", "minecraft.screen")
         replace("client.gui.setScreen(", "client.setScreen(")
+    }
+
+    replacements.string(stonecutter.current.parsed < "26.3") {
+        replace("InputConstants.Type.KEYBOARD", "InputConstants.Type.KEYSYM")
+        replace("InputConstants.KEY_B", "org.lwjgl.glfw.GLFW.GLFW_KEY_B")
     }
 }
 

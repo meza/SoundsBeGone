@@ -3,7 +3,9 @@ name: Dependency Update
 description: MUST CONSULT When asked to update and refresh dependencies in the project.
 ---
 
-This project uses Stonecutter to manage multiple Minecraft versions and loaders. Please refer to the [Contributing Guide](../../CONTRIBUTING.md) for more information on how to work with Stonecutter.
+This project uses Stonecutter to manage multiple Minecraft versions and loaders. Please refer to the [Contributing Guide](../../../CONTRIBUTING.md) for more information on how to work with Stonecutter.
+
+When adding or upgrading supported Minecraft versions, follow the [Minecraft Version Update Runbook](../../../docs/minecraft-version-update-runbook.md) instead of this dependency-refresh workflow.
 
 The dependency versions are separated per supported Minecraft version.
 
@@ -19,13 +21,16 @@ Your sources for available versions are the repositories in the build.gradle.kts
 
 ## Your task
 
-When asked to update a dependency, you should:
+First determine the requested scope:
 
-1. Take the first versions/dependency/*.properties file that contains the dependency to update that you haven't updated yet.
-2. Check the current version of the first dependency you haven't updated yet in the file.
-3. Look up the latest version for the given Minecraft version in the repositories defined in the build.gradle.kts file. - you might need to look online or on Modrinth to find out the correct version/loader combination.
-4. Update the version in the properties file.
-5. Repeat from step 2 until there are no more dependencies to update in the file.
-6. Repeat from step 1 until all the properties files have been updated.
-7. Once all the properties files have been updated, run `./gradlew buildAndCollect` to make sure everything builds correctly.
-8. Stop and notify the user
+- For a named dependency update, update only that dependency in every manifest where it is present.
+- For an explicitly requested full dependency refresh, update every dependency in every manifest.
+
+For each dependency and manifest within that scope:
+
+1. Check its current version.
+2. Look up the latest compatible version for that manifest's Minecraft version in the repositories defined in `build.gradle.kts`. You might need to look online or on Modrinth to find the correct version-loader combination.
+3. Update the version in the manifest.
+4. Continue until every dependency and manifest within the requested scope has been handled.
+5. Verify the result using the full-matrix build workflow in `CONTRIBUTING.md`.
+6. Stop and notify the user.
