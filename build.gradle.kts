@@ -6,12 +6,6 @@ plugins {
 
 val isDeobfuscated = stonecutter.current.parsed >= "26.1"
 
-val awFile =
-    when {
-        isDeobfuscated -> "soundsbegone.accesswidener"
-        else -> "soundsbegone.old.accesswidener"
-    }
-
 modSettings {
     clientOptions {
         darkBackground = true
@@ -24,12 +18,7 @@ modSettings {
             "schema" to "\$schema",
             "cloth_version" to mod.prop("cloth_version", "*"),
             "modmenu_version" to mod.prop("modmenu_version", "*"),
-            "awFile" to awFile,
         )
-}
-
-loom {
-    accessWidenerPath = rootProject.file("src/main/resources/$awFile")
 }
 
 stonecutter {
@@ -38,6 +27,13 @@ stonecutter {
     replacements.string(stonecutter.current.parsed < "1.21.11") {
         replace("Identifier", "ResourceLocation")
         replace("ResourceLocationParameter", "ResourceLocationParameter")
+    }
+
+    replacements.string(stonecutter.current.parsed < "26.2") {
+        replace("Minecraft.getInstance().gui.screen()", "Minecraft.getInstance().screen")
+        replace("Minecraft.getInstance().gui.setScreen(", "Minecraft.getInstance().setScreen(")
+        replace("minecraft.gui.screen()", "minecraft.screen")
+        replace("client.gui.setScreen(", "client.setScreen(")
     }
 }
 

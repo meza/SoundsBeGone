@@ -16,13 +16,13 @@ env:
 
 jobs:
   update-readme:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Update supporters list
-        uses: meza/action-patrons@v1.0.17
+        uses: meza/action-patrons@f7b554efbf7e65abbdb2d4372ce906e257fbb3e8 # v1.0.20
         with:
           files-to-update: |
             - README.md

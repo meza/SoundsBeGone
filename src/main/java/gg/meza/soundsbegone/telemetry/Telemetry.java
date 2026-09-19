@@ -47,7 +47,7 @@ public class Telemetry {
         }
         String languageCode = client.getLanguageManager().getSelected().toLowerCase();
         //$ version
-        String MC_VERSION = "26.1";
+        String MC_VERSION = "26.2";
         //$ loader
         String LOADER = "fabric";
         Map<String, Object> baseProps = new ConcurrentHashMap<>(Map.of(

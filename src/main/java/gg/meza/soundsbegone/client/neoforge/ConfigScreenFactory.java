@@ -2,16 +2,16 @@
 /*package gg.meza.soundsbegone.client.neoforge;
 
 import gg.meza.soundsbegone.client.ConfigScreen;
-/^? if > 1.21 {^/
+//? if >= 1.21
 import net.neoforged.fml.ModContainer;
-/^?}^/
-import net.minecraft.client.Minecraft;
+//? < 1.21
+//import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
 public class ConfigScreenFactory implements IConfigScreenFactory {
 
-    /^? if > 1.21 {^/
+    /^? if >= 1.21 {^/
     @Override
     public Screen createScreen(ModContainer modContainer, Screen parent) {
         return ConfigScreen.getConfigScreen(parent);

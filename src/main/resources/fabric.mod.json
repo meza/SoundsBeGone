@@ -23,7 +23,6 @@
 	"license": "GPL-3.0",
 	"icon": "assets/${id}/icon.png",
 	"environment": "client",
-	"accessWidener": "${awFile}",
 	"entrypoints": {
 		"main": [],
 		"client": [
