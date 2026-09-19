@@ -35,6 +35,11 @@ stonecutter {
         replace("minecraft.gui.screen()", "minecraft.screen")
         replace("client.gui.setScreen(", "client.setScreen(")
     }
+
+    replacements.string(stonecutter.current.parsed < "26.3") {
+        replace("InputConstants.Type.KEYBOARD", "InputConstants.Type.KEYSYM")
+        replace("InputConstants.KEY_B", "org.lwjgl.glfw.GLFW.GLFW_KEY_B")
+    }
 }
 
 repositories {
