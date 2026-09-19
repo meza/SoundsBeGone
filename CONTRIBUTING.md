@@ -148,8 +148,6 @@ Do not run traditional gradle compile tasks. The project uses a custom build pro
 - For Stonecraft: https://stonecraft.meza.gg/
 - For Stonecutter: https://stonecutter.kikugie.dev/wiki/
 
-
-
 ---
 
 [issues]: https://github.com/meza/SoundsBeGone/issues
