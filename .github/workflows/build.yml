@@ -6,9 +6,6 @@
 name: build
 on:
   push:
-    branches:
-      - main
-      - beta
   pull_request:
   workflow_dispatch:
 
@@ -20,10 +17,11 @@ permissions:
 
 env:
   TYPE: ${{ endsWith(github.ref_name, 'main') && 'release' || (endsWith(github.ref_name, 'beta') && 'beta' || 'dev') }}
+  NPM_CONFIG_CACHE: /cache/npm
 
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
-    cancel-in-progress: ${{ github.ref_name != 'main' && github.ref_name != 'beta' }}
+    cancel-in-progress: ${{ github.event_name == 'push' && github.ref_name != 'main' && github.ref_name != 'beta' }}
 
 jobs:
   build:
@@ -33,6 +31,22 @@ jobs:
     steps:
       - name: "⬇️ Checkout"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: "🔃 Use Latest Node.js"
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 25
+
+      - name: Install commitlint
+        run: npm install -D @commitlint/cli @commitlint/config-conventional
+
+      - name: Validate current commit (last commit) with commitlint
+        if: github.event_name == 'push'
+        run: npx commitlint --last --verbose
+
+      - name: Validate PR commits with commitlint
+        if: github.event_name == 'pull_request'
+        run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
 
       - name: "☕ Setup Jdk"
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
@@ -44,11 +58,6 @@ jobs:
             21
             25
           distribution: 'temurin'
-
-      - name: "🔃 Use Latest Node.js"
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version: 25
 
       - name: "🔓 Adjust the release permissions"
         run: chmod a+x ./scripts/release.sh && chmod +x ./gradlew
@@ -90,4 +99,3 @@ jobs:
           name: Artifacts
           path: |
             build/libs/*.jar
-
