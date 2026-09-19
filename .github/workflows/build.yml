@@ -16,7 +16,8 @@ permissions:
 
 env:
   TYPE: ${{ endsWith(github.ref_name, 'main') && 'release' || (endsWith(github.ref_name, 'beta') && 'beta' || 'dev') }}
-  GRADLE_USER_HOME: /cache/Minecraft/SoundsBeGone
+  GRADLE_RO_DEP_CACHE: /cache/Minecraft/SoundsBeGone
+
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: ${{ github.event_name == 'push' && github.ref_name != 'main' && github.ref_name != 'beta' }}
@@ -29,7 +30,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: "Ensure cache folder"
-        run: mkdir -p "${{ env.GRADLE_USER_HOME }}"
+        run: mkdir -p "${{ env.GRADLE_RO_DEP_CACHE }}"
 
       - name: "☕ Setup Jdk 25"
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
