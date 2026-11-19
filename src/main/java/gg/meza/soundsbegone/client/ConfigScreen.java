@@ -9,8 +9,14 @@ import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import me.shedaniel.clothconfig2.impl.builders.SubCategoryBuilder;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class ConfigScreen {
     public static Screen getConfigScreen(Screen parent) {
@@ -21,6 +27,7 @@ public class ConfigScreen {
                     SoundsBeGoneClient.config.saveConfig();
                 });
         ConfigCategory general = builder.getOrCreateCategory(Component.translatable("soundsbegone.config.category.latest"));
+        ConfigCategory allSounds = builder.getOrCreateCategory(Component.translatable("soundsbegone.config.category.all_sounds"));
         ConfigCategory disabled = builder.getOrCreateCategory(Component.translatable("soundsbegone.config.category.disabled"));
         ConfigCategory infrequent = builder.getOrCreateCategory(Component.translatable("soundsbegone.config.category.infrequent"));
         ConfigCategory settings = builder.getOrCreateCategory(Component.translatable("soundsbegone.config.category.settings"));
@@ -59,45 +66,55 @@ public class ConfigScreen {
         settings.addEntry(telemetrySubcategory.build());
         settings.addEntry(entryBuilder.startTextDescription(Component.translatable("soundsbegone.config.telemetry.disclaimer")).build());
 
-        SoundsBeGoneClient.SoundMap
-                .keySet()
-                .stream()
-                .filter(s -> !SoundsBeGoneClient.config.isSoundDisabled(s))
-                .sorted()
-                .forEach((key) -> general.addEntry(constructOption(entryBuilder, key)));
+        Set<String> recentSounds = Set.copyOf(SoundsBeGoneClient.SoundMap.keySet());
+        Set<String> soundIds = new TreeSet<>(recentSounds);
+        soundIds.addAll(SoundsBeGoneClient.config.infrequentSounds());
+        soundIds.addAll(SoundsBeGoneClient.config.disabledSounds());
+        Minecraft.getInstance().getSoundManager().getAvailableSounds()
+                .forEach(id -> soundIds.add(id.toString()));
 
-        SoundsBeGoneClient.config.infrequentSounds().stream().sorted().forEach((key) -> infrequent.addEntry(constructOption(entryBuilder, key)));
-        SoundsBeGoneClient.config.disabledSounds().stream().sorted().forEach((key) -> disabled.addEntry(constructOption(entryBuilder, key)));
+        Map<String, SoundOption> soundEntries = new LinkedHashMap<>();
+        for (String soundId : soundIds) {
+            SoundState state = SoundsBeGoneClient.config.getSoundState(soundId);
+            // Share the entry so a change is visible in every tab that shows this sound.
+            SoundOption entry = constructOption(soundId, state);
+            soundEntries.put(soundId, entry);
+            if (state == SoundState.DISABLED) {
+                disabled.addEntry(entry);
+            } else {
+                if (recentSounds.contains(soundId)) general.addEntry(entry);
+                if (state == SoundState.INFREQUENT) infrequent.addEntry(entry);
+            }
+        }
+        AbstractConfigListEntry<?> searchHint = entryBuilder.startTextDescription(
+                Component.translatable("soundsbegone.config.search_hint")).build();
+        searchHint.setDisplayRequirement(() -> !SoundGroups.hasSearch(searchHint.getConfigScreen()));
+        allSounds.addEntry(searchHint);
+        SoundGroups.addEntries(allSounds, soundEntries);
         SupportCategory.add(builder, entryBuilder);
         return builder.build();
     }
 
-    private static AbstractConfigListEntry<?> constructOption(ConfigEntryBuilder builder, String key) {
-        return builder
-                .startEnumSelector(Component.translatable(key), SoundState.class, SoundsBeGoneClient.config.getSoundState(key))
-                .setDefaultValue(SoundsBeGoneClient.config.getSoundState(key))
-                .setEnumNameProvider((state) -> Component.translatable("soundsbegone.config.sound.state." + state.name().toLowerCase()))
-                .setSaveConsumer(newValue -> {
-                    boolean hasChanged = SoundsBeGoneClient.config.getSoundState(key) != newValue;
-                    if (!hasChanged) return;
-                    switch (newValue) {
-                        case DISABLED -> {
-                            SoundsBeGoneConfig.LOGGER.info("Disabling sound: " + key);
-                            SoundsBeGoneClient.config.disableSound(key);
-                            SoundsBeGoneClient.telemetry.mutedSound(key);
-                        }
-                        case INFREQUENT -> {
-                            SoundsBeGoneConfig.LOGGER.info("Setting sound to infrequent: " + key);
-                            SoundsBeGoneClient.config.reduceSound(key);
-                            SoundsBeGoneClient.telemetry.setInfrequentSound(key, SoundsBeGoneClient.config.getFrequencyPercentage());
-                        }
-                        case ENABLED -> {
-                            SoundsBeGoneConfig.LOGGER.info("Enabling sound: " + key);
-                            SoundsBeGoneClient.config.resetSound(key);
-                            SoundsBeGoneClient.telemetry.unmutedSound(key);
-                        }
-                    }
-                })
-                .build();
+    private static SoundOption constructOption(String key, SoundState initialState) {
+        return new SoundOption(key, initialState, newValue -> {
+            if (SoundsBeGoneClient.config.getSoundState(key) == newValue) return;
+            switch (newValue) {
+                case DISABLED -> {
+                    SoundsBeGoneConfig.LOGGER.info("Disabling sound: " + key);
+                    SoundsBeGoneClient.config.disableSound(key);
+                    SoundsBeGoneClient.telemetry.mutedSound(key);
+                }
+                case INFREQUENT -> {
+                    SoundsBeGoneConfig.LOGGER.info("Setting sound to infrequent: " + key);
+                    SoundsBeGoneClient.config.reduceSound(key);
+                    SoundsBeGoneClient.telemetry.setInfrequentSound(key, SoundsBeGoneClient.config.getFrequencyPercentage());
+                }
+                case ENABLED -> {
+                    SoundsBeGoneConfig.LOGGER.info("Enabling sound: " + key);
+                    SoundsBeGoneClient.config.resetSound(key);
+                    SoundsBeGoneClient.telemetry.unmutedSound(key);
+                }
+            }
+        });
     }
 }

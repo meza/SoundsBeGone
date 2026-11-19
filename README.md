@@ -6,7 +6,7 @@
 
 Inspired by my own misophonia, Sounds Be Gone keeps Minecraft playable when specific noises are overwhelming. The mod passively records every sound you have heard in the past minute and lets you mute any of them permanently with a couple of clicks. Everything is client-side, so your preferences affect only your game.
 
-### _Fabric and NeoForge builds are available for Minecraft 1.21 and newer._
+### _This fork targets Minecraft 1.21.11, 26.1–26.1.2, 26.2, and 26.3 on Fabric and NeoForge._
 
 ## Why players use Sounds Be Gone
 
@@ -27,11 +27,11 @@ Use **Infrequent** for sounds where silence would remove useful feedback, but no
 
 ## Quick start
 
-### Minecraft 1.21+
+1. Press `B` (default keybind) to open the sound config.
+2. Open **All sounds** and search for a mob, block, or sound ID. For example, search for `Villager`, `Oak Planks`, or `minecraft:entity.villager.ambient`. Blocks can share a group, such as the wood sounds used by oak planks.
+3. Expand a result to pick an individual sound, or use **Enable all** or **Disable all** beside the group name to change every sound in that group. Click **Save & Quit** to apply your changes.
 
-1. When you hear an unwanted sound, press `B` (default keybind) to open the Sound Sanctuary.
-2. Pick the sound(s) from the "Played in the last 60 seconds" list.
-3. Toggle them off to mute permanently; the change saves immediately to your local profile.
+The search catalog includes events loaded by mods and active resource packs. Use **Played in the last 60 seconds** to identify a sound you have just heard, or **Disabled sounds** to re-enable a sound later.
 
 ## Compatibility support policy
 
@@ -41,19 +41,9 @@ Older Minecraft versions may be dropped when they fall outside that window. Vers
 
 ## Installation
 
-### CurseForge
+Build the fork with `./gradlew buildAndCollect` using JDK 25 and a JDK 21 toolchain. Put the JAR for your Minecraft version and mod loader in the client's `mods` folder. If you already have Sounds Be Gone installed, remove its old JAR first.
 
-> Using [mmm](https://github.com/meza/minecraft-mod-manager)? Run `mmm add curseforge 874633` to install the latest build.
-
-- [Cloth Config](https://www.curseforge.com/minecraft/mc-mods/cloth-config)
-- [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu) (optional, but makes the settings screen easier to reach)
-
-### Modrinth
-
-> Using [mmm](https://github.com/meza/minecraft-mod-manager)? Run `mmm add modrinth FOIvwGKz` to install the latest build.
-
-- [Cloth Config](https://modrinth.com/mod/cloth-config)
-- [Mod Menu](https://modrinth.com/mod/modmenu) (optional)
+Install [Cloth Config](https://modrinth.com/mod/cloth-config) for your version and loader. Fabric players also need [Fabric API](https://modrinth.com/mod/fabric-api) and can optionally use [Mod Menu](https://modrinth.com/mod/modmenu) to open the config from the title screen.
 
 ## Configuration tips
 

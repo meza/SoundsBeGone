@@ -5,6 +5,8 @@ plugins {
 }
 
 val isDeobfuscated = stonecutter.current.parsed >= "26.1"
+val minecraftVersions = (listOf(stonecutter.current.version, mod.prop("minecraft_version", stonecutter.current.version)) +
+    mod.prop("additional_versions", "").split(",").map(String::trim).filter(String::isNotEmpty)).distinct()
 
 modSettings {
     clientOptions {
@@ -16,6 +18,8 @@ modSettings {
     variableReplacements =
         mapOf(
             "schema" to "\$schema",
+            "fabric_minecraft_versions" to minecraftVersions.joinToString("\", \"") { "=$it" },
+            "neoforge_minecraft_range" to minecraftVersions.sorted().joinToString(",") { "[$it]" },
             "cloth_version" to mod.prop("cloth_version", "*"),
             "modmenu_version" to mod.prop("modmenu_version", "*"),
             "neoforgeLogo" to

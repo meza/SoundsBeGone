@@ -17,7 +17,7 @@ logoBlur = false
 [[dependencies.${id}]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[${minecraftVersion},)"
+versionRange = "${neoforge_minecraft_range}"
 ordering = "NONE"
 side = "CLIENT"
 

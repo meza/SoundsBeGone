@@ -13,9 +13,15 @@
 
   "soundsbegone.config.title" : "Sounds Be Gone Config",
   "soundsbegone.config.category.latest" : "Played in the last 60 seconds",
+  "soundsbegone.config.category.all_sounds" : "All sounds",
   "soundsbegone.config.category.disabled" : "Disabled sounds",
   "soundsbegone.config.category.infrequent" : "Infrequent sounds",
   "soundsbegone.config.category.settings" : "Settings",
+  "soundsbegone.config.search_hint" : "Search by mob, block, or sound ID.",
+  "soundsbegone.config.group.entity" : "%s (entity)",
+  "soundsbegone.config.group.block" : "%s (block)",
+  "soundsbegone.config.group.enable_all" : "Enable all",
+  "soundsbegone.config.group.disable_all" : "Disable all",
 
   "soundsbegone.config.infrequent.frequency.title" : "Frequency of infrequent sounds (percentage)",
   "soundsbegone.config.infrequent.frequency.tooltip" : "What percentage of infrequent sounds should be played? (0.001 - 99.999)",
